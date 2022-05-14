@@ -1,0 +1,228 @@
+\documentclass[12pt]{beamer}
+
+%%% INÍCIO DE PACOTES %%%
+
+\usepackage[brazilian]{babel}
+\usepackage[utf8]{inputenc}
+
+\usepackage{graphicx} % Possibilita inclusão de imagem
+\usepackage{tikz} % Permite desenhar
+\usepackage{pgfplots} % Com tikz, desenha gráfico
+\usetikzlibrary{decorations.pathreplacing, angles, quotes} % Permite desenhar "chaves"
+\usepackage{mathtools, amsthm, amssymb, amsbsy} % Pacotes de Matemática
+\usepackage{colonequals} % Símbolo de definição: \colonequals ou \equalscolon
+\usepackage{hyperref} % Link para partes do próprio texto
+
+\graphicspath{ {IMAGENS/} }
+
+%%% INÍCIO DE APARÊNCIA %%%
+\usetheme[]{metropolis}
+\usecolortheme{wolverine}
+\setbeamercovered{transparent = 0.5}
+
+\setbeamertemplate{footline}{% Formatação do rodaé de todos os slides
+	\leavevmode%
+	\hbox{%
+		\begin{beamercolorbox}[wd = 0.800\textwidth, ht = 4ex, dp = 2ex, left]{author in head/foot}%
+			\usebeamerfont{author in head/foot}\texttt{\hspace{12pt}\insertshortauthor~|~\insertshorttitle.}%
+		\end{beamercolorbox}%
+		\begin{beamercolorbox}[wd = 0.120\textwidth, ht = 4ex, dp = 2ex, center]{date in head/foot}%
+			\insertslidenavigationsymbol~\insertsectionnavigationsymbol%
+		\end{beamercolorbox}%
+		\begin{beamercolorbox}[wd = 0.080\textwidth, ht = 4ex, dp = 2ex, center]{date in head/foot}%
+			\usebeamerfont{date in head/foot}\texttt{\insertframenumber~/~\inserttotalframenumber}%
+		\end{beamercolorbox}%
+	}%
+}
+
+
+\setbeamertemplate{theorems}[numbered] % habilita numeração nos teoremas, definições, etc.
+
+%%% INÍCIO CÓDIGO ADICIONAL %%%
+
+\theoremstyle{definition} % retira a formatação do texto (o padrão é 'plain')
+
+\newtheorem{mydef}{Definição}
+\newtheorem{mythm}{Teorema}
+\newtheorem{myobs}{Observação}
+\newtheorem{myexp}{Exemplo}
+
+%%% INÍCIO DA DEFINIÇÃO DE NOVOS SÍMBOLOS E FUNÇÕES %%%
+
+\DeclareMathOperator{\PX}{\mathbb{P}} % Probability symbol
+\DeclareMathOperator{\EX}{\mathbb{E}} % Expectation symbol \mathbbmss
+\DeclareMathOperator{\VX}{\mathbb{V}} % Variance symbol
+\DeclareMathOperator{\FX}{\mathcal{F}} % Sigma-algebra symbol
+\DeclareMathOperator{\NX}{\mathbb{N}} % Natural set symbol
+\DeclareMathOperator{\ZX}{\mathbb{Z}} % Integer set symbol
+\DeclareMathOperator{\QX}{\mathbb{Q}} % Rational set symbol
+\DeclareMathOperator{\IX}{\mathbb{I}} % Irrational set symbol
+\DeclareMathOperator{\RX}{\mathbb{R}} % Real set symbol
+\DeclareMathOperator{\CX}{\mathbb{C}} % Complex set symbol
+\DeclareMathOperator{\LX}{\mathbb{L}} % Lattice set symbol
+\DeclareMathOperator{\GX}{\mathcal{G}} % Group symbol
+\newcommand{\diff}{{\nabla_i}f(\omega)}
+\newcommand{\flip}{\text{Flip}_i(\omega)}
+\newcommand{\infl}{\text{Inf}_i(f(\omega))}
+
+\makeatletter % Define função ERF
+\pgfmathdeclarefunction{erf}{1}{%
+	\begingroup
+	\pgfmathparse{#1 > 0 ? 1 : -1}%
+	\edef\sign{\pgfmathresult}%
+	\pgfmathparse{abs(#1)}%
+	\edef\x{\pgfmathresult}%
+	\pgfmathparse{1/(1+0.3275911*\x)}%
+	\edef\t{\pgfmathresult}%
+	\pgfmathparse{%
+		1 - (((((1.061405429*\t -1.453152027)*\t) + 1.421413741)*\t 
+		-0.284496736)*\t + 0.254829592)*\t*exp(-(\x*\x))}%
+	\edef\y{\pgfmathresult}%
+	\pgfmathparse{(\sign)*\y}%
+	\pgfmath@smuggleone\pgfmathresult%
+	\endgroup
+}
+\makeatother
+
+%%% INÍCIO DAS INFORMAÇÕES %%%
+
+\title{Sharp Threshold Phenomena in Statistical Physics}
+\author[André V. R. Amaral]{André Victor Ribeiro Amaral}
+
+\begin{document}
+	\AtBeginSection{} % Elimina slide inicial de cada seção
+	\metroset{block = fill} % Permite que os blocos de teoremas tenham cor de fundo e estrutura
+	
+	\begin{frame}[t]
+		\centering
+		\vspace{42pt}
+		\texttt{{\usebeamercolor[fg]{frametitle} Sharp Threshold Phenomena in Statistical Physics}} \\
+		\vspace{30pt}
+		\texttt{{\small André Victor Ribeiro Amaral${}^{\dagger}$}} \\
+		\texttt{{\scriptsize Orientador$:$ Roger William Câmara Silva}}\\
+		\vspace{30pt}
+		\texttt{{\scriptsize Universidade Federal de Minas Gerais $-$ ICEx, Departam$.$ de Estatística.}}\\
+		\texttt{{\scriptsize (09/12/2019)}} \\
+		\vspace{24pt}
+		\begin{flushleft} \texttt{{\tiny ${}^{\dagger}$ E-mail$:$ \href{mailto:avramaral@gmail.com}{avramaral@gmail.com}}} \end{flushleft}
+		
+	\end{frame}
+
+	\begin{frame}[t]
+		\frametitle{Sumário}
+		\tableofcontents
+	\end{frame}
+
+
+	\section{Introdução}
+	\begin{frame}[t]
+		\frametitle{Introdução}	
+		\begin{mydef}[Sharp threshold]
+			Em modelos com componentes estocásticas, diz que um sistema aleatório \textbf{finito} passa por \textit{sharp threshold} se o seu comportamento muda ``rapidamente'' como resultado de uma pequena perturbação dos parâmetros que governam sua estrutura.
+		\end{mydef}
+		\pause
+		\begin{myobs}[Espaço de Probabilidade]
+			O espaço de probabilidade ($\Omega, \FX, \PX_p$) será tal que $\Omega = \{0,1\}^n$, para $n \in \NX$, $\FX = \sigma$(conjuntos cilíndricos) e $\PX_p$ é a medida produto Bernoulli $\prod_{i \in [n]} \mu_i$, com $\mu_i(\omega_i = 1) = p$ e $\mu_i(\omega_i = 0) = 1-p$; onde $[n] = \{1, \cdots n\}$.
+		\end{myobs}
+	\end{frame}
+
+	\begin{frame}[t]
+		\frametitle{Introdução}
+		Seja $f_k: \{0,1\}^n \longrightarrow \{0,1\}$ sequência de funções Booleanas, então defina $F_k(p) \colonequals \EX_p(f_k(\omega))$, $\forall k \in \NX$. Nesse caso:
+		\begin{align}\label{eq-sharp-threshold}
+			F_k(p) = \sum_{\omega \in \Omega} f_k(\omega) \, p^{\sum_{i \in [n]} \omega_i} \, (1 - p)^{\sum_{i \in [n]} 1 - \omega_i}
+		\end{align}
+		\pause
+		\begin{mydef}
+			Uma sequência de funções Booleanas crescentes $(f_k)_{k \in \NX}$ passa por \textit{sharp threshold} em $(p_k)_{k \in \NX}$ se existe $(\delta_k)_{k \in \NX}$, com $\lim_{k \rightarrow +\infty} \delta_k = 0$, tal que $F_k(p_k - \delta_k) \longrightarrow 0$ e $F_k(p_k + \delta_k) \longrightarrow 1$, quando $k \rightarrow +\infty$.
+		\end{mydef}
+	\end{frame}
+
+	\begin{frame}[t]
+		\frametitle{Introdução}
+		\begin{figure}
+			\begin{tikzpicture}[scale = 0.75, declare function = {funcao(\x) = 0.5 + (0.5 * erf((ln(\x) - ln(1 - x))/(0.45254834)));}]
+				\begin{axis}
+				[
+					name = myGraph,
+					xmin = 0,
+					xmax = 1.075,
+					xtick = {0, 1},
+					axis x line = bottom,
+					ymin = 0,
+					ymax = 1.075,
+					ytick = {0,1},
+					axis y line = middle,
+					samples = 200,
+					domain = 0:1,
+					clip = false %
+				]
+					\addplot[blue, mark = none] (x, {funcao(x)});
+					\draw[densely dotted] (100, 0) -- (100, 100);
+					\draw[densely dotted] (0, 100) -- (100, 100);
+					\draw[densely dotted] (40,  0) -- (40,  100);
+					\draw[densely dotted] (60,  0) -- (60,  100);
+					\draw[densely dotted] (0,  10) -- (100,  10);
+					\draw[densely dotted] (0,  90) -- (100,  90);
+					\node[left] at (axis cs:0, 0.10) {\scriptsize{$F_k(p_k - \delta_k)$}};
+					\node[left] at (axis cs:0, 0.90) {\scriptsize{$F_k(p_k + \delta_k)$}};
+					\node[right] at (axis cs:1.075, 0) {\small{$p$}};
+					\node[above] at (axis cs:0, 1.075) {\small{$F_k(p)$}};
+					\draw[decoration = {brace, mirror, raise = 5pt}, decorate] (axis cs:0.4,0) -- node[below = 6pt] {{\scriptsize $2\delta_k$ }} (axis cs:0.6, 0);
+				\end{axis}		
+			\end{tikzpicture}
+			\caption{Esboço de $F_k(p) = \EX_p(f_k(w))$ para algum $k$ ``grande'', tal que $(f_k)_{k \in \NX}$ passa por \textit{sharp threshold}.} 
+			\label{fig-sharp-threshold}
+		\end{figure}
+	\end{frame}
+
+	\begin{frame}[t]
+		\frametitle{Introdução}
+		\begin{myexp}
+			Seja $f_k(\omega) = \IX_{\{\omega_1 = 1\}}(\omega)$, $\forall k \in \NX$. Nesse caso, $F_k(p) = p$; dessa forma, $(f_k)_{k \in \NX}$ \textbf{não} passa por \textit{sharp threshold}.
+		\end{myexp}
+		\pause
+		\vspace{-8pt}
+		(Modelo de Erd\"os-Rényi) Seja $G(n,p)$ grafo aleatório, então:
+		\begin{myexp}[Conectividade do grafo]
+			Seja $A_k = \{G(k, p) \text{ é conectado}\}$; então $(\IX_{A_k})_{k \in \NX}$ passa por \textit{sharp threshold} em $p_k = \frac{\log k}{k}$.
+		\end{myexp}
+		\pause
+		\begin{myexp}[Exist. de comp. conectada ``grande'']
+			Seja $B_k = \{\exists \text{ comp. em } G(k, p) \text{ com tam. maior que } r_k\}$, tal que $\log k \ll r_k \ll k$; então $(\IX_{B_k})_{k \in \NX}$ passa por \textit{sharp threshold} em $p_k = \frac{1}{k}$.
+		\end{myexp}
+	\end{frame}
+	
+	\section{Como provar que $(f_k)_{k \in \NX}$ passa por \textit{sharp threshold}}
+	\subsection{Fórmula de Russo-Margulis}
+	
+	\begin
+	
+	\subsection{Inequação de \textit{sharp threshold}}
+	\subsection{Desigualdade de O'Donnel-Saks-Schramm-Servedio}
+	\begin{frame}[t]
+		\frametitle{Título2}	
+		\begin{block}{Teorema}
+			Aqui vai o enunciado do teorema.
+		\end{block}
+		Assim, a partir do Teorema \ref{teorema01}, têm-se que:
+		\begin{mydef}
+			Minha terceira definição
+		\end{mydef}
+	\end{frame}
+
+	\section{Aplicações em percolação Bernoulli ($\ZX^d$)}
+	\subsection{Ponto crítico para percolação em $\ZX^2$}
+	\subsection{\textit{Sharpness} da transição de fase para percolação Bernoulli em $\ZX^d$}
+	\begin{frame}[t]
+		\frametitle{Título2}\vspace{5pt}	
+		\begin{block}{Teorema}
+			Aqui vai o enunciado do teorema.
+		\end{block}
+		Assim, a partir do Teorema \ref{teorema01}, têm-se que:
+		\begin{mydef}
+			Minha terceira definição
+		\end{mydef}
+	\end{frame}
+
+\end{document}

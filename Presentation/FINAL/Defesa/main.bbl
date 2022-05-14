@@ -1,0 +1,42 @@
+\begin{thebibliography}{1}
+
+\bibitem{aizenman1987sharpness}
+Michael Aizenman and David~J Barsky.
+\newblock Sharpness of the phase transition in percolation models.
+\newblock {\em Communications in Mathematical Physics}, 108(3):489--526, 1987.
+
+\bibitem{beffara2012self}
+Vincent Beffara and Hugo Duminil-Copin.
+\newblock The self-dual point of the two-dimensional random-cluster model is
+  critical for {$q \geq 1$}.
+\newblock {\em Probability Theory and Related Fields}, 153(3-4):511--542, 2012.
+
+\bibitem{duminil2019sharp}
+Hugo Duminil-Copin.
+\newblock {Sharp Threshold Phenomena in Statistical Physics}.
+\newblock {\em Japanese Journal of Mathematics}, 14(1):1--25, 2019.
+
+\bibitem{duminil2019sharpdecision}
+Hugo Duminil-Copin, Aran Raoufi, and Vincent Tassion.
+\newblock {Sharp phase transition for the random-cluster and Potts models via
+  decision trees}.
+\newblock {\em Annals of Mathematics}, 189(1):75--99, 2019.
+
+\bibitem{duminil2016newzd}
+Hugo Duminil-Copin and Vincent Tassion.
+\newblock A new proof of the sharpness of the phase transition for bernoulli
+  percolation on {$\ZX^d$}.
+\newblock {\em L'Enseignement Math{\'e}matique}, 62:199--206, 2016.
+
+\bibitem{kesten1980critical}
+H.~Kesten.
+\newblock The critical probability of bond percolation on the square lattice
+  equals 1/2.
+\newblock {\em Communications in mathematical physics}, 74(1):41--59, 1980.
+
+\bibitem{menshikov1986coincidence}
+Mikhail~V Menshikov.
+\newblock Coincidence of critical points in percolation problems.
+\newblock {\em Soviet Mathematics Doklady}, 33:856--859, 1986.
+
+\end{thebibliography}

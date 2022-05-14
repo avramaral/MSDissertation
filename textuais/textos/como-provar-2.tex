@@ -1,0 +1,177 @@
+\par Do ponto de vista histórico, o estudo do fenômeno de \textit{sharp threshold} para medida produto em espaço discreto iniciou-se através de Russo, em \cite{russo1982approximate}, e Kahn, Kalai e Linial, em \cite{kahn1988influence} $-$ que utilizaram-se da desigualdade de Bonami-Beckner (\cite{beckner1975inequalities} e \cite{bonami1970etude}) para provar, no caso em que $p = \frac{1}{2}$, inequações que relacionam a variância de uma função Booleana com a influência total para uma função desse tipo (como o Teorema \ref{talagrand}). Bourgain, Kahn, Kalai, Katznelson e Linial (BKKKL), em \cite{bourgain1992influence}, estenderam esses resultados para o espaço produto $[0,1]^n$, com medida uniforme nesse intervalo; assim, por um processo de discretização dessa última prova, foi possível obter inequações de \textit{sharp threshold} para sequências do tipo $(f_n)_{n\in\NX}$, definidas em $\{0,1\}^n$ e com medida produto Bernoulli, com $p \in [0,1]$ arbitrário, associada. Por fim, um resultado equivalente ao de BKKKL foi provado por Talagrand, em \cite{talagrand1994russo}, e será enunciado a seguir.
+
+\begin{mythm}\label{talagrand}
+	Existe uma constante $c > 0$ tal que, para qualquer $p \in [0,1]$ e $n \in \NX$, vale que, para qualquer função Booleana crescente $f: \Omega_n \longrightarrow \{0,1\}$:
+	\begin{align}\label{talagrand-main-inequality}
+		\VX_p(f(\omega)) \leq c \ln\frac{1}{p(1-p)} \sum_{i \in [n]} \frac{\infl}{\ln\frac{1}{\infl}}.
+	\end{align}
+\end{mythm}
+
+\par Antes, porém, da demonstração, são necessárias algumas observações sobre esse resultado. Primeiro, note que deve existir algum $i$ com
+\begin{align*}
+	\frac{\infl}{\ln\frac{1}{\infl}} \geq \frac{c_p}{n} \VX_p(f(\omega)), \numberthis \label{in-parcial-talagrand-1}
+\end{align*}
+onde $c_p = \left(c \ln \frac{1}{p(1-p)}\right)^{-1}$. Basta supor que, $\forall i \in [n]$,
+\begin{align*}
+	\frac{\infl}{\ln\frac{1}{\infl}} &< \frac{c_p}{n} \VX_p(f(\omega)) \\
+	\implies \sum_{i \in [n]} \frac{\infl}{\ln\frac{1}{\infl}} &< n \frac{c_p}{n} \VX_p(f(\omega)) = c_p \VX_p(f(\omega)),
+\end{align*}
+o que é uma contradição, pelo enunciado do próprio Teorema \ref{talagrand}. E, como resultado da Expressão \eqref{in-parcial-talagrand-1}, existe um $i$, tal que
+\begin{align*}
+	\infl > c_p \frac{\ln n}{n} \VX_p(f(\omega)), \numberthis \label{in-parcial-talagrand-2}
+\end{align*}
+com $c_p$ possivelmente modificado por um fator multiplicador. De fato, note que, ou ${}^{(\text{a})}$ $\exists i$ t.q. $\infl > c_p \frac{\ln n}{n} \VX_p(f(\omega))$, ou ${}^{(\text{b})}$ $\infl \leq c_p \frac{\ln n}{n} \VX_p(f(\omega))$, $\forall i \in [n]$. Se ``(b)'', teríamos que, pela Expressão \eqref{in-parcial-talagrand-1}, existe algum $i$ com $\infl > \frac{c_p}{n} \ln\frac{n}{\ln n} \VX_p(f(\omega))$ $-$ que é o mesmo que dizer que, cotando $\ln \frac{n}{\ln n}$ por $\frac{\ln n}{2}$, $\exists i \in [n]$ t.q. $\infl > \frac{c_p}{2} \frac{\ln n}{n} \VX_p(f(\omega)) = ({c_p}^{\star}) \frac{\ln n}{n} \VX_p(f(\omega))$, onde ${c_p}^{\star} = \frac{c_p}{2}$; se esse for o caso, perceba o absurdo. Dessa maneira, vale a Expressão \eqref{in-parcial-talagrand-2}. 
+
+\par Para a demonstração do Teorema \ref{talagrand}, vamos precisar de alguns resultados adicionais que se baseiam, principalmente, na expansão de Fourier (ou de Fourier-Walsh) de $f(\omega)$. Estudaremos, portanto, essa ferramenta.
+
+A fim de estudar funções Booleanas do tipo $f: \Omega_n \longrightarrow \{0, 1\}$, com $\Omega_n$ munido de medida uniforme, considere o espaço $\mathcal{L}^2(\Omega_n)$, $2^n$-dimensional, das funções que mapeiam $\Omega_n$ em $\RX$, com produto interno definido por $\langle f, g \rangle = \sum_{\omega \in \Omega} 2^{-n}\,f(\omega)\,g(\omega) = \EX_{\frac{1}{2}}(f(\omega) \, g(\omega))$. Considere, então, para cada $S \subset [n]$, a função $\chi_S: \Omega_n \longrightarrow \RX$ dada por $\chi_S(\omega) = (-1)^{\sum_{i \in S}\omega_i}$. Nesse caso, é possível verificar que a família de funções $\chi_S$ forma uma base ortonormal para $\mathcal{L}^2(\Omega_n)$. De fato, para $S, ~T \subset [n]$, note que $\langle \chi_S,\chi_T \rangle = \EX_{\frac{1}{2}}\left(\chi_{S \triangle T}\right)$, onde $\triangle$ é \textit{diferença simétrica}; nesse caso, $\EX_{\frac{1}{2}}\left(\chi_{S \triangle T}\right)$ é igual $0$ se $S \neq T$, e igual a $1$ se $S = T$ (logo, $\{\chi_S : S \subset [n]\}$ é conjunto ortonormal). Além disso, como $\{\chi_S : S \subset [n]\}$ tem $2^n$ elementos, a família de funções $\chi_S$ é base ortonormal para $\mathcal{L}^2(\Omega_n)$. Assim, qualquer função $f$ avaliada em $\Omega_n$ pode ser decomposta em $f(\omega) = \sum_{S \subset [n]} \widehat{f}(S) \, \chi_S$, tal que $\widehat{f}(S) = \langle f , \chi_s\rangle$.
+
+\begin{mydef}\label{def-fourier}
+	Para uma função do tipo $f:\Omega_n \longrightarrow \{0,1\}$, com medida uniforme em $\Omega_n$, a expansão de Fourier de $f$ é dada por \vspace{-2pt}
+	\begin{align*}
+		f(\omega) = \sum_{S \subset [n]} \widehat{f}(S) \; \chi_S,
+	\end{align*}
+	onde $\chi_S = (-1)^{\sum_{i \in S}\omega_i}$ e $\widehat{f}(S) = 2^{-n}\sum_{\omega \in \Omega_n}f(\omega) \; \chi_S(\omega)$.
+\end{mydef}
+
+\begin{myexp}
+	Seja $f:\Omega_n\longrightarrow\{0,1\}$ com medida uniforme. Defina $f_n(\omega) = \max\{\omega_1, \cdots, \omega_n\}$. Se $n = 2$, então $f_2(\omega) = \max\{\omega_1, \omega_2\}$; nesse caso, determine a expansão de Fourier de $f_2$.
+	\par Calculando $\chi_S$, obtemos $\chi_\emptyset = 1$ (por definição), $\chi_{\{1\}} = (-1)^{\omega_1}$, $\chi_{\{2\}} = (-1)^{\omega_2}$ e $\chi_{\{1,2\}} = (-1)^{\omega_1 + \omega_2}$. Agora, em relação aos coeficientes $\widehat{f}(S)$, \vspace{-2pt}
+	\begin{align*}
+		\widehat{f_2}(\emptyset) & = \frac{1}{4} \left(0 \cdot 1 + 1 \cdot 1 + 1 \cdot 1 + 1 \cdot 1\right) = \frac{3}{4} \\
+		\widehat{f_2}(\{1\})     & = \frac{1}{4} \left(0\,(-1)^0 + 1\,(-1)^1 + 1\,(-1)^0 + 1\,(-1)^1 \right) = -\frac{1}{4} \\
+		\widehat{f_2}(\{2\})     & = \frac{1}{4} \left(0\,(-1)^0 + 1\,(-1)^0 + 1\,(-1)^1 + 1\,(-1)^1 \right) = -\frac{1}{4} \\
+		\widehat{f_2}(\{1, 2\})  & = \frac{1}{4} \left(0\,(-1)^0 + 1\,(-1)^1 + 1\,(-1)^1 + 1\,(-1)^2 \right) = -\frac{1}{4}. 
+	\end{align*}
+	\par Dessa maneira, $f_2$ pode ser expressa como $\frac{3}{4} - \frac{1}{4}(-1)^{\omega_1} - \frac{1}{4}(-1)^{\omega_2} - \frac{1}{4}(-1)^{\omega_1 + \omega_2}$.
+\end{myexp}
+
+\par Além disso, precisaremos de mais duas ferramentas para a prova do Teorema \ref{talagrand}.
+
+\begin{mylem}[Teorema de Parseval] \label{parseval}
+	Seja $f: \Omega_n \longrightarrow \RX$, então vale que
+	\begin{align*}
+		\EX_{\frac{1}{2}}(f^2(\omega)) = \sum_{S \subset [n]} (\widehat{f}(S))^2.
+	\end{align*}
+\end{mylem}
+
+\par A demonstração do Lema \ref{parseval} será feita no Apêndice \hyperref[apendice-primeiro]{A}.
+
+\begin{mylem}[Desigualdade de Bonami-Beckner] \label{bonami-beckner}
+	Seja $f: \Omega_n \longrightarrow \RX$. Defina, para $0 \leq t \leq 1$,  o ``operador de ruído'' (em inglês, ``\textit{noise operator}'') $\text{T}_t(\cdot)$ de tal forma que $\text{T}_t(f(\omega)) = \sum_{S \subset [n]} t^{|S|} \, \widehat{f}(S) \, \chi_S$. Se $1 \leq q \leq r < + \infty$ e vale que $t \leq \left(\frac{q - 1}{r - 1}\right)^{\frac{1}{2}}$, então
+	\begin{align*}
+	||\text{T}_t(f(\omega))||_r \leq ||f(\omega)||_q, 
+	\end{align*}
+	onde $||f(\omega)||_p = \left(2^{-n}\sum_{\omega \in \Omega_n} |f(\omega)|^p\right)^{\frac{1}{p}} =  {\EX_{\frac{1}{2}}}^{\frac{1}{p}}(|f(\omega)|^{p})$ é norma-$p$.
+\end{mylem}
+
+\par A demonstração do Lema \ref{bonami-beckner} não será feita; entretanto, é possível encontrá-la, com detalhes, em \cite{lecturenotes2007donnell} (além de nos artigos originais, em \cite{beckner1975inequalities} e \cite{bonami1970etude}).
+
+\par \texttt{Demonstração (Teorema \ref{talagrand}):}
+
+\par Pela possibilidade de uso do Lema \ref{bonami-beckner} durante a demonstração, apenas o caso onde $p = \frac{1}{2}$ será contemplado. Dessa forma, considerando a expansão de Fourier estabelecida na Definição \ref{def-fourier}, perceba que:
+\[ \widehat{\nabla_{i}f}(S) = \begin{cases}
+2\widehat{f}(S) & \text{se } i \in S \\
+0				& \text{caso contrário},
+\end{cases} \numberthis \label{nabla-fourier}
+\]
+já que  $\widehat{\nabla_{i}f}(S) = \widehat{f}(S) - 2^{-n} \sum_{\omega \in \Omega_n} f(\flip) \, (-1)^{\sum_{i \in S} \omega_i}$. Nesse caso, note que, para $i \not\in S$, temos $2^{-n} \sum_{\omega \in \Omega_n} f(\flip) \, (-1)^{\sum_{i \in S} \omega_i} = \widehat{f}(S)$; ou seja, $\widehat{\nabla_{i}f}(S) = \widehat{f}(S) - \widehat{f}(S) =  0$. Porém, para $i \in S$, é possível escrever $2^{-n} \sum_{\omega \in \Omega_n} f(\flip) \, (-1)^{\sum_{i \in S} \omega_i}$ como $(-\widehat{f}(S))$, e, portanto, $\widehat{\nabla_{i}f}(S) = \widehat{f}(S) - (-\widehat{f}(S)) = 2\widehat{f}(S)$.
+
+\par Agora, como $\widehat{f}(\emptyset) = 2^{-n} \sum_{\omega \in \Omega_n} f(\omega) = F\left(\frac{1}{2}\right)$ e, pelo Lema \ref{parseval}, $\EX_{\frac{1}{2}}(f^2(\omega)) = \sum_{S \subset [n]} (\widehat{f}(S))^2$, temos que
+\begin{align*}
+	\VX_{\frac{1}{2}}(f(\omega)) & = \EX_{\frac{1}{2}}(f^2(\omega)) - {\EX_{\frac{1}{2}}}^2(f(\omega)) \\
+								 & = \sum_{S \subset [n]} (\widehat{f}(S))^2 - (\widehat{f}(\emptyset))^2 \\
+								 & = \sum_{\substack{S \subset [n] \\ S \neq \emptyset}} (\widehat{f}(S))^2 . \numberthis \label{var-option-1}
+\end{align*}
+
+\par Considerando as Expressões \eqref{nabla-fourier} e \eqref{var-option-1}, perceba que é possível dizer que
+\begin{align*}
+	\VX_{\frac{1}{2}}(f(\omega)) & = \sum_{i \in [n]} \sum_{S \ni i} \frac{(\widehat{f}(S))^2}{|S|} \\
+								 & = \sum_{i \in [n]} \sum_{S \ni i} \frac{(\widehat{\nabla_{i}f}(S))^2}{4 \, |S|} \\
+								 & \leq \sum_{i \in [n]} \sum_{\substack{S \subset [n] \\ S \neq \emptyset}} \frac{(\widehat{\nabla_{i}f}(S))^2}{4 \, |S|} \\
+								 & \leq \sum_{i \in [n]} \sum_{\substack{S \subset [n] \\ S \neq \emptyset}} \frac{(\widehat{\nabla_{i}f}(S))^2}{2|S| + 1},
+\end{align*}
+com $|S|$ representando a cardinalidade de $S$. Escrevendo, então, $\frac{1}{2|S| + 1}$ como $\int_{0}^{1}t^{2|S|}dt$, e introduzindo, para cada $t \in [0, 1]$, o ``operador de ruído'' (ou ``\textit{noise operator}'') $\text{T}_t(\cdot)$, vale
+\begin{align*}
+	\VX_{\frac{1}{2}}(f(\omega)) & \leq \sum_{i \in [n]} \sum_{\substack{S \subset [n] \\ S \neq \emptyset}} \int_{0}^{1} t^{2|S|}\,(\widehat{\nabla_{i}f}(S))^2 dt\\
+								 & = \sum_{i \in [n]} \sum_{S \subset [n]} \left[\int_{0}^{1} t^{2|S|}\,(\widehat{\nabla_{i}f}(S))^2 dt\right] - \int_{0}^{1}t^{2|\emptyset|}(\widehat{\nabla_{i}f}(\emptyset))^2 dt\\
+								 & = \sum_{i \in [n]} \sum_{S \subset [n]} \left[\int_{0}^{1} t^{2|S|}\,(\widehat{\nabla_{i}f}(S))^2 dt\right] \\
+								 & = \sum_{i \in [n]} \int_{0}^{1} \left[\sum_{S \subset [n]} t^{2|S|}\,(\widehat{\nabla_{i}f}(S))^2\right] dt \\
+								 & = \sum_{i \in [n]} \int_{0}^{1} ||\text{T}_t(\diff)||^2_2 \, dt, \numberthis \label{cota-variancia}
+\end{align*}
+tal que na terceira linha usamos o fato de que $i \not\in \emptyset$; logo, pela Expressão \eqref{nabla-fourier}, $\widehat{\nabla_{i}f}(\emptyset) = 0$.
+%onde $||\text{T}_t(|\diff|)||^2_2 = {\EX_{\frac{1}{2}}}^{\frac{2}{2}}((\text{T}_t(|\diff|))^2)$, tal que, pelo Lema \ref{parseval} e relembrando que $\text{T}_t(|\diff|)$ suaviza, através da componente $t^{|S|}$, os coeficientes de Fourier da expansão de {\hspace{1pt}}$|\diff|$, ${\EX_{\frac{1}{2}}}((\text{T}_t(|\diff|))^2) = \sum_{S \subset [n]}\left(t^{|S|}\,|\widehat{\nabla_{i}f}(S)|\right)^2 = \sum_{S \subset [n]} t^{2|S|}\,(\widehat{\nabla_{i}f}(S))^2$.
+%{\EX_{\frac{1}{2}}}^{\frac{2}{2}}(|\text{T}_t(\diff)|^2) = \EX_{\frac{1}{2}}((\text{T}_t(\diff))^2)$, que, pelo Lema \ref{parseval}, é igual a $\sum_{S \subset [n]}(\text{T}_t(\widehat{\nabla_i f}(S)))^2$; agora, através da Expressão \eqref{operadorT}, chegamos a $||\text{T}_t(\diff)||^2_2 = \sum_{S \subset [n]} t^{2|S|}\,(\widehat{\nabla_{i}f}(S))^2$.
+
+Dessa forma, utilizando o Lema \ref{bonami-beckner}, podemos dizer que
+\begin{align} \label{aplic-bon-bec}
+	||\text{T}_t(\diff)||_2 \leq ||(\diff)||_{1 + t^2},
+\end{align}
+já que $t \leq \left(\frac{1 + t^2}{2}\right)^{\frac{1}{2}}$, para $0 \leq t \leq 1$. Além disso, como $|\diff|$ assume valores no conjunto $\{0, 1\}$,
+\begin{align*}
+	||(\diff)||_{1 + t^2} & = \left(\EX_{\frac{1}{2}}(|\diff|^{1 + t^2})\right)^{\frac{1}{1 + t^2}} \\
+						& = \left(\infl\right)^{\frac{1}{1 + t^2}}, \numberthis \label{norma-estilizada}
+\end{align*}
+onde a segunda igualdade apenas utiliza a definição de $\infl$.
+
+\par Dessa maneira, juntando a Expressão \eqref{cota-variancia} com as Expressões \eqref{aplic-bon-bec} e \eqref{norma-estilizada}, temos
+\begin{align*}
+	\VX_{\frac{1}{2}}(f(\omega)) & \leq \sum_{i \in [n]} \int_{0}^{1} \left(\infl\right)^{\frac{2}{1 +  t^2}} dt \\
+								 & = \sum_{i \in [n]} \infl \int_{0}^{1} \left(\infl\right)^{\frac{1 - t^2}{1 + t^2}} dt. \numberthis \label{cota-final-var}
+\end{align*}
+Agora, fazendo mudança de variável tal que $s = 1 - t$; o que implica que $ds = -dt$, é possível escrever que
+\begin{align*}
+	\int_{0}^{1} \left(\infl\right)^{\frac{1 - t^2}{1 + t^2}}dt & \leq \int_{0}^{1} \left(\infl\right)^{(1 - t)}dt \\
+	& = \int_{1}^{0} -\infl^s ds \\
+	& = \int_{0}^{1} \infl^s ds \\
+	& = \frac{\infl}{\ln\left(\infl\right)} - \frac{1}{\ln(\infl)} \leq \left(\ln\frac{1}{\infl}\right)^{-1}, \numberthis \label{desig-2-2-final}
+\end{align*}
+tal que a primeira desigualdade é válida pois $\frac{1 - t^2}{1 + t^2} \geq (1 - t)$, para $t \in [0, 1]$, e $\infl \leq 1$, $\forall i \in [n]$. Assim, aplicando a Expressão \eqref{desig-2-2-final} na Expressão \eqref{cota-final-var}, obtemos
+\begin{align*}
+	\VX_{\frac{1}{2}}(f(\omega)) \leq \sum_{i \in [n]} \frac{\infl}{\ln \frac{1}{\infl}},
+\end{align*}
+o que conclui a demonstração para $p = \frac{1}{2}$. \hspace{\fill}$\qed$
+
+\par Perceba, finalmente, que o resultado que acabamos de mostrar nos diz que $F'(p) = \sum_{i \in [n]} \infl \geq c_p \, \ln\frac{1}{\max_i(\infl)} \, \VX_p(f(\omega))$; ou seja, tomando como referência a Expressão \eqref{eq-cota}, para provar que $(f_n)_{n \in \NX}$ passa por \textit{sharp threshold}, é necessário mostrar que $c_p \, \ln\frac{1}{\max_i(\infl)}$ é ``grande'' $-$ o que é o mesmo que dizer que $\max_i(\infl)$ é ``pequeno'' (i.e., $\forall i \in [n]$, $\infl$ é ``pequeno''). Porém, provar que todas as \textit{influências} são pequenas pode não ser tarefa fácil. Nesse sentido, o Teorema \ref{thm-grupo-acao} nos permitirá, sob condições específicas, utilizar o Teorema \ref{talagrand} de forma prática. Mas antes disso, precisaremos de mais uma definição. 
+
+\begin{mydef}
+	Dado um conjunto arbitrário $\Lambda$, $(\Sigma, \psi)$ é dito grupo simétrico $\GX$ se $\Sigma = \{\sigma; \sigma:\Lambda\longrightarrow\Lambda\ \text{ é bijeção}\}$ e $\psi:\Sigma\times\Sigma\longrightarrow\Sigma$, com $(\sigma_1, \sigma_2) \mapsto \sigma_1 \circ \sigma_2$; nesse caso, uma função $f$ com domínio em $\Lambda$ é dita \textit{simétrica sob $\GX$}, se $f \circ \sigma = f$, $\forall \sigma \in \GX$. Além disso, $\GX$ \textit{age transitivamente} sobre $\Lambda$ se, para todo par $\lambda_1$ e $\lambda_2$ em $\Lambda$, existe $\sigma \in \GX$, tal que $\sigma(\lambda_1) = \lambda_2$.
+\end{mydef}
+
+\begin{mythm}\label{thm-grupo-acao}
+	Existe uma constante $c > 0$ tal que, para qualquer $p \in [0,1]$ e $n \in \NX$, vale que, para qualquer função Booleana crescente $f: \Omega_n \longrightarrow \{0,1\}$ que é \textit{simétrica sob um grupo $\GX$ agindo transitivamente sobre $[n]$}, temos que
+	\begin{align*}
+		F'(p) \geq c \, \ln(n) \, \VX_p(f(\omega)).
+	\end{align*}
+\end{mythm}
+
+\par \texttt{Demonstração:}
+
+\par Se $f$ é simétrica sob um grupo $\GX$ agindo transitivamente sobre $[n]$, então $f \circ \sigma = f$, $\forall \sigma \in \GX$ e, para todo par $i_1, i_2 \in [n]$, existe $\sigma \in \GX$ tal que $\sigma(i_1) = i_2$. Em particular, 
+%\par Tomando $f(\omega)$ simétrica sob um grupo $\GX$ agindo transitivamente sobre $[n]$, temos que, para todo par $i_1$, $i_2 \in [n]$, $f = f \circ \sigma$, $\forall \sigma \in \GX$ satisfazendo $\sigma(i_1) = (i_2)$. Em particular,
+\begin{align*}
+	\text{Inf}_{i_1}(f) = \text{Inf}_{i_1}(f \circ \sigma) = \text{Inf}_{i_2}(f),
+\end{align*}
+onde a primeira igualdade usa o fato de que $f = f \circ \sigma$, e a segunda igualdade vem da ideia de que, dada uma permutação $\sigma \in \GX$ que satisfaz $\sigma(i_1) = i_2$, olhar para a influência de $i_1$ em $f \circ \sigma$, é o mesmo que ``olhar'' para a influência de $i_2$ em $f$. Dessa forma, \textit{todas as influências são iguais}. Dito isso, existem duas possibilidades:
+\begin{enumerate}
+	\item Se $\infl \geq \frac{\ln(n)}{n}$ para todo $i$, então
+		\begin{align*}
+			F'(p) = \sum_{i \in [n]} \infl \geq \ln(n) \geq \ln(n) \, \VX_p(f(\omega)),
+		\end{align*}
+		já que $\VX_p(f(\omega)) \leq 1$; ou
+	\item Se $\infl \leq \frac{\ln(n)}{n}$ para todo $i$, então $\ln \frac{1}{\infl} \geq \ln(n) - \ln(\ln(n))$, $\forall i \in [n]$; nesse caso, pelo Teorema \ref{talagrand} (com aplicação direta da Expressão \eqref{talagrand-main-inequality}), temos que
+		\begin{align*}
+		F'(p) = \sum_{i \in [n]} \infl \geq c_p \, (\ln(n) - \ln(\ln(n))) \, \VX_p(f(\omega)),
+		\end{align*}
+		onde, como já definido, $c_p = \left(c \, \ln \frac{1}{p(1 - p)}\right)^{-1}$.
+\end{enumerate}
+
+\par Finalmente, como $\ln(n) - \ln(\ln(n)) \geq \frac{\ln(n)}{2}$, $\forall n \in \NX$, tomando $c = \frac{c_p}{2}$, concluímos a demonstração. \hspace{\fill}$\qed$
+
+\par Perceba que o Teorema \ref{thm-grupo-acao} implica que, cumprida determinadas hipóteses sobre $f(\omega)$, e levando em consideração a Expressão \eqref{eq-cota}, tomar $C = c \, \ln(n)$ nos permite dizer que a sequência $(f_n)_{n \in \NX}$ passa por \textit{sharp threshold}.
+
+\begin{myexp}[Propriedades monótonas em grafos \cite{friedgut1996every}] \label{grafo-monotono}
+	Para Modelo de Erd\"os-Rényi descrito na Seção \ref{Intoduction}, seja $A_n$ propriedade monótona crescente (propriedade que não é ``destruída'' pela adição de elos) que depende apenas da classe de isomorfismo de $\mathbb{G}$. Nesse caso, $(\IX_{A_n})_{n \in \NX}$ passa por \textit{sharp threshold}.
+\end{myexp}
+
+\par Para verificar que o Exemplo \ref{grafo-monotono} é, de fato, válido, basta notar que, por hipótese, uma propriedade do tipo $A_n$ depende somente da classe de isomorfismo de $\mathbb{G}$; em particular, $A_n$ é invariante por ``renomeação dos vértices''. Então $\IX_{A_n}$ é simétrica sob um grupo $\GX$ agindo transitivamente sobre o conjunto dos vértices do grafo. Pelo Teorema \ref{thm-grupo-acao}, $(\IX_{A_n})_{n \in \NX}$ passa por \textit{sharp threshold}. Veja, nesse caso, que o Exemplo \ref{exemplo-2} é um caso particular desse resultado mais geral.

@@ -1,0 +1,178 @@
+\documentclass[9pt, aspectratio=169]{beamer}
+
+%%% INÍCIO DE PACOTES %%%
+
+\usepackage[brazilian]{babel}
+\usepackage[utf8]{inputenc}
+
+\usepackage{graphicx} % Possibilita inclusão de imagem
+\usepackage{tikz} % Permite desenhar
+\usetikzlibrary{patterns} % Permite hachurar áreas
+\usepackage{pgfplots} % Com tikz, desenha gráfico
+\usetikzlibrary{decorations.pathreplacing, angles, quotes} % Permite desenhar "chaves"
+\usepackage{mathtools, amsthm, amssymb, amsbsy} % Pacotes de Matemática
+\usepackage{colonequals} % Símbolo de definição: \colonequals ou \equalscolon
+\usepackage{hyperref} % Link para partes do próprio texto
+\usepackage{lmodern} % Melhora a fonte
+\usepackage{ragged2e}
+\usepackage{xcolor}
+\usepackage[size = custom,
+width = 9.05, height = 2.00, scale = 0.5, debug]{beamerposter}
+
+%%% INÍCIO DE APARÊNCIA %%%
+\usetheme[]{metropolis}
+\usecolortheme[]{wolverine}
+
+\definecolor{MyRed}{RGB}{226, 3, 52}
+\definecolor{MyGreen}{RGB}{0, 153, 73}
+\definecolor{MyBlue}{RGB}{0, 84, 154}
+\definecolor{MyOrange}{RGB}{239, 130, 6}
+
+\definecolor{YellowBar}{RGB}{254, 231, 2}
+\definecolor{YellowSecondaryBar}{RGB}{251, 199, 7}
+\definecolor{MyBG}{RGB}{240, 230, 180} % 250, 250, 250
+
+\setbeamercolor{MC}{bg = MyBG}
+\setbeamercolor{background canvas}{bg = MyBG}
+
+\usefonttheme{serif}
+\setbeamersize{text margin left = 6pt,text margin right = 6pt} 
+\setbeamercovered{transparent = 0.5}
+
+\setbeamertemplate{footline}{}
+\setbeamertemplate{frametitle continuation}{} 
+
+
+\begin{document}
+	\AtBeginSection{} % Elimina slide inicial de cada seção
+	\metroset{block = fill} % Permite que os blocos de teoremas tenham cor de fundo e estrutura
+
+	\begin{frame}
+		\begin{figure}
+			\vspace{-16pt}
+			\begin{tikzpicture}[scale = 0.50]
+			
+				\foreach \x in {-9,...,9}
+				\foreach \y in {-2,...,1}{
+					\draw (\x,  \y) circle (3pt);
+				}
+			
+				\foreach \a in {-9,...,8}{
+					\draw[densely dotted] (\a, -2) -- (\a, 1);
+				}
+			
+				\foreach \b in {-2,...,1}{
+					\draw[densely dotted] (-9, \b) -- (8, \b);
+				}
+				                                                                                                  
+				\draw[black, line width = 0.3mm] (1, 0) -- (1, 1);
+				\draw[black, line width = 0.3mm] (6, -1) -- (7, -1);
+				\draw[black, line width = 0.3mm] (1, 0) -- (2, 0); 
+				\draw[black, line width = 0.3mm] (2, 0) -- (2, -1);
+				\draw[black, line width = 0.3mm] (-6, 0) -- (-6, -1);
+				\draw[black, line width = 0.3mm] (6, -1) -- (6, 0);
+				\draw[black, line width = 0.3mm] (0, 0) -- (0, -1);
+				\draw[black, line width = 0.3mm] (-6, 0) -- (-6, -1);
+				\draw[black, line width = 0.3mm] (-2, -2) -- (-3, -2);
+				\draw[black, line width = 0.3mm] (4, 0) -- (5, 0);
+				\draw[black, line width = 0.3mm] (6, -1) -- (6, -2);
+				\draw[black, line width = 0.3mm] (7, -1) -- (7, -2);
+				\draw[black, line width = 0.3mm] (1, -2) -- (1, -1);
+				\draw[black, line width = 0.3mm] (-7, 1) -- (-7, 0);
+				\draw[black, line width = 0.3mm] (4, 1) -- (5, 1);
+				\draw[black, line width = 0.3mm] (-1, -2) -- (-1, -1);
+				\draw[black, line width = 0.3mm] (-9, -2) -- (-9, -1);
+				\draw[black, line width = 0.3mm] (-8, 0) -- (-7, 0);
+				\draw[black, line width = 0.3mm] (6, -2) -- (6, -1);
+				\draw[black, line width = 0.3mm] (0, 1) -- (1, 1);
+				\draw[black, line width = 0.3mm] (-3, 1) -- (-2, 1);
+				\draw[black, line width = 0.3mm] (-3, -2) -- (-3, -1);
+				\draw[black, line width = 0.3mm] (-1, -1) -- (-1, -2);
+				\draw[black, line width = 0.3mm] (2, 0) -- (2, 1);
+				\draw[black, line width = 0.3mm] (6, -2) -- (7, -2);
+				\draw[black, line width = 0.3mm] (5, -2) -- (6, -2);
+				\draw[black, line width = 0.3mm] (7, -2) -- (8, -2);
+				\draw[black, line width = 0.3mm] (7, -2) -- (6, -2);
+				\draw[black, line width = 0.3mm] (1, -1) -- (1, -2);
+				\draw[black, line width = 0.3mm] (-1, 0) -- (-2, 0);
+				\draw[black, line width = 0.3mm] (-2, -2) -- (-3, -2);
+				\draw[black, line width = 0.3mm] (-3, -2) -- (-4, -2);
+				\draw[black, line width = 0.3mm] (-8, 0) -- (-9, 0);
+				\draw[black, line width = 0.3mm] (7, -1) -- (8, -1);
+				\draw[black, line width = 0.3mm] (6, -2) -- (7, -2);
+				\draw[black, line width = 0.3mm] (-2, -1) -- (-1, -1);
+				\draw[black, line width = 0.3mm] (2, 1) -- (2, 0);
+				\draw[black, line width = 0.3mm] (-5, 0) -- (-5, -1);
+				\draw[black, line width = 0.3mm] (2, 0) -- (3, 0);
+				\draw[black, line width = 0.3mm] (-8, 0) -- (-8, 1);
+				\draw[black, line width = 0.3mm] (-8, -1) -- (-8, 0);
+				\draw[black, line width = 0.3mm] (6, -2) -- (7, -2);
+				\draw[black, line width = 0.3mm] (-3, -1) -- (-4, -1);
+				\draw[black, line width = 0.3mm] (2, 0) -- (2, -1);
+				\draw[black, line width = 0.3mm] (-1, 1) -- (-1, 0);
+				\draw[black, line width = 0.3mm] (7, -1) -- (7, -2);
+				\draw[black, line width = 0.3mm] (6, -1) -- (6, -2);
+				\draw[black, line width = 0.3mm] (-9, -2) -- (-9, -1);
+				\draw[black, line width = 0.3mm] (-5, 0) -- (-5, -1);
+				\draw[black, line width = 0.3mm] (4, 0) -- (4, 1);
+				\draw[black, line width = 0.3mm] (4, -1) -- (3, -1);
+				\draw[black, line width = 0.3mm] (-8, 1) -- (-8, 0);
+				\draw[black, line width = 0.3mm] (-6, -2) -- (-7, -2);
+				\draw[black, line width = 0.3mm] (2, -1) -- (3, -1);
+				\draw[black, line width = 0.3mm] (-2, -2) -- (-1, -2);
+				\draw[black, line width = 0.3mm] (2, -2) -- (3, -2);
+				\draw[black, line width = 0.3mm] (-8, 1) -- (-9, 1);
+				\draw[black, line width = 0.3mm] (2, -2) -- (1, -2);
+				\draw[black, line width = 0.3mm] (5, 0) -- (5, -1);
+				\draw[black, line width = 0.3mm] (1, 0) -- (2, 0);
+				\draw[black, line width = 0.3mm] (2, 0) -- (2, 1);
+				\draw[black, line width = 0.3mm] (-6, -2) -- (-7, -2);
+				\draw[black, line width = 0.3mm] (4, -2) -- (5, -2);
+				\draw[black, line width = 0.3mm] (-1, -2) -- (0, -2);
+				\draw[black, line width = 0.3mm] (-1, 1) -- (-2, 1);
+				\draw[black, line width = 0.3mm] (-2, 0) -- (-2, -1);
+				\draw[black, line width = 0.3mm] (4, -2) -- (5, -2);
+				\draw[black, line width = 0.3mm] (-8, -2) -- (-9, -2);
+				\draw[black, line width = 0.3mm] (-8, 1) -- (-8, 0);
+				\draw[black, line width = 0.3mm] (-8, 0) -- (-8, 1);
+				\draw[black, line width = 0.3mm] (3, 0) -- (4, 0);
+				\draw[black, line width = 0.3mm] (2, 1) -- (2, 0);
+				\draw[black, line width = 0.3mm] (1, 1) -- (0, 1);
+				\draw[black, line width = 0.3mm] (-2, 0) -- (-2, 1);
+				\draw[black, line width = 0.3mm] (6, -1) -- (6, 0);
+				\draw[black, line width = 0.3mm] (0, 0) -- (-1, 0);
+				\draw[black, line width = 0.3mm] (1, 1) -- (2, 1);
+				\draw[black, line width = 0.3mm] (-6, -2) -- (-7, -2);
+				\draw[black, line width = 0.3mm] (0, 0) -- (-1, 0);
+				\draw[black, line width = 0.3mm] (-6, 0) -- (-5, 0);
+				\draw[black, line width = 0.3mm] (0, 1) -- (1, 1);
+				\draw[black, line width = 0.3mm] (4, 0) -- (4, 1);
+				\draw[black, line width = 0.3mm] (3, -1) -- (4, -1);
+				\draw[black, line width = 0.3mm] (5, 1) -- (4, 1);
+				\draw[black, line width = 0.3mm] (-4, -1) -- (-3, -1);
+			
+			\end{tikzpicture}
+		\end{figure}
+	\end{frame}
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,112 @@
+\documentclass[12pt, a4paper]{article}
+
+\usepackage[brazilian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[top = 2cm, left = 2cm, bottom = 2cm, right = 2cm]{geometry}
+
+\usepackage{graphicx} % Possibilita inclusão de imagem
+\usepackage{tikz} % Permite desenhar
+\usepackage{pgfplots} % Com tikz, desenha gráfico
+\usetikzlibrary{patterns} % Permite hachurar áreas
+\usetikzlibrary{decorations.pathreplacing, angles, quotes} % Permite desenhar "chaves"
+\usepackage{mathtools, amsthm, amssymb, amsbsy} % Pacotes de Matemática
+\usepackage[makeroom]{cancel}
+\usepackage{indentfirst} % Identa o primeiro parágrafo de cada seção
+\usepackage{changepage} % Permite mudar as margens para um bloco de texto
+\usepackage{afterpage} % Permite incluir página em branco
+\usepackage[authoryear]{natbib} % Configuração de Referências
+\usepackage{titlesec} % Permite iniciar cada subseção em uma nova página 
+\usepackage{titleps} % Permite customização do cabeçalho e rodapé (ORDEM IMPORTA: depois do 'titlesec')
+\usepackage{colonequals} % Símbolo de definição: \colonequals ou \equalscolon
+\usepackage{hyperref} % Link para partes do próprio texto
+\usepackage[shortlabels]{enumitem} % Permite trocar a numeração da lista
+\usepackage{ragged2e}
+\allowdisplaybreaks
+
+% DEIXAR O CARREGAMENTO DE hyperref POR ÚLTIMO
+\usepackage{color}   % May be necessary if you want to color links
+\usepackage{hyperref}
+%\hypersetup{
+%	colorlinks = true,  % Set true if you want colored links
+%	allcolors  = black
+%}
+
+% DEFINIÇÃO DE ESPAÇAMENTO
+\setlength{\parindent}{1.25cm}
+\setlength{\parskip}{0pt}
+\renewcommand{\baselinestretch}{1.5}
+
+% PERMITE INCLUIR NUMERAÇÃO EM APENAS UMA EQUAÇÃO DO ALIGN*
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+
+% DEFINIÇÃO DE NOVOS SÍMBOLOS
+\DeclareMathOperator{\PX}{\mathbb{P}} % Probability symbol
+\DeclareMathOperator{\EX}{\mathbb{E}} % Expectation symbol \mathbbmss
+\DeclareMathOperator{\VX}{\mathbb{V}} % Variance symbol
+\DeclareMathOperator{\FX}{\mathcal{F}} % Sigma-algebra symbol
+\DeclareMathOperator{\NX}{\mathbb{N}} % Natural set symbol
+\DeclareMathOperator{\ZX}{\mathbb{Z}} % Integer set symbol
+\DeclareMathOperator{\QX}{\mathbb{Q}} % Rational set symbol
+\DeclareMathOperator{\IX}{\mathbb{I}} % Irrational set symbol
+\DeclareMathOperator{\RX}{\mathbb{R}} % Real s\footnote{Existe o p}et symbol
+\DeclareMathOperator{\CX}{\mathbb{C}} % Complex set symbol
+\DeclareMathOperator{\LX}{\mathbb{L}} % Lattice set symbol
+\DeclareMathOperator{\GX}{\mathcal{G}} % Group symbol
+\DeclareMathOperator{\VL}{\mathcal{V}} % Group symbol
+\DeclareMathOperator{\HL}{\mathcal{H}} % Group symbol
+\DeclareMathOperator{\PL}{\mathcal{P}} % Group symbol
+\newcommand{\diff}{{\nabla_i}f(\omega)}
+\newcommand{\flip}{\text{Flip}_i(\omega)}
+\newcommand{\infl}{\text{Inf}_i(f(\omega))}
+\newcommand{\diffe}{{\nabla_e}f(\omega)}
+\newcommand{\infle}{\text{Inf}_e(f(\omega))}
+\newcommand{\flipe}{\text{Flip}_e(\omega)}
+
+% DEFINIÇÃO DE TEOREMAS, LEMAS, ETC. (+ SÍMBOLO DE DEMONSTRAÇÃO)
+\theoremstyle{definition} % Define padrão de formatação - default: plain
+\newtheorem{mydef}{Definição}[section]
+\newtheorem{mythm}{Teorema}[section]
+\newtheorem{mylem}{Lema}[section]
+\newtheorem{mypro}{Proposição}[section]
+\newtheorem{mycol}{Corolário}[section]
+\newtheorem{myexp}{Exemplo}[section]
+
+
+
+\begin{document}
+	\begin{center}
+		\LARGE
+		\textbf{RASCUNHO}
+	\end{center} 
+	
+	Considerando o problema de Percolação $2k$ Dependente, e com $\PX_p$ medida de probabilidade para um subconjunto mensurável de $\tilde{\Omega} = \prod_{x \in \ZX^d}\{0, 1\}$, temos que
+	\begin{align*}
+	\sum_{s = 1}^{n} \PX_p(x \overset{\omega}{\leftrightarrow} \partial\Lambda_s) &\overset{\text{Inc. de ev.}}{\leq} \sum_{s = 1}^{n} \PX_p(x \overset{\omega}{\leftrightarrow} \partial\Lambda_{|s - \text{d}(0, x)|}(x)), \text{ com } \text{d}(0, x) = \max(|x_1|, |x_2|) \\
+	&= \sum_{j = 0}^{\text{d}(0, x) - 1} \PX_p(x \overset{\omega}{\leftrightarrow} \partial\Lambda_j(x)) + \sum_{j = 1}^{n - \text{d}(0, x)} \PX_p(x \overset{\omega}{\leftrightarrow} \partial\Lambda_j(x)),
+	\end{align*}
+	tal que o primeiro somatório considera o caso no qual, para $x$ fixo, $x \in \Lambda_s$, enquanto que para o segundo, $x \not\in \Lambda_s$. Assim, por invariância por translação,
+	\begin{align*}
+		\sum_{s = 1}^{n} \PX_p(x \overset{\omega}{\leftrightarrow} \partial\Lambda_s) &\leq \sum_{j = 0}^{\text{d}(0, x) - 1} \PX_p(0 \overset{\omega}{\leftrightarrow} \partial\Lambda_j) + \sum_{j = 1}^{n - \text{d}(0, x)} \PX_p(0 \overset{\omega}{\leftrightarrow} \partial\Lambda_j) \\
+		&\leq \sum_{j = 0}^{n - 1} \PX_p(0 \overset{\omega}{\leftrightarrow} \partial\Lambda_j) + \sum_{j = 0}^{n - 1} \PX_p(0 \overset{\omega}{\leftrightarrow} \partial\Lambda_j) = 2 \, S_n.
+	\end{align*}
+	
+	\vspace{24pt}
+	Tentando resolver o problema de passar de um ``modelo de percolação de vértices que \textit{olha} para cruzamento de elos'' para um ``modelo de percolação de vértices \textit{puro} (i.e., com cruzamento de vértices)'' para Percolação $2k$ Dependente:
+	
+	Ou seja, quero sair de $\PX_p(\{\tilde{\omega} \in \tilde{\Omega} : x \overset{\omega}{\leftrightarrow} \partial\Lambda_s\})$ para $\PX_p(\{\tilde{\omega} \in \tilde{\Omega} : x \overset{\tilde{\omega}}{\leftrightarrow} \partial\Lambda_s\})$ (alternativamente, $\PX_p(\{\tilde{\omega} \in \tilde{\Omega} : x \leftrightarrow \partial\Lambda_s\}) = \PX_p(x \leftrightarrow \partial\Lambda_s)$); isto é, eu quero poder escrever algo como $\{\tilde{\omega} \in \tilde{\Omega} : x \overset{\omega}{\leftrightarrow} \partial\Lambda_s\} \cap \{$Vértices sobressalentes em $\Lambda_n \backslash \Lambda_s$ estão abertos$\} = \{\tilde{\omega} \in \tilde{\Omega} : x \overset{\tilde{\omega}}{\leftrightarrow} \partial\Lambda_s\}$.
+	
+	\textbf{Problema 1:} \textit{não} existe independência entre os eventos $\{\omega \in \Omega : x \leftrightarrow \partial\Lambda_s\}$ e $\{$Elos sobressalentes em $\Lambda_n \backslash \Lambda_s$ estão abertos tal que existe caminho de cruzamento de vértices$\}$. E, na verdade, o segundo evento \textbf{não} pode ser garantido, mesmo com a abertura de todos os elos.
+	
+	\textbf{Problema 2:} No caso de conseguirmos superar o ponto anterior {\color{red}(\textbf{?})} e \textit{definirmos adequadamente a Inequação 34}, ainda temos que voltar de um ``modelo de percolação de vértices \textit{puro}'' para um ``modelo de percolação de elos \textit{induzido}'', de forma a obter as desigualdades apropriadas para o teorema que queremos demonstrar. As desigualdades nesse caso, \textbf{não} nos favorecem.
+	
+	No caso de mostrarmos que $\PX_p(0 \leftrightarrow \partial\Lambda_n) \leq e^{-c_p\,n}$, teremos
+	\begin{align*}
+	\{\tilde{\omega}\in\tilde{\Omega}:0 \leftrightarrow \partial\Lambda_n\} = \{\omega \in \Omega : 0 \leftrightarrow \partial\Lambda_n\} \cap \{\text{Elos sobressalentes em } \Lambda_n \backslash \Lambda_s \text{ estão abertos}\}
+	\end{align*}
+	o que implica em, superado o problema de independência entre os eventos {\color{red}(\textbf{?})},
+	\begin{align*}
+		e^{-c_p\,n} \geq \PX_p(0 \leftrightarrow \partial\Lambda_n) = h \, \mu_p(0 \leftrightarrow \partial\Lambda_n),
+	\end{align*}
+	o que, para $h \in [0, 1]$, \textbf{não} nos dá uma desigualdade que funciona.
+	
+\end{document}

@@ -1,0 +1,48 @@
+\begin{tikzpicture}[scale = 0.70]
+
+	\begin{scope}	
+		\clip (0.60, 0) to[out = 86, in = 135] (1.25, 0.75) to[out = -45, in = 135] (1.75, -0.5) to[out = -45, in = -95] (0.60, 0); % Área limitada
+		\draw[pattern = north east lines, pattern color = black!30] (-2 , -2) rectangle (2, 2); % Área total
+	\end{scope}
+
+	\draw[solid, black] (-2,  2) -- ( 2,  2);
+	\draw[solid, black] ( 2,  2) -- ( 2, -2);
+	\draw[solid, black] ( 2, -2) -- (-2, -2);
+	\draw[solid, black] (-2, -2) -- (-2,  2);
+	
+	\draw[dashed, black] (-1,  1) -- ( 1,  1);
+	\draw[dashed, black] ( 1,  1) -- ( 1, -1);
+	\draw[dashed, black] ( 1, -1) -- (-1, -1);
+	\draw[dashed, black] (-1, -1) -- (-1,  1);
+	
+	\draw[black] ( 0,  0) circle (2pt);
+	\node[black] at (0, -.35) {{\footnotesize $0$}};
+	\node[black] at (1.80, -2.30) {{\small $\Lambda_n$}};
+	\node[black] at (0.80, -1.30) {{\small $\Lambda_s$}};
+%	\node[red] at (1.25,  1.25) {{\tiny $C_{\partial\Lambda_k}(\omega)$}};
+	
+	\draw[solid, black] (0.60, 0) to[out = 86, in = 135] (1.25, 0.75) to[out = -45, in = 135] (1.75, -0.5) to[out = -45, in = -95] (0.60, 0);
+
+
+%	\draw[solid, thick, black] (0, 2) to[out = -45, in = 135] (3.75, 2);
+%	\draw[solid, thick, black] (4.25, 2) to[out = -45, in = 135] (8, 2);
+%	\draw[fill] (3.75, 2) circle (2pt);
+%	\draw[fill] (4.25, 2) circle (2pt);
+%	\draw[fill] (0, 2) circle (2pt);
+%	\draw[fill] (8, 2) circle (2pt);
+%	
+%	\draw[dashed, thick, black] (4, -0.25) to[out = 45, in = -135] (4, 1.75);
+%	\draw[dashed, thick, black] (4,  2.25) to[out = 45, in = -135] (4, 4.25);
+%	\draw[draw] (4, 1.75) circle (2pt);
+%	\draw[draw] (4, 2.25) circle (2pt);
+%	\draw[draw] (4, -0.25) circle (2pt);
+%	\draw[draw] (4,  4.25) circle (2pt);
+%	
+%	\draw [decorate, decoration = {brace, amplitude = 12pt, mirror}, xshift = 0pt, yshift = -8pt] (0, 0) -- (8, 0) node [black, midway, xshift = 0pt, yshift = -18pt] {\small $2n$};
+%	
+%	\draw [decorate, decoration = {brace, amplitude = 6pt, mirror}, xshift = 4pt, yshift = 0pt] (8, 0) -- (8, 4) node [black, midway, xshift = 12pt, yshift = 0pt] {\small $n$};
+%	
+%	\node[black] at (-0.25, 0.15) {{\small $\text{R}^{\phantom{\star}}$}};
+%	\node[black] at (0.45, 4.55) {{\small $\text{R}^{\star}$}};
+	
+\end{tikzpicture}

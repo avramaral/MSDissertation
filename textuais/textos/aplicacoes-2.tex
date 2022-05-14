@@ -1,0 +1,169 @@
+Em dimensões maiores que $d = 2$, calcular o valor exato de $p_c$ é tarefa difícil; de fato, não se espera que o ponto crítico, nesses casos, seja, ao menos, um número racional (ou mesmo algébrico). Entretanto, é possível mostrar que o modelo definido, para dimensões mais altas, também tem transição de fase ``\textit{afiada}'' $-$ o que significa dizer que a probabilidade de, por exemplo, a origem estar conectada à fronteira de uma caixa de lado $2n$ decai ``muito'' rápido (em particular, exponencialmente rápido) quando $p < p_c$. O teorema abaixo nos dá um resultado desse tipo.
+
+\begin{mythm} \label{exp-decay}
+	Em um modelo de percolação Bernoulli em $\LX^d$, vale que
+	\begin{enumerate}
+		\item Para $p < p_c$, existe um $c_p > 0$ tal que para todo $n \geq 1$, $\PX_p(0 \leftrightarrow \partial\Lambda_n) \leq e^{-c_p\,n}$.
+		\item Para $p > p_c$, existe um $c > 0$ tal que $\PX_p(|C_0(\omega)| = +\infty) \geq c\,(p - p_c)$.
+	\end{enumerate}
+\end{mythm}
+
+Sobre o resultado que acabamos de enunciar, primeiro perceba que nada foi dito quando $p = p_c$; para $3 \leq d \leq 10$, esse é um problema em aberto. O Teorema \ref{exp-decay} foi provado primeiro por Menshikov em \cite{menshikov1986coincidence} e por Aizenman e Barsky em \cite{aizenman1987sharpness}. Uma prova mais recente (e mais simples, se comparada àquela que será apresentada aqui) pode ser vista em \cite{duminil2016newzd}; porém, a estratégia de demonstração utilizada por Duminil-Copin e Tassion nesse texto depende fortemente da estrutura associada ao modelo de Percolação considerado. Para esta dissertação, será apresentada uma demonstração introduzida em \cite{duminil2019sharpdecisiontree}, e que utiliza a ideia de algoritmo discutida na Subseção \ref{subsection-OSSS}. O benefício dessa abordagem está na sua possibilidade de extensão para modelos definidos sobre espaços mais gerais.
+
+Porém, antes da demonstração do teorema, um lema (de Análise) será necessário.
+
+\begin{mylem} \label{lem-seq-funcoes}
+	Considere uma sequência convergente de funções $f_n: [0, \bar{x}] \longrightarrow [0, M]$ diferenciáveis e crescentes em $x$ tal que, para todo $n \geq 1$,
+	\begin{align} \label{restricao-seq-funcoes}
+		{f_n}^{\prime} \geq \frac{n}{\Sigma_n}\,f_n,
+	\end{align}
+	onde $\Sigma_n = \sum_{s = 0}^{n - 1}f_s$. Então, existe $\tilde{x} \in [0, \bar{x}]$ tal que
+	\begin{enumerate}[a.]
+		\item Para qualquer $x < \tilde{x}$, existe $c_x > 0$ tal que, para qualquer $n \geq 1$, $f_n(x) \leq e^{-c_x\,n}$.
+		\item Para qualquer $x > \tilde{x}$, $f = \lim_{n \rightarrow +\infty} f_n$ satisfaz $f(x) \geq x - \tilde{x}$.
+	\end{enumerate}
+\end{mylem}
+
+\par \texttt{Demonstração:}
+
+\par Comece definindo
+\begin{align*}
+	\tilde{x} \colonequals \inf\left\{x : \limsup_{n \rightarrow +\infty} \frac{\ln\Sigma_n(x)}{\ln(n)} \geq 1\right\}.
+\end{align*}
+
+\par Para mostrar ``a.'', assuma $x < \tilde{x}$; nesse caso, fixe um $\delta > 0$ e defina $x^{\prime} \colonequals x - \delta$ e $x^{\prime\prime} \colonequals x - 2\delta$. Iremos mostrar que existe decaimento exponencial para $f_n(x)$ em $x^{\prime\prime}$ em dois passos. Primeiro, note que, pela definição de $\tilde{x}$, existe um inteiro $N$ e um $\alpha > 0$ tal que $\Sigma_n(x) \leq n^{1 - \alpha}$, $\forall n \geq N$. Em adição, veja que, da Expressão \eqref{restricao-seq-funcoes} e da cota que acabamos de estabelecer para $\Sigma_n$, temos que
+\begin{align} \label{ineq-fn-prime}
+	{f_n}^{\prime} &\geq \frac{n}{\Sigma_n}\,f_n \geq \frac{n}{n^{1 - \alpha}}\,f_n \geq n^{\alpha}\,f_n.
+\end{align}
+Integrando a Expressão \eqref{ineq-fn-prime} entre $x^{\prime}$ e $x$, obtemos
+\begin{align*}
+\int_{x^{\prime}}^{x} \left(\ln f_n(x) \right)^{\prime} dx &\geq n^{\alpha} \, \int_{x^{\prime}}^{x} dx \\
+\implies \ln\left(\frac{f_n(x)}{f_n(x^\prime)}\right) &\geq n^{\alpha} \, \delta \\
+\implies f_n(x^{\prime}) \, e^{n^{\alpha} \, \delta} &\leq M, \text{ já que $f_n(x) \leq M$}\\
+\implies f_n(x^{\prime}) &\leq M\,e^{-\delta\,n^{\alpha}}, \text{ } \forall n \geq N. \numberthis \label{result-parc-fn}
+\end{align*}
+Em segundo lugar, da Expressão \eqref{result-parc-fn}, perceba que existe $\Sigma < +\infty$ tal que $\Sigma_n(x^{\prime}) \leq \Sigma$, $\forall n \geq 1$. Além disso e de maneira similar ao que foi feito na Expressão \eqref{ineq-fn-prime}, vale que 
+\begin{align} \label{ineq-fn-prime2}
+{f_n}^{\prime} \geq \frac{n}{\Sigma}\,f_n.
+\end{align}
+Integrando a Expressão \eqref{ineq-fn-prime2} entre $x^{\prime\prime}$ e $x^{\prime}$, obtemos 
+\begin{align*}
+\int_{x^{\prime\prime}}^{x^{\prime}} \left(\ln f_n(x) \right)^{\prime} dx &\geq \frac{n}{\Sigma} \, \int_{x^{\prime\prime}}^{x^{\prime}} dx \\
+\implies f_n(x^{\prime\prime}) &\leq M \, e^{-\frac{\delta}{\Sigma}\,n}, \text{ } \forall n \geq 0.
+\end{align*}
+
+\par Para mostrar ``b.'', assuma $x > \tilde{x}$. Aqui, para $n \geq 1$, defina $T_n \colonequals \frac{1}{\ln(n)}\sum_{i = 1}^{n}\frac{f(i)}{i}$. Agora, note que 
+\begin{align*}
+	{T_n}^{\prime} &\overset{\phantom{\eqref{restricao-seq-funcoes}}}{=} \frac{1}{\ln(n)}\sum_{i = 1}^{n}\frac{{f_i}^{\prime}}{i} \\
+	&\overset{\text{\eqref{restricao-seq-funcoes}}}{\geq} \frac{1}{\ln(n)}\sum_{i = 1}^{n}\frac{i}{\Sigma_i} \, f_i \, \frac{1}{i} = \frac{1}{\ln(n)}\sum_{i = 1}^{n} \frac{f_i}{\Sigma_i} \geq \frac{\ln\Sigma_{n+1} - \ln\Sigma_1}{\ln(n)},
+\end{align*}
+onde a última desigualdade vem do fato de que, para todo $i \geq 1$,
+\begin{align*}
+\frac{f_i}{\Sigma_i} \geq \int_{\Sigma_i}^{\Sigma_{i+1}} \frac{1}{t} \, dt = \ln\Sigma_{i+1} - \ln\Sigma_i.
+\end{align*}
+Para $x^{\prime} \in (\tilde{x}, x)$, e integrando ${T_n}^{\prime} \geq \frac{\ln\Sigma_{n+1} - \ln\Sigma_1}{\ln(n)}$ entre $x^{\prime}$ e $x$, obtemos
+\begin{align*}
+	T_n(x) - T_n(x^{\prime}) &\geq \frac{1}{\ln(n)} \left(\int_{x^\prime}^{x} \ln\Sigma_{n+1}(x) - \ln(f_0(x)) dx\right) \\
+	&\geq \frac{(x - x^{\prime})}{\ln(n)} \, \left(\ln\Sigma_n(x^\prime) - \ln(M)\right), 
+\end{align*}
+já que $\Sigma_n$ é não-decrescente.
+
+\par Assim, como $T_n(x)$ converge para $f(x)$ quando $n \to +\infty$ (recorde que, para uma sequência $(a_n)_{n \in \NX}$ de números reais, \hspace{-1pt}se $a_n \overset{n \to +\infty}{\longrightarrow} a$, então $\frac{1}{\ln(n)}\sum_{i = 1}^{n}\frac{a_i}{i} \overset{n \to +\infty}{\longrightarrow} a$), temos que
+\begin{align*}
+	f(x) - f(x^\prime) \geq (x - x^{\prime}) \, \left(\limsup_{n \rightarrow +\infty} \frac{\ln\Sigma_n(x^{\prime})}{\ln(n)}\right) \geq (x - x^\prime),
+\end{align*}
+pela definição de $\tilde{x}$.
+
+\par Por fim, quando $x^{\prime}$ tende para $\tilde{x}$ \textit{por cima}, temos que $f(x) \geq x - \tilde{x}$.\hspace{\fill}\qed
+
+\vspace{6pt}
+
+Agora, defina $\theta_n(p) \colonequals \PX_p(0 \leftrightarrow \partial\Lambda_n)$ e $S_n \colonequals \sum_{s = 0}^{n-1} \theta_s(p)$. Feito isso, vamos estudar o resultado abaixo, que nos dá a última ferramenta necessária para provar o Teorema \ref{exp-decay}.
+
+\begin{mylem} \label{lem-infl}
+	Para qualquer $n \geq 1$, temos que
+	\begin{align*}
+		\sum_{e \in \text{E}_n} \text{Inf}_e(\IX_{0 \leftrightarrow \partial\Lambda_n}(\omega)) \geq \frac{n}{S_n} \, \theta_n(p)\, (1 - \theta_n(p)),
+	\end{align*}
+	onde $\text{E}_n$ é o conjunto de elos tal que as duas extremidades de $e$ estão em $\Lambda_n$.
+\end{mylem}
+
+\par A demonstração do Lema \ref{lem-infl} é baseada no Teorema \ref{osss-inequality} e na escolha de um algoritmo $\text{\textbf{T}}$ conveniente para determinar $f_n(\omega) \colonequals \IX_{0 \leftrightarrow \partial\Lambda_n}(\omega)$. Nesse sentido, uma escolha trivial de algoritmo seria o de revelar todos os elos de $\Lambda_n$ (seguindo alguma ordenação); porém, note que, aqui, $\delta_e(\text{\textbf{T}}) = 1$ para os primeiros elos $e \in \text{E}_n$ $-$ o que não funciona. Como alternativa à essa primeira sugestão de algoritmo, podemos utilizar a estratégia de começar a verificar os elos que compõem o aglomerado da origem a partir do centro da caixa $\Lambda_n$. Sendo assim, os elos que não estão próximos da origem seriam verificados se e somente se tivessem uma de suas extremidades conectadas a $C_0(\omega)$. Essa abordagem nos dá uma boa cota para as \textit{revelações} dos elos longe da origem; em contrapartida, note que os elos próximos do centro da caixa ainda seriam revelados com alta probabilidade. Para mitigar esse último problema apontado, vamos, na verdade, escolher uma família de algoritmos que consulta os estados dos elos que pertencem ao aglomerado de $\partial\Lambda_s$, para $1 \leq s \leq n$.
+
+\par \texttt{Demonstração (Lema \ref{lem-infl}):}
+
+\par Para $1 \leq s \leq n$, queremos um algoritmo $\text{\textbf{T}}$ para $\IX_{0 \leftrightarrow \partial\Lambda_n}(\omega)$ tal que, para todo elo $e = (x, y)$ em $\text{E}_n$,
+\begin{align} \label{cota-revelacao}
+	\delta_e(\text{\textbf{T}}) \leq \PX_p(x \leftrightarrow \partial\Lambda_s) + \PX_p(y \leftrightarrow \partial\Lambda_s).
+\end{align}
+
+\par Veja que se tivermos uma cota como a apresentada na Expressão \eqref{cota-revelacao}, temos o resultado desejado. Para verificar isso, note que, para $x \in \Lambda_n$,
+\begin{align*}
+	\sum_{s = 1}^{n} \PX_p(x \leftrightarrow \partial\Lambda_s) &\leq \sum_{s = 1}^{n} \PX_p\left(x \leftrightarrow \partial\Lambda_{|s - \text{d}(0, x)|}(x)\right)
+	\leq 2 \sum_{s = 0}^{n - 1} \PX_p(0 \leftrightarrow \partial\Lambda_s) = 2\, S_n, \numberthis \label{result-parc-x-caixa}
+\end{align*}
+onde $\text{d}(0, x) = \max\left(|x_1|, |x_2|\right)$.
+
+\par Da mesma forma,
+\begin{align} \label{result-parc-y-caixa}
+	\sum_{s = 1}^{n} \PX_p(y \leftrightarrow \partial\Lambda_s) \leq 2 \, S_n.
+\end{align} 
+
+\par Agora, aplicando o Teorema \ref{osss-inequality} e utilizando a cota estabelecida pela Expressão \eqref{cota-revelacao}, temos
+\begin{align*}
+	\VX_p(\IX_{0 \leftrightarrow \partial\Lambda_n}(\omega)) \leq p\,(1-p) \sum_{e \in \text{E}_n} \left(\PX_p(x \leftrightarrow \partial\Lambda_s) + \PX_p(y \leftrightarrow \partial\Lambda_s)\right) \, \text{Inf}_e(\IX_{0 \leftrightarrow \partial\Lambda_n}(\omega)),
+\end{align*}
+o que implica, somando sobre todos os valores de $s$, que
+\begin{align*}
+\sum_{s = 1}^{n} \theta_n(p)\,(1 - \theta_n(p)) &\leq p\,(1-p) \sum_{e \in \text{E}_n} \text{Inf}_e(\IX_{0 \leftrightarrow \partial\Lambda_n}(\omega)) \sum_{s = 1}^{n} \left(\PX_p(x \leftrightarrow \partial\Lambda_s) + \PX_p(y \leftrightarrow \partial\Lambda_s)\right) \\
+\implies n \cdot \frac{\theta_n(p) \, (1 - \theta_n(p))}{p\,(1-p)} &\leq 4\,S_n \sum_{e\in\text{E}_n} \text{Inf}_e(\IX_{0 \leftrightarrow \partial\Lambda_n}(\omega)) \\
+\implies \sum_{e\in\text{E}_n} \text{Inf}_e(\IX_{0 \leftrightarrow \partial\Lambda_n}(\omega)) &\geq \frac{n}{p\,(1-p) \, 4 \, S_n} \, \theta_n(p) \, (1 - \theta_n(p)) \geq \frac{n}{S_n} \, \theta_n(p)\, (1 - \theta_n(p)),
+\end{align*}
+tal que a segunda linha utiliza as cotas representadas através das Expressões \eqref{result-parc-x-caixa} e \eqref{result-parc-y-caixa}.
+
+\par De fato, basta mostrar que vale a Expressão \eqref{cota-revelacao}. Para isso, vamos empregar um algoritmo $\text{\textbf{T}}$ que explora, primeiro, os estados dos elos construídos a partir do conjunto de vértices que compõe o aglomerado de $\Lambda_n$ intersecção com $\partial\Lambda_s$ e que não revela o estado de nenhum elo $e$ tal que as duas extremidades de $e$ estejam fora dessa componente conexa.
+
+\par De maneira formal, defina o conjunto de índices $\mathbf{e}$ (antes, denotado por $\mathbf{i}$) utilizando duas sequências $\partial\Lambda_s = \text{V}_0 \subset \text{V}_1 \subset \cdots \subset \text{V}_n$ e $\emptyset = \text{E}_0 \subset \text{E}_1 \subset \cdots \subset \text{E}_n$. Aqui, $\text{V}_t$ representa o conjunto de vértices que o algoritmo verificou estar conectado a $\partial\Lambda_s$ e $\text{E}_t$ representa o conjunto de elos explorados pelo algoritmo até o instante $t$.
+
+\par Fixando uma ordem para os elos de $\text{E}_n$, defina $\text{V}_0 = \partial\Lambda_s$ e $\text{E}_0 = \emptyset$. Assuma, então, que os conjuntos $\text{V}_t \subset \text{V}_n$ e $\text{E}_t \subset \text{E}_n$ foram construídos de tal forma que, em $t$, uma das duas situações a segui se aplica:
+
+\begin{enumerate}[a.]
+	\item Se existe elo $e = (x, y)$ em $\text{E}_n \text{~\textbackslash~} \text{E}_t$ tal que $x \in \text{V}_t$ e $y \not\in \text{V}_t$ (se existir mais de um, escolha o menor deles $-$ de acordo com a ordem estabelecida), então defina $\mathbf{e}_{t+1} \colonequals e$, $\text{E}_{t + 1} \colonequals \text{E}_t \cup \{e\}$ e
+	\[ \text{V}_{t + 1} \colonequals
+	\begin{cases}
+	\text{V}_t \cup \{y\} &\text{ se } \omega_e = 1 \\
+	\text{V}_t &\text{ caso contrário}.
+	\end{cases}
+	\]
+	\item Se $e$ não existe, então defina $\mathbf{e}_{t+1}$ como o menor elo em $\text{E}_n \text{~\textbackslash~} \text{E}_t$ (de acordo com a ordem estabelecida), $\text{E}_{t + 1} \colonequals \text{E}_t \cup \{e\}$ e $\text{V}_{t + 1} \colonequals \text{V}_t$.
+\end{enumerate}
+
+\par Perceba que, enquanto estivermos na situação ``a$.$'', ainda estamos descobrindo elos que fazem parte da componente conectada a $\partial\Lambda_s$; ao passo que, assim que mudamos para a situação ``b$.$'', nós permanecemos nela. Nesse caso, $\tau(\omega)$ não é maior que o último $t$ para o qual ainda estamos na situação ``a$.$''.
+
+\par Relembrando que $\delta_e(\text{\textbf{T}}) \colonequals \PX_p(\exists t \leq \tau(\omega) : e_t = e)$, temos que
+\begin{align*}
+	\PX_p(\exists t \leq \tau(\omega) : e_t = e) &\leq \PX_p\left(\{x \leftrightarrow \partial\Lambda_s\} \cup \{y \leftrightarrow \partial\Lambda_s\}\right) \\
+	&\leq \PX_p(x \leftrightarrow \partial\Lambda_s) + \PX_p(y \leftrightarrow \partial\Lambda_s),
+\end{align*}
+o que prova a Expressão \eqref{cota-revelacao} e, portanto, finaliza a demonstração.\hspace{\fill}\qed
+
+\par Finalmente, somos capazes de provar o teorema principal dessa subseção.
+
+\par \texttt{Demonstração (Teorema \ref{exp-decay}):}
+
+\par Seja $F_n(p) = \EX_p(\IX_{0 \leftrightarrow \partial\Lambda_n}(\omega))$. Assim, utilizando os resultados do Teorema \ref{formula-margulis-russo} e do Lema \ref{lem-infl}, temos que
+\begin{align} \label{ineq-parcial-exp}
+	{F_n}^{\prime}(p) = {\theta_n}^{\prime}(p) = \sum_{e \in \text{E}_n}\text{Inf}_e(\IX_{0 \leftrightarrow \partial\Lambda_n}(\omega)) \geq \frac{n}{S_n} \, \theta_n(p) \, (1 - \theta_n(p)).
+\end{align}
+
+\par Fixando $\bar{p} \in (p_c, 1)$, veja que, para $p \leq \bar{p}$, $1 - \theta_n(p) \geq 1 - \theta_1(\bar{p}) > 0$; dessa forma, considerando a Expressão \eqref{ineq-parcial-exp}, somos capazes de dizer que
+\begin{align*}
+\left(\frac{1}{1 - \theta_1(\bar{p})}\,\theta_n(p)\right)^{\prime} \geq \frac{n}{(1 - \theta_1(\bar{p}))^{-1}\, S_n} \cdot \left(\frac{1}{1 - \theta_1(\bar{p})}\,\theta_n(p)\right).
+\end{align*}
+Assim, aplicando o Lema \ref{lem-seq-funcoes} para $f_n(p) = (1 - \theta_1(\bar{p}))^{-1}\,\theta_n(p)$ , existe $\tilde{p}_c \in [0, \bar{p}]$ tal que
+\begin{enumerate}[a.]
+	\item Para qualquer $p < \tilde{p}_c$, existe $c_p > 0$ tal que, para qualquer $n \geq 1$, $(1 - \theta_1(\bar{p}))^{-1} \,\theta_n(p) \leq e^{-c_p\,n} \implies \theta_n(p) \leq e^{-c_p\,n}$.
+	\item Existe $c > 0$ tal que, para qualquer $p > \tilde{p}_c$, $\theta(p) \geq c\,(p - \tilde{p}_c)$.
+\end{enumerate}
+
+\par Finalmente, já que $\bar{p}$ foi escolhido maior do que $p_c$, então $\tilde{p}_c$ deve ser, necessariamente, igual a $p_c$.\hspace{\fill}\qed

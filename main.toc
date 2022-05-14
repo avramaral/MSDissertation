@@ -1,0 +1,17 @@
+\babel@toc {brazilian}{}
+\contentsline {section}{Agradecimentos}{I}{section*.1}%
+\contentsline {section}{Resumo}{III}{section*.2}%
+\contentsline {section}{Abstract}{IV}{section*.3}%
+\contentsline {section}{\numberline {1}Introdução}{1}{section.1}%
+\contentsline {section}{\numberline {2}Como provar que $(f_n)_{n \in \NX }$ passa por \textit {sharp threshold}?}{4}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Fórmula de Russo-Margulis}{4}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Inequação de \textit {sharp threshold}}{7}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Desigualdade de O'Donnell-Saks-Schramm-Servedio}{13}{subsection.2.3}%
+\contentsline {section}{\numberline {3}Aplicações em percolação de Bernoulli no grafo $\LX ^d$}{16}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Ponto crítico para percolação Bernoulli em $\LX ^2$}{17}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}\textit {Sharpness} da transição de fase para percolação Bernoulli em $\LX ^d$}{26}{subsection.3.2}%
+\contentsline {section}{\numberline {4}Modelos de percolação com dependência}{32}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Percolação $2k$ Dependente}{32}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Percolação FK (ou \textit {Random Cluster Model})}{35}{subsection.4.2}%
+\contentsline {section}{Referências}{43}{section*.43}%
+\contentsline {section}{Apêndice A $-$ Outras demonstrações}{46}{section*.44}%

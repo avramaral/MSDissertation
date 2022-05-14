@@ -1,0 +1,95 @@
+\begin{tikzpicture}[scale = 0.7]
+
+
+	%%% LADO DIREITO %%%
+
+	\begin{scope}	
+		\clip (-2,  1) to[out = -45, in = 135] ( 0,  1) to[out = 45, in = -135] ( 2,  1) -- ( 2, -2) -- (-2, -2) -- (-2,  1); % Área limitada
+		\draw[pattern = north west lines, pattern color = black!30] (-2 , -2) rectangle (2, 2); % Área total
+	\end{scope}
+
+	\draw[solid, black] (-2,  0) -- (2,  0);
+	\draw[solid, black] (-2, -2) -- (2, -2);
+	\draw[solid, black] (-2,  2) -- (2,  2);
+	\draw[solid, black] (-2,  4) -- (2,  4);
+	\draw[solid, black] (0,   0) -- ( 0, 2);
+	\draw[solid, black] (-2, -2) -- (-2, 4);
+	\draw[solid, black] (2,  -2) -- ( 2, 4);
+	
+	\draw[black] ( 0,  0) circle (2pt);
+	\draw[black] (-2,  0) circle (2pt);
+	\draw[black] ( 2,  0) circle (2pt);
+	\draw[black] ( 0, -2) circle (2pt);
+	\draw[black] ( 0,  2) circle (2pt);
+	\draw[black] ( 0,  4) circle (2pt);
+	
+	\node[black] at (0, -.25) {{\footnotesize $(0, 0)$}};
+	\node[black] at (-2.65, -.25) {{\footnotesize $(-n, 0)$}};
+	\node[black] at ( 2.55, -.25) {{\footnotesize $(n, 0)$}};
+	\node[black] at (0, -2.25) {{\footnotesize $(0, -n)$}};
+	\node[black] at (0,  2.25) {{\footnotesize $(0, n)$}};
+	\node[black] at (0,  4.25) {{\footnotesize $(0, 2n)$}};
+	
+	\node[black] at (2.25,  4.00) {{\small $\text{R}$}};
+	\node[black] at (1.75,  1.75) {{\small $\text{S}$}};
+	\node[black] at (2.25,  2.00) {{\small $\text{S}^{\prime}$}};
+	\node[black] at (-2.25,  -2.00) {{\small $l$}};
+	
+	\draw[solid,  black] (0, 1) to[out = 45, in = -135] ( 2, 1);
+	\draw[dashed, black] (0, 1) to[out = 135, in = -45] (-2, 1);
+	
+	\node[black] at ( 0.75, 1.45) {{\footnotesize $\gamma\phantom{(\gamma)}$}};
+	\node[black] at (-0.75, 1.45) {{\footnotesize $\sigma(\gamma)$}};
+	
+	\node[black] at (1.55,  -1.75) {{\footnotesize $\text{V}(\gamma)$}};
+	
+	
+	%%% LADO ESQUERDO %%%	
+
+	\draw[solid, black] (-10,  0) -- (-6,  0);
+	\draw[solid, black] (-10, -2) -- (-6, -2);
+	\draw[solid, black] (-10,  2) -- (-6,  2);
+	\draw[solid, black] (-10,  4) -- (-6,  4);
+	\draw[solid, black] (-8,   0) -- (-8,  2);
+	\draw[solid, black] (-10, -2) -- (-10, 4);
+	\draw[solid, black] (-6,  -2) -- (-6,  4);
+	
+	\draw[black] (-8,   0) circle (2pt);
+	\draw[black] (-10,  0) circle (2pt);
+	\draw[black] (-6,   0) circle (2pt);
+	\draw[black] (-8,  -2) circle (2pt);
+	\draw[black] (-8,   2) circle (2pt);
+	\draw[black] (-8,   4) circle (2pt);
+	
+	\node[black] at (-8, -.25) {{\footnotesize $(0, 0)$}};
+	\node[black] at (-10.65, -.25) {{\footnotesize $(-n, 0)$}};
+	\node[black] at (-5.45, -.25) {{\footnotesize $(n, 0)$}};
+	\node[black] at (-8, -2.25) {{\footnotesize $(0, -n)$}};
+	\node[black] at (-8,  2.25) {{\footnotesize $(0, n)$}};
+	\node[black] at (-8,  4.25) {{\footnotesize $(0, 2n)$}};
+	
+	\node[black] at (-5.75,  4.00) {{\small $\text{R}$}};
+	\node[black] at (-6.25,  1.75) {{\small $\text{S}$}};
+	\node[black] at (-5.75,  2.00) {{\small $\text{S}^{\prime}$}};
+	\node[black] at (-10.25,  -2.00) {{\small $l$}};
+	
+	\node[red]   at (-7.45,  1.70) {{\small $A^{\phantom{\prime}}$}};
+	\node[blue]  at (-7.45,  1.00) {{\small $A^{\prime}$}};
+	\node[green] at (-7.45,  0.30) {{\small $B^{\phantom{\prime}}$}};
+	
+	\draw[fill, red]   (-7, 2) circle (2pt);
+	\draw[fill, red]   (-7, 0) circle (2pt);
+	\draw[fill, blue]  (-8, 1.25) circle (2pt);
+	\draw[fill, blue]  (-6, 1.25) circle (2pt);
+	\draw[fill, green] (-8, 0.75) circle (2pt);
+	\draw[fill, green] (-6, 0.75) circle (2pt);
+	\draw[fill, green] (-6.5, 0.9075) circle (2pt);
+	\draw[fill, green] (-6.5, -2) circle (2pt);
+	
+	\draw[solid, thick, red]   (-7, 2) to[out = 225, in = 45] (-7, 0);
+	\draw[solid, thick, blue]  (-8, 1.25) to[out = 45, in = -135] (-6, 1.25);
+	\draw[solid, thick, green] (-8, 0.75) to[out = -45, in = 135] (-6, 0.75);
+	\draw[solid, thick, green] (-6.5, 0.9075) to[out = -45, in = 135] (-6.5, -2);		
+	
+	
+\end{tikzpicture}

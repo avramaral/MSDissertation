@@ -1,0 +1,81 @@
+\par Na física, \textit{transição de fase} pode ser caracterizada como a mudança descontínua do estado físico de um sistema à medida que algum de seus parâmetros varia continuamente. O exemplo mais simples vem, talvez, da mudança do estado físico da matéria: sólido, líquido ou gasoso $-$ dependendo de parâmetros como temperatura e pressão.
+
+\par Tratando-se, porém, de modelos com componentes estocásticas, dizemos que um sistema aleatório finito passa por \textit{sharp threshold} se o seu comportamento muda rapidamente como resultado de uma pequena perturbação dos parâmetros que governam sua estrutura. O modelo de percolação Bernoulli, que será formalmente enunciado na Seção \ref{Bernoulli-percolation}, é um dos principais exemplos que vamos estudar ao longo deste texto.
+
+\par O modelo probabilístico assumido, a menos que seja dito o contrário, será descrito pelo espaço de probabilidade $(\Omega_n, \AX, \QX_p)$, tal que $\Omega_n = \{0,1\}^n$ com $\omega = (\omega_1, \cdots, \omega_n) \in \Omega_n$ e $n \in \NX$, $\AX = \mathcal{P}(\Omega_n)$, onde $\mathcal{P}(\cdot)$ é o conjunto das partes, e $\QX_p(\omega) = \prod_{i:\omega_i = 1} p \prod_{i:\omega_i = 0} (1 - p)$ é a medida produto Bernoulli com parâmetro $p$. A fim de simplificar notação, denote o conjunto $\{1, \cdots, n\}$ por $[n]$ .
+
+\par Dentro do espaço de probabilidade apresentado, este texto se concentrará em estudar funções do tipo $f: \Omega_n \longrightarrow \{0,1\}$, chamadas de \textit{funções Booleanas}. Assim, defina $F(p) \colonequals \EX_p(f(\omega))$, onde $\EX_p(\cdot)$ é \textit{valor esperado} com respeito à medida $\QX_p$. Da mesma forma, defina $F_n(p) \colonequals \EX_p(f_n(\omega))$ para uma sequência de funções $(f_n)_{n \in \NX}$ tal que $f_n: \Omega_n \longrightarrow \{0,1\}$, $\forall n \in \NX$. Por fim, note que, como $\QX_p$ é medida produto Bernoulli,
+\begin{align}\label{eq-esperanca}
+	F_n(p) = \sum_{\omega \in \Omega_n} f_n(\omega) \; p^{\sum_{i \in [n]}\omega_i} \; (1 - p)^{\sum_{i \in [n]}1 - \omega_i}\text{, }\forall n \in \NX.
+\end{align} 
+\par Em adição, dadas duas configurações $\omega, \omega' \in \Omega_n$, dizemos que $\omega \leq \omega'$ se $\omega_i \leq \omega'_i$, $\forall i \in [n]$ $-$ nesse caso, foi determinada uma ordem parcial para os elementos do espaço amostral $\Omega_n$. Assim, $f(\omega)$ é dita \textit{crescente} se $f(\omega) \leq f(\omega')$ sempre que $\omega \leq \omega'$. Estabelecidas as quantidades de interesse, a definição a seguir irá formalizar a ideia de \textit{sharp threshold}.
+
+\begin{mydef}\label{sharp-threshold}
+	Uma sequência de funções Booleanas crescentes $(f_n)_{n \in \NX}$ passa por \textit{sharp threshold} em $(p_n)_{n \in \NX}$ se existe $(\delta_n)_{n \in \NX}$, com $\delta_n > 0$, $\forall n \in \NX$, e $\lim_{n \rightarrow +\infty} \delta_n = 0$, tal que $F_n(p_n - \delta_n) \longrightarrow 0$ e $F_n(p_n + \delta_n) \longrightarrow 1$, quando $n \rightarrow +\infty$.
+\end{mydef}
+
+\par Perceba que, da Definição \ref{sharp-threshold}, é possível ver que, se $f_n(\omega) = \IX_{A_n}(\omega)$, onde $\IX_{A_n}(\omega)$ é função indicadora de $\omega$ em $A_n \in \AX$, então $F_n(p) = \EX_p(f_n(\omega)) = \EX_p(\IX_{A_n}(\omega)) = \QX_p(A_n)$, $\forall n \in \NX$. Isto é, se $(f_n)_{n \in \NX}$ passa por \textit{sharp threshold}, então para $n$ ``grande'' a medida $\QX_p(A_n)$ está, exceto na região $(p_n - \delta_n, p_n + \delta_n)$, perto de $0$ ou $1$; o que, de alguma forma, pode estar relacionado à \textit{transição de fase} (ou, \textit{transição de fase} ``\textit{afiada}'') pela qual o sistema que está sendo considerado é caracterizado. Abaixo, a Figura \ref{fig-sharp-threshold} apresenta um esboço esse fenômeno.
+
+\begin{figure*}[!htbp]
+	\centering
+	\begin{tikzpicture}[scale = 0.9, declare function = {funcao(\x) = 0.5 + (0.5 * erf((ln(\x) - ln(1 - x))/(0.45254834)));}]
+	\begin{axis}
+	[
+	name = myGraph,
+	xmin = 0,
+	xmax = 1.075,
+	xtick = {0, 1},
+	axis x line = bottom,
+	ymin = 0,
+	ymax = 1.075,
+	ytick = {0,1},
+	axis y line = middle,
+	samples = 200,
+	domain = 0:1,
+	clip = false %
+	]
+	\addplot[blue, mark = none, thick] (x, {funcao(x)});
+	\draw[densely dotted] (100, 0) -- (100, 100);
+	\draw[densely dotted] (0, 100) -- (100, 100);
+	\draw[densely dotted] (40,  0) -- (40,  100);
+	\draw[densely dotted] (60,  0) -- (60,  100);
+	\draw[densely dotted] (0,  10) -- (100,  10);
+	\draw[densely dotted] (0,  90) -- (100,  90);
+	\node[left] at (axis cs:0, 0.10) {\scriptsize{$F_n(p_n - \delta_n)$}};
+	\node[left] at (axis cs:0, 0.90) {\scriptsize{$F_n(p_n + \delta_n)$}};
+	\node[right] at (axis cs:1.075, 0) {\small{$p$}};
+	\node[above] at (axis cs:0, 1.075) {\small{$F_n(p)$}};
+	\draw[decoration = {brace, mirror, raise = 5pt}, decorate] (axis cs:0.4,0) -- node[below = 6pt] {{\scriptsize $2\delta_n$ }} (axis cs:0.6, 0);
+	\end{axis}		
+	\end{tikzpicture}
+	%\vspace{-12pt}
+	\caption{Esboço de $F_n(p) = \EX_p(f_n(w))$ para $n$ ``grande'', tal que $(f_n)_{n \in \NX}$ passa por \textit{sharp threshold}.} 
+	\label{fig-sharp-threshold}
+\end{figure*}
+
+\par A seguir, com o propósito de indicar se as sequências de funções Booleanas $(f_n)_{n \in \NX}$ descritas passam (ou não) por \textit{sharp threshold}, dois exemplos serão apresentados.
+
+\begin{myexp}\label{exemplo-1}
+	Seja $f_n(\omega) = f(\omega) = \IX_{\{\omega_1 = 1\}}(\omega)$, $\forall n \in \NX$. Assim, o cálculo de $F_n(p) = F(p)$, $\forall n \in \NX$, utilizando a Expressão \eqref{eq-esperanca}, é dado por
+	\begin{align*}
+	F_n(p) & = \sum_{\omega \in \Omega_n} f_n(\omega) \; p^{\sum_{i \in [n]}\omega_i} \; (1 - p)^{\sum_{i \in [n]}1 - \omega_i} \\
+		   & = p \;\sum_{\substack{\omega \in \Omega_n; \\ \omega_1 = 1}} p^{\sum_{i = 2}^{n}\omega_i} \; (1 - p)^{\sum_{i = 2}^{n} 1 - \omega_i} \\
+		   & = p \cdot 1 = p = F(p).
+	\end{align*}
+\end{myexp}
+
+\par Nesse caso, como $F_n(p) = p$, $\forall n \in \NX$, $(f_n)_{n \in \NX}$ não passa por \textit{sharp threshold}.
+
+\par O próximo exemplo está relacionado ao Modelo de Erd\"os-Rényi, introduzido em \cite{erdos1959random} e descrito a seguir. Seja $(\Omega_{\mathbb{G}}, \AX, \mathbb{M}_p)$ espaço de probabilidade, tal que $\Omega_{\mathbb{G}} = \{0, 1\}^{|\text{I}|}$, onde $\text{I}$ é o conjunto de pares não ordenados em $[n]$ com $|\text{I}| = {n \choose 2}$, para $n \in \NX$, $\AX = \mathcal{P}(\Omega_{\mathbb{G}})$ e $\mathbb{M}_p$ é a medida produto Bernoulli com parâmetro $p$. Sobre esse espaço, construa o grafo aleatório $\mathbb{G}(n, p) = (\text{V}, \text{E})$ com conjuntos de vértices $\text{V} = [n]$ e conjunto de elos $\text{E} = \{i \in \text{I} : \omega_i = 1\}$. Nesse modelo, Erd\"os e Rényi estavam inicialmente interessados em estudar propriedades de $\mathbb{G}$ que dependem apenas da classe de isomorfismo\footnote{Considere dois grafos $\mathbb{G} = (\text{V}, \text{E})$ e $\mathbb{G}' = (\text{V}', \text{E}')$, tal que $\text{V}$ e $\text{V}'$ são conjuntos de vértices e $\text{E}$ e $\text{E}'$ são conjuntos de elos. Um mapeamento $f: \text{V} \longrightarrow \text{V}'$ é um isomorfismo entre $\mathbb{G}$ e $\mathbb{G}'$ se é bijeção e se $(v_1, v_2) \in \text{E}$ se e somente se $(f(v_1), f(v_2)) \in \text{E}'$. A coleção de grafos isomórficos a $\mathbb{G}$ é chamada de \textit{classe de isomorfismo} de $\mathbb{G}$.} do grafo, como a propriedade abaixo.
+
+\begin{myexp}[Conectividade do grafo \cite{erdos1959random}]\label{exemplo-2}
+	Seja $A_n = \{\mathbb{G}(n, p) \text{ é conexo}\}$, onde ``ser conexo'' significa dizer que para quaisquer dois pontos $w, z \in \text{V}$, existe um caminho de elos que conecta $w$ a $z$. Nesse caso, $(\IX_{A_n})_{n \in \NX}$ passa por \textit{sharp threshold} em $p_n = \frac{\log n}{n}$.
+\end{myexp}
+
+%\begin{myexp}[Existência de componente conexa gigante \cite{erdos1959random}]\label{exemplo-3}
+%	Seja $B_k = \{\exists$ componente em $G(k, p)$ com tamanho maior ou igual a $r_k\}$. Se a sequência $(r_k)_{k \in \NX}$ satisfaz $\frac{r_k}{\log k} \to +\infty$ e $\frac{r_k}{k} \to 0$, quando $k \rightarrow +\infty$, então $(\IX_{B_k})_{k \in \NX}$ passa por \textit{sharp threshold} para $p_k = \frac{1}{k}$.
+%\end{myexp}
+
+\par Uma observação que podemos fazer é a de que, propriedades $-$ como as apresentadas nos exemplos acima $-$ que não passam por \textit{sharp threshold} devem, essencialmente, depender de uma quantidade uniformemente limitada de estados de bits que compõem uma configuração do espaço amostral (vide Exemplo \ref{exemplo-1}). Esse tipo de afirmação é intuitiva à medida que, sob as condições descritas, $F_n(p)$ não atingirá propriedades do tipo $\lim_{n \rightarrow + \infty}F_n(p_n - \delta_n) = 0$ e $\lim_{n \rightarrow + \infty}F_n(p_n + \delta_n) = 1$ para sequências $(p_n)_{n \in \NX}$ e $(\delta_n)_{n \in \NX}$ com $\delta_n \to 0$, quando $n \rightarrow +\infty$.
+
+\par Esta dissertação está organizada como é descrito a seguir. A Seção \ref{How-to-prove} mostrará alguns importantes resultados relacionados ao estudo de funções Booleanas no espaço produto. A Seção \ref{Bernoulli-percolation} se concentrará em aplicações que apresentam \textit{transição de fase}; considerando, principalmente, o Modelo de Percolação Bernoulli com conjunto de vértices em $\ZX^d$. E a Seção \ref{Monotonic-measures} irá generalizar alguns dos resultados discutidos em seções anteriores, considerando, nesses casos, medidas definidas sobre espaços com algum tipo de dependência.

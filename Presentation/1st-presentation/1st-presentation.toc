@@ -1,0 +1,10 @@
+\babel@toc {brazilian}{}
+\beamer@sectionintoc {1}{Introdu\IeC {\c c}\IeC {\~a}o}{3}{0}{1}
+\beamer@sectionintoc {2}{Como provar que $(f_k)_{k \in \NX }$ passa por \textit {sharp threshold}}{11}{0}{2}
+\beamer@subsectionintoc {2}{1}{F\IeC {\'o}rmula de Russo-Margulis}{13}{0}{2}
+\beamer@subsectionintoc {2}{2}{Inequa\IeC {\c c}\IeC {\~a}o de \textit {sharp threshold}}{15}{0}{2}
+\beamer@subsectionintoc {2}{3}{Desigualdade de O'Donnel-Saks-Schramm-Servedio}{23}{0}{2}
+\beamer@sectionintoc {3}{Aplica\IeC {\c c}\IeC {\~o}es em percola\IeC {\c c}\IeC {\~a}o Bernoulli ($\ZX ^d$)}{26}{0}{3}
+\beamer@subsectionintoc {3}{1}{Ponto cr\IeC {\'\i }tico para percola\IeC {\c c}\IeC {\~a}o em $\ZX ^2$}{35}{0}{3}
+\beamer@subsectionintoc {3}{2}{\textit {Sharpness} da transi\IeC {\c c}\IeC {\~a}o de fase para percola\IeC {\c c}\IeC {\~a}o Bernoulli em $\ZX ^d$}{45}{0}{3}
+\beamer@sectionintoc {4}{Refer\IeC {\^e}ncias}{47}{0}{4}

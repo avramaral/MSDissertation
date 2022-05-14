@@ -1,0 +1,86 @@
+\par Uma outra desigualdade, que nos permite conseguir cotas como a sugerida na Expressão \eqref{eq-cota}, será introduzida nessa subseção. Esse resultado é baseado na ideia de \textit{algoritmo de exploração}, inicialmente proposta em \cite{yao1977probabilistic}.
+
+\par De maneira informal, um algoritmo associado a uma função Booleana $f: \Omega_n \longrightarrow \{0,1\}$ toma $\omega \in \Omega_n$ como entrada e revela, de maneira algorítmica, o valor de $\omega$ em diferentes coordenadas, um por um, até que o valor da função $f(\omega)$ possa ser completamente determinado. Em cada passo desse processo, a coordenada que será revelada imediatamente a seguir depende apenas do que foi revelado de $\omega$ até o momento. Nesse sentido, a exploração é interrompida quando o valor de $f(\omega)$ puder ser determinado independente das coordenadas não reveladas de $\omega$. Assim, a pergunta de interesse passa a ser: Quantas coordenadas de $\omega$ devem ser reveladas antes que o algoritmo pare? Essa quantidade é comumente referenciada como \textit{complexidade computacional} de uma função Booleana.
+
+\begin{mydef}\label{def-algoritmo}
+	Dados uma $n$-upla $x = (x_1, \cdots, x_n)$ e um $t \leq n$, com $t \in \NX$, defina $x_{[t]} \colonequals (x_1, \cdots, x_t)$ e $\omega_{x_{[t]}} \colonequals (\omega_{x_1}, \cdots, \omega_{x_t})$. Um \textit{algoritmo} $\text{\textbf{T}}$ é uma dupla $(i_1, \psi_t)$, com $2 \leq t \leq n$, que toma $\omega \in \Omega_n$ como entrada e devolve uma sequência ordenada $\textbf{i} = (i_1, \cdots, i_n)$ construída indutivamente da seguinte forma: para $2 \leq t \leq n$,
+	\begin{align*}
+		i_t = \psi_t(\mathbf{i}_{[t-1]}, \omega_{\mathbf{i}_{[t-1]}}) \in [n] \text{~\textbackslash~} \{i_1, \cdots, i_{t-1}\};
+	\end{align*}
+	onde $\psi_t$ é interpretada como a regra de decisão no tempo $t$ ($\psi_t$ toma, como argumentos, a localização e o valor dos bits para os primeiros $(t-1)$ passos do processo de indução, e, então, decide qual o próximo bit que será consultado). Aqui, note que a primeira coordenada $i_1$ é determinística. Por fim, para $f:\Omega_n \longrightarrow \{0,1\}$, defina:
+	\begin{align*}
+		\tau(\omega) = \tau_{f, \text{\textbf{T}}}(\omega) \colonequals \min\{t \geq 1: \forall x \in \Omega_n, x_{\mathbf{i}_{[t]}} = \omega_{\mathbf{i}_{[t]}} \implies f(x) = f(\omega)\}.
+	\end{align*}
+\end{mydef}
+
+\par Perceba que, da Definição \ref{def-algoritmo}, $\tau(\omega)$ diz respeito à menor quantidade de bits de $\omega \in \Omega_n$ que precisa ser consultada para que $f(\omega)$ seja \textit{completamente} determinada. Sendo assim, em Ciência da Computação, os algoritmos são, de maneira geral, definidos até $\tau(\omega)$.
+
+\par O resultado abaixo, conhecido como ``desigualdade de OSSS'' e introduzido por O'Donnell, Saks, Schramm e Servedio em \cite{o2005every}, relaciona a variância de $f(\omega)$ com a influência total e complexidade computacional de um algoritmo $\text{\textbf{T}}$ para a mesma função.\vspace{-3pt}
+
+\begin{mythm}\label{osss-inequality}
+	Seja $p \in [0,1]$ e $n \in \NX$. Fixe uma função Booleana crescente $f: \Omega_n \longrightarrow \{0,1\}$ e um algoritmo $\text{\textbf{T}}$; então vale que
+	\begin{align*}
+		\VX_p(f(\omega)) \leq p(1 - p) \sum_{i \in [n]} \delta_i(\text{\textbf{T}}) \, \infl, 
+	\end{align*}
+	onde $\delta_i(\text{\textbf{T}}) = \delta_i(f, \text{\textbf{T}}) \colonequals \QX_p(\exists t \leq \tau(\omega) : i_t = i)$ é chamado de \textit{revelação} de $f$ para o algoritmo $\text{\textbf{T}}$ e o bit $i$.
+\end{mythm}
+
+\par Antes da demonstração, perceba que, mais uma vez considerando a Inequação \ref{eq-cota}, se todas as \textit{revelações} $\delta_i(\text{\textbf{T}})$ forem pequenas; i.e., se existe um algoritmo que determina completamente $f(\omega)$, mas \textit{revela} ``poucos'' bits, então $(f_n)_{n \in \NX}$ passa por \textit{sharp threshold}.
+
+\par \texttt{Demonstração (Teorema \ref{osss-inequality}):}
+
+\par Comece considerando duas sequências independentes $\omega$ e $\tilde{\omega}$ de variáveis aleatórias Bernoulli com parâmetro $p$, independentes e igualmente distribuídas ($i.i.d.$). Construa uma sequência de índices $\mathbf{i}$ tal que $i_1$ é determinístico e, para todo $t \geq 1$, $i_{t+1} = \psi_t(\mathbf{i}_{[t]}, \omega_{\mathbf{i}_{[t]}})$. Aqui, vale a observação de que a construção de $\mathbf{i}$ depende, somente, de $\omega$; i.e., $\mathbf{i}$ não envolve $\tilde{\omega}$.
+
+Dessa maneira, para $\tau(\omega) = \min\{t \geq 1: \forall x \in \Omega, x_{\mathbf{i}_{[t]}} = \omega_{\mathbf{i}_{[t]}} \implies f(x) = f(\omega)\}$ e $0 \leq t \leq n$, definimos a sequência\vspace{-3pt}
+\begin{align*}
+\omega^{t} \colonequals (\tilde{\omega}_{i_1}, \cdots, \tilde{\omega}_{i_t}, \omega_{i_{t+1}}, \cdots, \omega_{i_{\tau-1}}, \omega_{i_{\tau}}, \tilde{\omega}_{i_{\tau+1}}, \cdots, \tilde{\omega}_{i_n}),
+\end{align*}
+onde $\omega^t = \tilde{\omega}$ se $t \geq \tau$.
+
+\par Agora, observe que, como $f(\omega)$ assume valores no conjunto $\{0, 1\}$,
+\begin{align*}
+	\VX_p(f(\omega)) = F(p) \, (1 - F(p)) = \frac{1}{2} \EX_p(|f(\omega) - F(p)|),
+\end{align*}
+onde a última igualdade vem do fato de que\vspace{-9pt}
+\begin{align*}
+	\EX_p(|f(\omega) - F(p)|) &= (1 - F(p)) \, \QX_p(f(\omega) = 1) + F(p) \, \QX_p(f(\omega) = 0) \\
+							  &= (1 - F(p)) \, F(p) + F(p) \, (1 - F(p)) = 2 \, \VX_p(f(\omega)).
+\end{align*}
+
+\par Veja também que, de acordo com como definimos a $n$-upla $\omega^t$, $\omega^0$ coincide com $\omega$ no conjunto de índices $\mathbf{i}_{[\tau]}$; logo, $f(\omega^0) = f(\omega)$. Da mesma forma, $\omega^n = \tilde{\omega}$, o que nos permite dizer que $f(\omega^n) = f(\tilde{\omega})$.
+
+\par Sendo assim, utilizando a observação que acabamos de fazer, temos que
+\begin{align*}
+	2\,\VX_p(f(\omega)) & = \EX_p(|f(\omega) - F(p)|) \\
+						& = \EX_p(|\EX_p(f(\omega^0)\,|\,\omega) - \EX_p(f(\omega^{n})\,|\,\omega)|) 
+						  = \EX_p(|\EX_p(f(\omega^0) - f(\omega^n) \, | \, \omega)|) \\
+						& \leq \EX_p(|f(\omega^0) - f(\omega^n)|)
+						  \leq \sum_{t = 1}^{n} \EX_p(|f(\omega^t) - f(\omega^{t-1})|),
+\end{align*}
+onde a segunda igualdade usa o fato de que $\omega$ e $\tilde{\omega}$ têm a mesma distribuição.
+
+\par Além disso, como $\omega^t = \omega^{t-1}$, $\forall t > \tau$, podemos escrever que
+\begin{align*}
+	\sum_{t = 1}^{n} \EX_p(|f(\omega^t) - f(\omega^{t-1})|) &= \sum_{i = 1}^n\sum_{t = 1}^{n} \EX_p(|f(\omega^t) - f(\omega^{t-1})| \IX_{\{t \leq \tau\}\cap\{i_t = i\}}) \\
+	&=\sum_{i = 1}^{n}\sum_{t = 1}^{n} \EX_p\left[\EX_p(|f(\omega^t) - f(\omega^{t-1})| \, | \, \omega_{\mathbf{i}_{[t-1]}})\IX_{\{t \leq \tau\}\cap\{i_t = i\}}\right], \numberthis\label{eq-esp-cond}
+\end{align*}
+já que $\{t \leq \tau\}\cap\{i_t = i\}$ é mensurável com respeito à sequência $\omega_{\mathbf{i}_{[t-1]}}$. Agora perceba que, condicionado em $\{t \leq \tau\}\cap\{i_t = i\}$, tanto $\omega^t$ quanto $\omega^{t-1}$ são independentes de $\omega_{\mathbf{i}_{[t-1]}}$ (já que as duas sequências $\omega^t$ e $\omega^{t-1}$ são definidas por bits que não dependem de $\omega_{\mathbf{i}_{[t-1]}}$). Além disso, note que $\omega^t$ e $\omega^{t-1}$ só se diferem (possivelmente) pelo do bit $i$, onde $\omega^t_i = \tilde{\omega}_{i}$ e $\omega^{t-1}_i = \omega_i$. No caso de $\omega^t_i = \omega^{t-1}_i$, temos que $|f(\omega^t) - f(\omega^{t-1})| = 0$; assim,
+%\[ |f(\omega^t) - f(\omega^{t-1})| = 
+%	\begin{cases}
+%		0 &\text{ se } \omega^t_i = \omega^{t-1}_i\\
+%		1 &\text{ se } \omega^t_i \neq \omega^{t-1}_i \text{ e } f(\omega^t_i) \neq f(\omega^{t-1}_i).
+%	\end{cases}
+%\]
+%
+%Nesse caso, 
+\begin{align*}
+	\EX_p(|f(\omega^t) - f(\omega^{t-1})| \, | \, \omega_{\mathbf{i}_{[t-1]}}) &= \QX_p(\{\omega^t_i \neq \omega^{t-1}_i\} \cap \{f(\omega) \neq f(\flip)\}) \\
+	&=2 \, p \, (1-p) \cdot \QX_p(\{f(\omega) \neq f(\flip)\}).
+\end{align*}
+
+Assim, podemos dizer que $\EX_p(|f(\omega^t) - f(\omega^{t-1})|) = 2 \, p \, (1-p) \cdot \, \infl$, o que, voltando na Expressão \eqref{eq-esp-cond}, implica que
+\begin{align*}
+	2 \, \VX(f(\omega)) \leq 2 \, p \, (1-p) \sum_{i = 1}^{n}\infl \sum_{t = 1}^{n} \QX(\{t \leq \tau\} \cap \{i_{t} = i\}).
+\end{align*}
+
+Finalmente, recordando que $\delta_i(\text{\textbf{T}})$ pode ser escrito como $\sum_{t = 1}^{n} \QX(\{t \leq \tau\} \cap \{i_{t} = i\})$, concluímos a demonstração.\hspace{\fill}$\qed$

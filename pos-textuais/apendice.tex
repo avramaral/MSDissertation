@@ -1,0 +1,163 @@
+\newpage
+
+\phantomsection
+\section*{\Large \hspace*{\fill} \textbf{Apêndice A $-$ Outras demonstrações} \hspace*{\fill}}\label{apendice-primeiro}
+\addcontentsline{toc}{section}{Apêndice A $-$ Outras demonstrações}
+
+\par A seguir, serão apresentadas as demonstrações de alguns dos resultados que foram utilizados ao longo do texto e que não tinham relação direta com o assunto que estava sendo discutido; e, portanto, não foram provados. Para ler o enunciado do Lema ou Proposição de interesse, volte à subseção apropriada.
+\vspace{12pt}
+
+\par \texttt{Demonstração do Lema \ref{parseval} (baseado em \cite{reu2016Spiro}):}
+
+\par Seja $f(\omega) = \sum_{S \in [n]}\widehat{f}(S)\,\chi_S$ e $g(\omega) = \sum_{T \in [n]}\widehat{g}(T)\,\chi_T$, então:
+\begin{align*}
+	\EX_{\frac{1}{2}}(f(\omega) \cdot g(\omega)) & = \EX_{\frac{1}{2}}\left[\left(\sum_{S \subset [n]} \widehat{f}(S) \, \chi_S\right) \cdot \left(\sum_{T \subset [n]} \widehat{g}(T) \, \chi_T\right)\right] \\
+					  				 & = \EX_{\frac{1}{2}}\left(\sum_{S \subset [n]}\sum_{T \subset[n]} \widehat{f}(S) \, \widehat{g}(T) \cdot \chi_S \, \chi_T\right).
+\end{align*}
+\par Agora, note que:
+\begin{align*}
+	\chi_S \, \chi_T & = (-1)^{\sum_{i \in S}\omega_i} \, (-1)^{\sum_{j \in T}\omega_j} \\
+					 & = (-1)^{\sum_{i \in S}\omega_i + \sum_{j \in T}\omega_j} \\
+					 & = (-1)^{\sum_{i \in S \triangle T}\omega_i + \sum_{j \in S \cap T}2\,\omega_j}, \text{ onde } S \triangle T \text{ é a diferença simétrica entre } S \text{ e } T \\
+					 & = (-1)^{\sum_{i \in S \triangle T}\omega_i} \, \left((-1)^2\right)^{\sum_{j \in S \cap T} \omega_j} = (-1)^{\sum_{i \in S \triangle T}\omega_i} = \chi_{S \triangle T}.
+\end{align*} 
+\par Assim:
+\begin{align*}
+	\EX_{\frac{1}{2}}(f(\omega) \cdot g(\omega)) & = \EX_{\frac{1}{2}}\left(\sum_{S \subset [n]} \sum_{T \subset [n]} \widehat{f}(S) \, \widehat{g}(T) \cdot \chi_{S \triangle T}\right) \\
+									 & = \sum_{S \subset [n]} \sum_{T \subset [n]} \widehat{f}(S) \, \widehat{g}(T) \cdot \EX_{\frac{1}{2}}\left(\chi_{S \triangle T}\right),
+\end{align*}
+onde $\EX_{\frac{1}{2}}(\chi_{S \triangle T})$ é igual a $0$, se $S \neq T$ (note que, se $A \neq \emptyset$, então $\EX_{\frac{1}{2}}(\chi_A) = \EX_{\frac{1}{2}}((-1)^{\sum_{i \in A} \omega_i})$; que é o mesmo que dizer que $\EX_{\frac{1}{2}}(\chi_A) = \prod_{i \in A}\EX_{\frac{1}{2}}((-1)^{\omega_i}) = 0$, visto que $\EX_{\frac{1}{2}}((-1)^{\omega_i}) = 0$, $\forall i \in A$), ou $\EX_{\frac{1}{2}}(\chi_{S \triangle T})$ é igual a $1$, se $S = T$ (já que $\chi_{\emptyset} = 1$). Dessa forma,
+\begin{align*}
+	\EX_{\frac{1}{2}}(f(\omega) \cdot g(\omega)) = \sum_{S \subset [n]} \widehat{f}(S) \, \widehat{g}(S).
+\end{align*}
+\par Por fim, tomando $f(\omega) = g(\omega)$, $\forall \omega \in \Omega$, segue que $\EX_{\frac{1}{2}}(f^2(\omega)) = \sum_{S \subset [n]}(\widehat{f}(S))^2$, como queríamos demonstrar. \hspace{\fill}$\qed$
+\vspace{12pt}
+
+\par \texttt{Demonstração da Proposição \ref{theta_prop} (baseado em \cite{lectures2010Bernardo}):}
+
+\par Para mostrar que $\theta(p)$ é não-decrescente, usaremos a ideia de acoplamento. Assim, seja $(\zeta_i)_{i \in \NX}$ sequência de variáveis aleatórias independente e igualmente distribuídas tal que $\zeta_i \sim U[0, 1]$, $\forall i \in \NX$. Além disso, defina um espaço de probabilidade ``maior'', tal que $\Omega = \prod_{e \in \text{E}^d} [0, 1]$ e $\PX_p$ é medida produto.
+
+\par Nesse caso, dizemos que um elo é $p$-aberto se $\zeta(e) \leq p$. Agora, note que, se $p_1 < p_2$, então um elo $p_1$-aberto é, também, $p_2$-aberto. Portanto, 
+\begin{align*}
+\{\omega \in \Omega: |C_0(\omega, p_1)| = +\infty\} &\subset \{\omega \in \Omega: |C_0(\omega, p_2)| = +\infty\};
+\end{align*}
+o que implica em
+\begin{align*}
+\PX_{p_1}(\{\omega \in \Omega: |C_0(\omega)| = +\infty\}) &\leq \PX_{p_2}(\{\omega \in \Omega: |C_0(\omega)| = +\infty\}),
+\end{align*}
+que é o mesmo que dizer que $\theta(p_1) \leq \theta(p_2)$.\hspace{\fill}$\qed$
+\vspace{12pt}
+
+\par \texttt{Demonstração da Proposição \ref{lem-descontinuidade} (baseado em \cite{lectures2010Bernardo}): }
+
+\par Utilizando a Proposição \ref{theta_prop}, é suficiente provar que valem as seguintes afirmações.
+\begin{enumerate}
+	\item $\exists \hat{p} > 0$, tal que, $\forall p < \hat{p}$, $\theta(p) = 0$; e
+	\item $\exists \tilde{p} < 1$, tal que, $\forall p > \tilde{p}$, $\theta(p) > 0$.
+\end{enumerate}
+
+\par \texttt{Afirmação 1}:
+
+\par Primeiro, note que $\EX_p(|C_0(\omega)|) = \sum_{n \in \NX} \left[n \cdot \PX_p(|C_0(\omega)| = n)\right] + (+\infty \cdot \theta(p))$; onde $|C_0(\omega)|$ pode ser escrita como $\sum_{x \in \ZX^d}\IX_{(0 \leftrightarrow x)}(\omega)$. Aqui, para mostrar que $\theta(p) = 0$, basta verificar que $\EX_p(|C_0(\omega)|) < +\infty$. Assim,
+\begin{align*}
+	\EX_p(|C_0(\omega)|) = \EX_p\left(\sum_{x \in \ZX^d}\IX_{(0 \leftrightarrow x)}(\omega)\right) = \sum_{x \in \ZX^d}\PX_p\left(0 \leftrightarrow x\right) &= \sum_{x \in \ZX^d}\PX_p\left(\bigcup_{\gamma = (0, \cdots, x)} \gamma \text{ é aberto}\right) \\
+	&\leq \sum_{x \in \ZX^d}\,\sum_{\gamma = (0, \cdots, x)}\PX(\gamma \text{ é aberto}).
+\end{align*}
+
+\par Nesse caso, note que $\sum_{x \in \ZX^d}\sum_{\gamma = (0, \cdots, x)}(\cdot)$ corresponde à soma de todos os caminhos finitos que começam na origem e terminam em algum vértice $x \in \ZX^d$. Dessa forma, é possível escrever que
+\begin{align*}
+	\sum_{x \in \ZX^d}\,\sum_{\gamma = (0, \cdots, x)}\PX(\gamma \text{ é aberto}) = \sum_{n =1}^{+\infty}\,\sum_{\substack{\gamma = (0, \cdots, x_n) \\ |\gamma| = n}} \PX(\gamma \text{ é aberto}) = \sum_{n =1}^{+\infty} p^n \cdot \sigma(n),
+\end{align*}
+onde $\sigma(n)$ representa o número de caminhos que partem da origem e tem tamanho $n$. 
+
+\par Agora, note que $\sigma(n) \leq 2d \cdot (2d - 1)^{(n-1)}$. Sendo assim,
+\begin{align*}
+	\EX_p(|C_0(\omega)|) \leq 2dp \, \sum_{n = 1}^{+\infty} (p \, (2d-1))^{n-1} < +\infty, \text{ se } |p\,(2d-1)| < 1;
+\end{align*}
+ou seja, $\EX_p(|C_0(\omega)|) < +\infty$ se $p < \frac{1}{2d - 1}$. Aqui, $\hat{p} = \frac{1}{2d - 1}$.
+
+\par \texttt{Afirmação 2}:
+
+\par Para verificar a segunda parte, basta considerar o caso $d = 2$; já que, se $(0 \leftrightarrow +\infty)$ ocorre com probabilidade estritamente positiva em $\LX^2$, o mesmo evento acontece em $\LX^d$, para $d > 2$.
+
+\par Para mostrar que, para algum $p \in (0, 1)$, vale $\theta(p) > 0$, basta mostrar que $\PX_p(|C_0(\omega)| < +\infty) < 1$. Nesse caso, comece considerando o reticulado dual ${(\LX^2)}^{\star}$ introduzido na demonstração da Proposição \ref{prop-rect-deg}. Agora, perceba que o aglomerado da origem tem tamanho finito se existe pelo menos um circuito $\gamma^{\star} = ({x_1}^{\star}, {x_2}^{\star}, \cdots, {x_1}^{\star})$ aberto em ${(\LX^2)}^{\star}$ que envolve $C_0(\omega)$. Assim,
+\begin{align*}
+	\PX_p(|C_0(\omega)| < +\infty) = \PX_p\left(\bigcup_{\gamma^{\star} \text{ que envolve } 0} \gamma^{\star} \text{ é aberto}\right) &\leq \sum_{\gamma^{\star} \text{ que envolve } 0} \PX_p(\gamma^{\star} \text{ é aberto}) \\
+	& = \sum_{n = 1}^{+\infty} \, \sum_{\substack{\gamma^{\star} \text{ que envolve } 0 \\ |\gamma^{\star}| = n}} \PX_p(\gamma^{\star} \text{ é aberto}).
+\end{align*}
+
+\par De maneira similar ao que fizemos na prova da \texttt{Afirmação 1}, defina $\lambda(n)$ como sendo o número de circuitos abertos em ${(\LX^2)}^{\star}$ que envolvem $C_0(\omega)$. Nesse caso, perceba que $\lambda(n) \leq n \cdot 3^{(n-1)}$. Dessa forma,
+\begin{align*}
+	\PX_p(|C_0(\omega)| < +\infty) \leq (1 - p) \sum_{n = 1}^{+\infty} n \cdot [3 \, (1-p)]^{n-1} < +\infty, \text{ se } |3\,(1-p)| < 1;
+\end{align*}
+ou seja, $\phi(p) \colonequals \PX_p(|C_0(\omega)| < +\infty) < +\infty$ se $p > \frac{2}{3}$. Além disso, note que, se a condição sobre $p$ for satisfeita, então $\phi(p) = \frac{1-p}{(2-3p)^2}$, tal que $\phi(p)$ é contínua e decrescente em $p \in (\frac{2}{3}, 1]$ e $\phi(1) = 0$. Sendo assim, $\exists \tilde{p} \in (\frac{2}{3}, 1)$, tal que, $\forall p  > \tilde{p}$, $\phi(p) < 1$.\hspace{\fill}\qed
+
+\vspace{12pt}
+
+\par \texttt{Demonstração da Proposição \ref{lem-infinito} (baseado em \cite{grimmett1999percolation}):}
+
+\par Seja $A = \{\exists$ aglomerado de tamanho infinito em $\omega\}$. Agora, note que $A$ não depende dos estados de uma quantidade finita de elos em $\text{E}^d$. Nesse caso, pela \textit{lei zero-um de Kolmogorov}\footnote{Sejam $(\xi_n)_{n \in \NX}$ sequência de variáveis aleatórias independentes, $\mathcal{F}^{+\infty}_n = \sigma(\xi_n, \xi_{n+1}, \cdots)$, $\forall n \in \NX$, e $\chi = \bigcap_{n \in \NX} \mathcal{F}^{+\infty}_n$. Se $A \in \chi$, então $\PX(A) = 0$ ou $\PX(A) = 1$.}, $\PX_p(A) = 0$ ou $\PX_p(A) = 1$.
+
+\par Defina $\psi(p) \colonequals \PX_p(A) = \PX_p(\{\exists x \in \ZX^d : |C_x(\omega)| = +\infty\})$; assim,
+\begin{align*}
+	\psi(p) = \PX_p\left(\bigcup_{x \in \ZX^d}\{\omega \in \Omega: |C_x(\omega)| = +\infty\}\right) \leq \sum_{x \in \ZX^d}\PX_p\left(\{\omega \in \Omega: |C_x(\omega)| = +\infty\}\right).
+\end{align*}
+\par Se $p < p_c$, por invariância por translação e utilizando a Proposição \ref{lem-descontinuidade}, temos que $\PX_p\left(\{\omega \in \Omega: |C_x(\omega)| = +\infty\}\right) = 0$, $\forall x \in \ZX^d$; logo, $\psi(p) = 0$.
+
+\par Por outro lado, se $p > p_c$, então
+\begin{align*}
+	\psi(p) &\geq \PX_p(\{\omega \in \Omega : |C_0(\omega)| = +\infty\}), \text{ por inclusão de eventos} \\
+			&> 0, \text{ pelo Lema \ref{lem-descontinuidade}.}
+\end{align*}
+\par Aplicando a \textit{lei zero-um}, $\psi(p) = 1$.\hspace{\fill}\qed
+\vspace{12pt}
+
+\par \texttt{Demonstração do Lema \ref{fkg-esp} (baseado em \cite{grimmett1999percolation}):}
+
+\par Suponha, inicialmente, que $X$ e $Y$ sejam variáveis aleatórias que dependem dos estados de uma quantidade finita ($e_1, e_2, \cdots, e_n$) de elos. Nesse caso, a prova será feita por indução em $n$.
+
+\par $X(\omega(e_1))$ e $Y(\omega(e_1))$ são, por hipótese, funções crescentes. Assim, para $n = 1$, temos que
+\begin{align*}
+[X(\omega_1(e_1)) - X(\omega_2(e_1))]\,[Y(\omega_1(e_1)) - Y(\omega_2(e_1))] \geq 0,
+\end{align*}
+para quaisquer duas possíveis configurações $\omega_1$ e $\omega_2$ independentes e definidas no mesmo espaço de probabilidade. Dessa forma,
+\begin{align*}
+\EX_p[[X(\omega_1(e_1)) - X(\omega_2(e_1))]\,[Y(\omega_1(e_1)) - Y(\omega_2(e_1))]] \geq 0.
+\end{align*}
+Aplicando a propriedade de linearidade da esperança, independência e usando o fato de que $\omega_1$ e $\omega_2$ estão definidas em um mesmo espaço, segue que
+\begin{align*}
+\cancel{2}\,\EX_p[X(\omega(e_1))Y(\omega(e_1))] \geq  \cancel{2}\,\EX_p[X(\omega(e_1))] \EX_p[Y(\omega(e_1))].
+\end{align*}
+
+\par Agora, suponha válida a hipótese de indução; i.e., para $n = k$, vale que
+\begin{align*}
+\EX_p[X(\omega(e_1), \cdots, \omega(e_k))Y(\omega(e_1), \cdots, \omega(e_k))] \geq \EX_p[X(\omega(e_1), \cdots, \omega(e_k))] \EX_p[Y(\omega(e_1), \cdots, \omega(e_k))].
+\end{align*}
+
+\par Para $n = k + 1$, considere $X = X(w(e_1), \cdots, w(e_{k+1}))$ e $Y = Y(w(e_1), \cdots, w(e_{k+1}))$. Sendo assim, temos que
+\begin{align*}
+\EX_p(XY) = \EX_p[\EX_p[XY\,|\,\omega(e_{1}), \cdots, \omega(e_{k})]].
+\end{align*}
+
+\par Como, para $\omega(e_{1}), \cdots, \omega(e_{k})$ fixados, $X$ e $Y$ dependem apenas do estado do $(k+1)-$ésimo elo, podemos dizer que
+\begin{align*}
+\EX_p(XY) \geq \EX_p[\EX_p[X\,|\,\omega(e_{1}), \cdots, \omega(e_{k})] \, \EX_p[Y\,|\,\omega(e_{1}), \cdots, \omega(e_{k})]].
+\end{align*}
+
+\par Aqui, como $\EX_p[\,\cdot\,|\,\omega(e_{1}), \cdots, \omega(e_{k})]$ é função de $\omega(e_1), \cdots, \omega(e_{k})$, podemos aplicar a hipótese de indução e o resultado, para $n = k + 1$, é obtido.
+
+\par Por fim, temos que retirar a hipótese adicional de que $X$ e $Y$ dependem dos estados de uma quantidade finita de elos para concluir a prova. Para isso, seja $e_1, e_2, \cdots$ uma ordenação dos elos de $\text{E}^d$; então, defina $X_n = \EX_p[X\,|\,\omega(e_1), \cdots, \omega(e_n)]$ e $Y_n = \EX_p[Y\,|\,\omega(e_1), \cdots, \omega(e_n)]$. Assim, pelos argumentos apresentados acima,
+\begin{align} \label{in-martingale}
+\EX_p[X_n\,Y_n] \geq \EX_p[X_n]\,\EX_p[Y_n].
+\end{align}
+
+\par Como, por hipótese, $X$ e $Y$ são limitadas, pelo Teorema de Convergência de Martingais, quando $n \rightarrow +\infty$, $X_n \longrightarrow X$ e $Y_n \longrightarrow Y$ quase certamente; de modo que $\EX_p[X_n] \longrightarrow \EX_p[X]$ e $\EX_p[Y_n] \longrightarrow \EX_p[Y]$, quando $n \rightarrow +\infty$. Agora, em relação ao termo $\EX_p[X_n\,Y_n]$, é possível afirmar, aplicando as desigualdades ``triangular'' e ``de Cauchy-Schwarz'' (respec.), que
+\begin{align*}
+\EX_p[|X_n\,Y_n - X\,Y|] &=    \EX_p[|(X_n - X) \, Y_n + (Y_n - Y) \, X|] \\
+&\leq \EX_p[|(X_n - X) \, Y_n| + |(Y_n - Y) \, X|] \\
+&\leq \sqrt{\EX_p[(X_n - X)^2] \, \EX_p[{Y_n}^2]} + \sqrt{\EX_p[(Y_n - Y)^2] \, \EX_p[{X}^2]} \overset{n\rightarrow+\infty}{\longrightarrow} 0;
+\end{align*}
+logo, $\EX_p(X_n\,Y_n) \longrightarrow \EX_p(X\,Y)$, quando $n \rightarrow +\infty$. 
+
+\par Tomando o limite, quando $n \rightarrow +\infty$, na Expressão \eqref{in-martingale}, concluímos a prova.\hspace{\fill}\qed
+\vspace{12pt}

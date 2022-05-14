@@ -1,0 +1,80 @@
+\par Seja $f: \Omega_n \longrightarrow \{0,1\}$ como na Seção \ref{Intoduction}. Começaremos a estudar as propriedades de $F(p)$; em particular, iremos estudar como se comporta a derivada $F'(p) = \frac{d}{dp}\EX_p(f(\omega))$. Nesse sentido, introduza a seguinte notação: $\diff \colonequals f(\omega) - f(\flip)$, onde $\flip$ é a configuração $\omega \in \Omega_n$ obtida quando se troca o valor do $i-$ésimo bit da sequência que compõe $\omega$; ou seja, a função $\flip$ pode ser definida como
+\[ \flip_j = \begin{cases}
+	\omega_j   & \text{ para } j \neq i \\
+	1 - \omega_j & \text{ para } j = i.
+\end{cases}
+\]
+
+\par Além disso, defina \textit{influência} do bit \textit{i} (notação: $\infl$) como sendo a probabilidade de $f(\omega)$ ser diferente de $f(\flip)$; i.e., a probabilidade de, mudando o estado de $\omega_i$, o valor que a função $f$ assume também ser modificado. Formalmente, dizemos que
+\begin{align*}
+	\infl \colonequals \EX_p(|\diff|),  
+\end{align*}
+que é igual a $\QX_p(f(\omega) \neq f(\flip))$. Note, por fim, que, apesar de não estar explicitado na notação, $\infl$ também depende do parâmetro $p$. 
+
+\par Agora, um resultado importante sobre como a derivada $\frac{d}{dp}\EX_p(f(\omega))$ se relaciona à soma das \textit{influência} dos bits $i$ para uma função $f(\omega)$, atribuído a \cite{margulis1974probabilistic} e \cite{russo1981critical}, será apresentado. 
+
+\begin{mythm}(Fórmula de Margulis-Russo)\label{formula-margulis-russo}
+	Para $f: \Omega_n \longrightarrow \{0, 1\}$ crescente, temos que
+	\begin{align*}
+		F'(p) = \sum_{i = 1}^{n} \infl.
+	\end{align*}
+\end{mythm}
+
+\par \texttt{Demonstração:}
+
+\par Seja $|\omega| = \sum_{i \in [n]} \omega_i$. Tomando a derivada, com respeito ao parâmetro $p$, da Expressão \eqref{eq-esperanca}, é possível observar que
+\begin{align*}
+	F'(p) & = \left(\sum_{\omega \in \Omega_n} f(\omega) \; p^{|\omega|} \; (1 - p)^{n - |\omega|}\right)' \\
+		  & = \sum_{\omega \in \Omega_n} \left(f(\omega) \; |\omega| \; p^{|\omega|-1} \; (1-p)^{n - |\omega|} - f(\omega) \; (n-|\omega|) \; p^{|\omega|} \; (1-p)^{n - |\omega| - 1}\right) \\
+		  & = \frac{1}{p} \; \EX_p(f(\omega) \; |\omega|) - \frac{1}{1-p} \; \EX_p(f(\omega) \; n - f(\omega) \; |\omega|))  \\
+		  & = \EX_p(f(\omega) \; |\omega|) \; \left(\frac{1}{p} + \frac{1}{1-p}\right) - \frac{1}{1-p} \; \EX_p(f(\omega) \; n) \\
+		  & = \frac{1}{p\;(1-p)} \; \left(\EX_p(f(\omega) \; |\omega|) - p \; \EX_p(f(\omega) \; n)\right) \\
+		  & = \frac{1}{p\;(1-p)} \; \EX_p\left(f(\omega) \; \sum_{i \in [n]}\omega_i - p \; f(\omega) \; n\right) \\
+		  & = \frac{1}{p\;(1-p)} \; \EX_p\left(f(\omega) \sum_{i \in [n]}(\omega_i - p)\right) \\
+		  & = \frac{1}{p\;(1-p)} \; \sum_{i \in [n]}\EX_p(f(\omega) \; (\omega_i - p)). \numberthis \label{result-parc-derivada}
+\end{align*}
+\par Agora perceba que, se $A_i \colonequals \{\omega \in \Omega_n : \diff \neq 0\}$ e olhando para a Expressão \eqref{result-parc-derivada}, é possível escrever $\EX_p(f(\omega) \; (\omega_i - p))$ como $\EX_p(f(\omega) \; (\omega_i - p) \; \IX_{A_i}(\omega)) + \EX_p(f(\omega) \; (\omega_i - p) \; \IX_{{A_i}^c}(\omega))$. Nesse caso, veja que, para $\omega \in {A_i}^c$, $f(\omega)$ é independente de $\omega_i$; além disso, $\EX_p(\omega_i - p) = p - p = 0$. Assim,
+\begin{align*}
+	\EX_p(f(\omega) \; (\omega_i - p)) & = \EX_p(f(\omega) \; (\omega_i - p) \; \IX_{A_i}(\omega)) \\
+									   & = \EX_p(f(\omega) \; (\omega_i - p) \; \IX_{A_i}(\omega)|\IX_{\{\omega_i = 1\}}) \cdot \EX_p(\IX_{\{\omega_i = 1\}}) + \\ 
+									   & \hspace{3.25cm} + \EX_p(f(\omega) \; (\omega_i - p) \; \IX_{A_i}(\omega)|\IX_{\{\omega_i = 0\}}) \cdot \EX_p(\IX_{\{\omega_i = 0\}}).
+\end{align*}
+\par Finalmente, como $f$ é crescente e $\omega \in A_i$, temos que $f(\omega) = 0$ se $\omega_i = 0$; da mesma forma, $f(\omega) = 1$ se $\omega_i = 1$. Portanto,
+\begin{align*}
+	\EX_p(f(\omega) \; (\omega_i - p)) & = \EX_p(f(\omega) \; (\omega_i - p) \; \IX_{A_i}(\omega)|\IX_{\{\omega_i = 1\}}) \cdot \EX_p(\IX_{\{\omega_i = 1\}}) + 0 \\
+									   & = (1 - p) \; \QX_p(A_i | \{\omega_1 = 1\}) \cdot \QX_p(\{\omega_i = 1\}) \\
+									   & = p \; (1 - p) \;\mathbb{Q}_p(A_i) \; \\ 
+									   & = p \; (1 - p) \;\infl. \numberthis \label{result-parc-derivada-2}
+\end{align*}
+\par Assim, conectando a Expressão \eqref{result-parc-derivada-2} na Expressão \eqref{result-parc-derivada}, concluímos que
+\begin{align*}
+	F'(p) = \sum_{i = 1}^{n} \infl,
+\end{align*}
+como queríamos demonstrar. \hspace{\fill}$\qed$
+
+\par Uma consequência imediada do Teorema \ref{formula-margulis-russo} é que $F(p)$ é não-decrescente e diferenciável. Dito isso, suponha, por um instante, que seja possível provar cotas do tipo
+\begin{align}\label{eq-cota}
+	F'(p) = \sum_{i = 1}^{n} \infl \geq C \; \VX_p(f(\omega)),
+\end{align}
+onde $\VX_p(\cdot)$ é \textit{variância} com respeito à medida $\QX_p$ e $C$ é alguma constante ``grande''. Aqui, note que, como $f$ assume valores em $\{0, 1\}$,
+\begin{align*}
+	\VX_p(f(\omega)) & = \EX_p(f^2(\omega)) - {\EX_p}^2(f(\omega)) \\
+					 & = \EX_p(f(\omega)) - {\EX_p}^2(f(\omega)) = F(p) \; (1 - F(p)). \numberthis \label{eq-var}
+\end{align*}
+Dessa forma, empregando a Expressão \eqref{eq-var} na Expressão \eqref{eq-cota}, é possível dizer que
+\begin{align*}
+			 & F'(p) \geq C \; F(p) \; (1 - F(p)) \\
+	\implies & \left(\frac{F'(p)}{F(p) \; (1 - F(p)}\right) = \left(\ln \; \frac{F(p)}{1 - F(p)}\right)' \geq C \numberthis \label{eq-diff-ineq}
+\end{align*}
+
+\par Agora, tome $p$ tal que $F(p) = \frac{1}{2}$; então, para $\delta > 0$, integrando a Expressão \eqref{eq-diff-ineq} entre $(p - \delta)$ e $p$, obtemos: 
+\begin{align*}
+	\left(\ln \; \frac{F(p)}{1 - F(p)}\right) - \left(\ln \; \frac{F(p - \delta)}{1 - F(p - \delta)}\right) &\geq C \, p - C \, (p  - \delta) \\
+	\implies 0 - \left(\ln \; \frac{F(p - \delta)}{1 - F(p - \delta)}\right) &\geq \delta \, C \implies \frac{F(p - \delta)}{1 - F(p - \delta)} \leq e^{-\delta \, C} \\
+	&\hspace{1.16cm}\implies F(p - \delta) \leq e^{-\delta \, C}. \numberthis \label{in-integral-1}
+\end{align*}
+\par Analogamente, integrando a Expressão \eqref{eq-diff-ineq} entre $p$ e $(p + \delta)$, obtemos:
+\begin{align*}
+	F(p + \delta) \geq 1 - e^{-\delta \, C}. \numberthis \label{in-integral-2}
+\end{align*}
+\par Isto significa que, se cotas como a apresentada na Expressão \eqref{eq-cota} forem obtidas, pela Expressão \eqref{in-integral-1}, $F(p - \delta)$ ficará ``próximo'' de $0$. Da mesma forma, pela Expressão \eqref{in-integral-2}, $F(p + \delta)$ ficará ``próximo'' de $1$. Ou seja, sob a hipótese de que é possível construir cotas como a que foi descrita, a janela de valores de $p$ para os quais $F(p)$ fica ``longe'' de $0$ e $1$ é necessariamente pequena. As próximas subseções serão concentradas em argumentos que nos levarão a resultados da forma da Expressão \eqref{eq-cota}.

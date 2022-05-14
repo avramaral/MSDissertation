@@ -1,0 +1,767 @@
+\documentclass[9pt]{beamer}
+
+%%% INÍCIO DE PACOTES %%%
+
+\usepackage[brazilian]{babel}
+\usepackage[utf8]{inputenc}
+
+\usepackage{graphicx} % Possibilita inclusão de imagem
+\usepackage{tikz} % Permite desenhar
+\usetikzlibrary{patterns} % Permite hachurar áreas
+\usepackage{pgfplots} % Com tikz, desenha gráfico
+\usetikzlibrary{decorations.pathreplacing, angles, quotes} % Permite desenhar "chaves"
+\usepackage{mathtools, amsthm, amssymb, amsbsy} % Pacotes de Matemática
+\usepackage{colonequals} % Símbolo de definição: \colonequals ou \equalscolon
+\usepackage{hyperref} % Link para partes do próprio texto
+\usepackage{lmodern} % Melhora a fonte
+\usepackage{ragged2e}
+\usepackage{xcolor}
+
+\apptocmd{\frame}{}{\justifying}{} % Allow optional arguments after frame.
+
+%%% INÍCIO DE APARÊNCIA %%%
+\usetheme[]{metropolis}
+\usecolortheme[]{wolverine}
+
+\definecolor{MyRed}{RGB}{226, 3, 52}
+\definecolor{MyGreen}{RGB}{0, 153, 73}
+\definecolor{MyBlue}{RGB}{0, 84, 154}
+\definecolor{MyOrange}{RGB}{239, 130, 6}
+
+\definecolor{YellowBar}{RGB}{254, 231, 2}
+\definecolor{YellowSecondaryBar}{RGB}{251, 199, 7}
+\definecolor{MyBG}{RGB}{250, 250, 250}
+
+\setbeamercolor{MC}{bg = MyBG}
+
+\usefonttheme{serif}
+\setbeamersize{text margin left = 9pt,text margin right = 9pt} 
+\setbeamercovered{transparent = 0.5}
+
+\setbeamertemplate{footline}{% Formatação do rodaé de todos os slides
+	\leavevmode%
+	\hbox{%
+		\begin{beamercolorbox}[wd = 0.800\textwidth, ht = 4ex, dp = 2ex, left]{MC}%
+			\usebeamerfont{author in head/foot}\texttt{\hspace{9pt}\insertshortauthor~|~\insertshorttitle.}%
+		\end{beamercolorbox}%
+		\begin{beamercolorbox}[wd = 0.120\textwidth, ht = 4ex, dp = 2ex, center]{MC}%
+			\raisebox{-2pt}{\insertslidenavigationsymbol~\insertsectionnavigationsymbol}%
+		\end{beamercolorbox}%
+		\begin{beamercolorbox}[wd = 0.080\textwidth, ht = 4ex, dp = 2ex, center]{MC}%
+			\usebeamerfont{date in head/foot}\texttt{\insertframenumber~/~\inserttotalframenumber}%
+		\end{beamercolorbox}%
+	}%
+}
+
+\setbeamertemplate{theorems}[numbered] % habilita numeração nos teoremas, definições, etc.
+
+%%% INÍCIO CÓDIGO ADICIONAL %%%
+
+\theoremstyle{definition} % retira a formatação do texto (o padrão é 'plain')
+
+\newtheorem{mydef}{Definição}
+\newtheorem*{mydef*}{Definição}
+\newtheorem{mythm}{Teorema}
+\newtheorem*{mythm*}{Teorema}
+\newtheorem{myobs}{Observação}
+\newtheorem*{myobs*}{Observação}
+\newtheorem{myexp}{Exemplo}
+\newtheorem*{myexp*}{Exemplo}
+\newtheorem{mypro}{Proposição}
+\newtheorem*{mypro*}{Proposição}
+\newtheorem{mycol}{Corolário}
+\newtheorem*{mycol*}{Corolário}
+\newtheorem{mylem}{Lema}
+\newtheorem*{mylem*}{Lema}
+
+%%% INÍCIO DA DEFINIÇÃO DE NOVOS SÍMBOLOS E FUNÇÕES %%%
+
+\DeclareMathOperator{\PX}{\mathbb{P}} % Probability symbol
+\DeclareMathOperator{\EX}{\mathbb{E}} % Expectation symbol \mathbbmss
+\DeclareMathOperator{\VX}{\mathbb{V}} % Variance symbol
+\DeclareMathOperator{\FX}{\mathcal{F}} % Sigma-algebra symbol
+\DeclareMathOperator{\NX}{\mathbb{N}} % Natural set symbol
+\DeclareMathOperator{\ZX}{\mathbb{Z}} % Integer set symbol
+\DeclareMathOperator{\QX}{\mathbb{Q}} % Rational set symbol
+\DeclareMathOperator{\IX}{\mathbb{I}} % Irrational set symbol
+\DeclareMathOperator{\RX}{\mathbb{R}} % Real set symbol
+\DeclareMathOperator{\CX}{\mathbb{C}} % Complex set symbol
+\DeclareMathOperator{\LX}{\mathbb{L}} % Lattice set symbol
+\DeclareMathOperator{\PL}{\mathcal{P}} % Lattice set symbol
+\DeclareMathOperator{\GX}{\mathcal{G}} % Group symbol
+\DeclareMathOperator{\HC}{\mathcal{H}} % Horizontal crossing
+\DeclareMathOperator{\VC}{\mathcal{V}} % Vertical crossing
+\DeclareMathOperator{\HL}{\mathcal{H}} % Horizontal crossing
+\DeclareMathOperator{\VL}{\mathcal{V}} % Vertical crossing
+\newcommand{\diff}{{\nabla_i}f(\omega)}
+\newcommand{\diffe}{{\nabla_e}f(\omega)}
+\newcommand{\flip}{\text{Flip}_i(\omega)}
+\newcommand{\flipe}{\text{Flip}_e(\omega)}
+\newcommand{\infl}{\text{Inf}_i(f(\omega))}
+\newcommand{\infle}{\text{Inf}_e(f(\omega))}
+
+\makeatletter % Define função ERF
+\pgfmathdeclarefunction{erf}{1}{%
+	\begingroup
+	\pgfmathparse{#1 > 0 ? 1 : -1}%
+	\edef\sign{\pgfmathresult}%
+	\pgfmathparse{abs(#1)}%
+	\edef\x{\pgfmathresult}%
+	\pgfmathparse{1/(1+0.3275911*\x)}%
+	\edef\t{\pgfmathresult}%
+	\pgfmathparse{%
+		1 - (((((1.061405429*\t -1.453152027)*\t) + 1.421413741)*\t 
+		-0.284496736)*\t + 0.254829592)*\t*exp(-(\x*\x))}%
+	\edef\y{\pgfmathresult}%
+	\pgfmathparse{(\sign)*\y}%
+	\pgfmath@smuggleone\pgfmathresult%
+	\endgroup
+}
+\makeatother
+
+%%% INÍCIO DAS INFORMAÇÕES %%%
+
+\title{Sharp Threshold Phenomena in Statistical Physics}
+\author[André V. R. Amaral]{André Victor Ribeiro Amaral}
+
+\begin{document}
+	\AtBeginSection{} % Elimina slide inicial de cada seção
+	\metroset{block = fill} % Permite que os blocos de teoremas tenham cor de fundo e estrutura
+	
+	\begin{frame}[t]
+		\centering
+		\vspace{40pt}
+		\texttt{{\Large \usebeamercolor[fg]{frametitle} Sharp Threshold Phenomena in Statistical Physics}} \\
+		\vspace{30pt}
+		\texttt{{\normalsize André Victor Ribeiro Amaral${}^{\dagger}$}} \\
+		\texttt{{\small Orientador$:$ Roger William Câmara Silva}}\\
+		\vspace{30pt}
+		\texttt{{\normalsize \usebeamercolor[fg]{frametitle} Exame de Qualificação}} \\
+		\vspace{30pt}
+		\texttt{{\small Universidade Federal de Minas Gerais $-$ ICEx, Departamento de Estatística.}}\\
+		\texttt{{\small (06/07/2020)}} \\
+		\vspace{26pt}
+		\begin{flushleft} \texttt{{\scriptsize ${}^{\dagger}$~E-mail$:$ \href{mailto:avramaral@gmail.com}{avramaral@gmail.com}}} \end{flushleft}
+		
+	\end{frame}
+
+	\begin{frame}[t]
+		\frametitle{Sumário}
+		\tableofcontents
+	\end{frame}
+
+	\section{Introdução}
+	\begin{frame}[t]
+		\frametitle{Introdução}	
+		Em modelos com componentes estocásticas, dizemos que um sistema aleatório \textbf{finito} passa por \textbf{\emph{sharp threshold}} se o seu comportamento muda ``rapidamente'' como resultado de uma pequena perturbação dos parâmetros que governam sua estrutura.
+		\pause
+		
+		Nesse sentido, o modelo probabilístico assumido, a menos que seja dito o contrário, será descrito
+		por $(\Omega, \FX, \PX_p)$, onde $\Omega = \{0,1\}^n$, para $n \in \NX$, $\FX = \PL(\Omega)$ e $\PX_p$ é a medida produto Bernoulli $\prod_{i \in [n]} \mu_i$, tal que $\mu_i(\omega_i = 1) = p$ e $\mu_i(\omega_i = 0) = 1-p$; com $[n] = \{1, \cdots n\}$.
+		\pause
+		
+		Em $(\Omega, \FX, \PX_p)$, nos concentraremos em analisar sequências de \textit{funções Booleanas}; i.e., sequências do tipo $(f_k)_{k \in \NX}$, tal que $f_k: \Omega \to \{0, 1\}$, para $k \in \NX$.
+		
+		Além disso, definindo $F_k(p) \colonequals \EX_p(f_k(\omega))$, para $k \in \NX$, temos, com $\PX_p$ medida produto,
+		\vspace{-6pt}
+		\begin{align}\label{eq-sharp-threshold}
+			F_k(p) = \sum_{\omega \in \Omega} f_k(\omega) \, p^{\sum_{i \in [n]} \omega_i} \, (1 - p)^{\sum_{i \in [n]} 1 - \omega_i}.
+		\end{align}
+		\pause
+		Por fim, e com a intenção de estabelecer uma ordem parcial para as possíveis configurações do espaço amostral, dizemos que, para $\omega, \omega^{\prime} \in \Omega$, $\omega \leq \omega^{\prime}$ se $\omega_i \leq \omega_i^{\prime}$, $\forall i \in [n]$. Assim, $f(\omega)$ é \textit{crescente} se $f(\omega) \leq f(\omega^{\prime})$ sempre que $\omega \leq \omega^{\prime}$.
+	\end{frame}
+
+	\begin{frame}[t]
+		\frametitle{Introdução}	
+		\begin{mydef}
+			Uma sequência de funções Booleanas crescentes $(f_k)_{k \in \NX}$ passa por \textit{\textbf{sharp threshold}} em $(p_k)_{k \in \NX}$ se existe $(\delta_k)_{k \in \NX}$, com $\lim_{k \rightarrow +\infty} \delta_k = 0$, tal que $F_k(p_k - \delta_k) \longrightarrow 0$ e $F_k(p_k + \delta_k) \longrightarrow 1$, quando $k \rightarrow +\infty$.
+		\end{mydef}
+		\pause
+		Graficamente,
+		\vspace{-9pt}
+		\input{Images/sharp-threshold-plot.tex}
+		\vspace{-18pt}
+		Note que se $f_k(\omega) = \IX_{A_k}(\omega)$ tem essa característica, então $F_k(p) = \PX_p(A_k)$ está ``perto'' de $0$ ou $1$ para $k$ ``muito grande''.
+	\end{frame}
+
+	\section{Como provar que $(f_k)_{k \in \NX}$ passa por \textit{\textbf{sharp threshold}}}
+	\subsection{Fórmula de Russo-Margulis}
+	\begin{frame}[t]
+		\frametitle{Como provar que $(f_k)_{k \in \NX}$ passa por \textit{\textbf{sharp threshold}}}	
+		Seja $f: \Omega \to  \{0,1\}$, então defina:
+		\begin{align*}
+		\diff \colonequals f(\omega) - f(\flip),
+		\end{align*}
+		onde
+		\[ \flip_j = \begin{cases}
+		\omega_j   & \text{ para } j \neq i \\
+		1 - \omega_j & \text{ para } j = i.
+		\end{cases}
+		\]
+		Além disso, defina a \textbf{influência} do bit $i$ como 
+		\begin{align*}
+		\infl \colonequals \EX_p(|\diff|),
+		\end{align*}
+		que é o mesmo que $\infl = \PX_p(f(\omega) \neq f(\flip))$.
+		\pause
+		
+		Nesse sentido, o primeiro resultado importante é enunciado através do teorema a seguir.
+		\begin{mythm}[Fórmula de Russo-Margulis] \label{thm:russo-margulis}
+			Para $f: \Omega \to \{0,1\}$ crescente, vale:
+			\begin{align*}
+			\frac{d}{dp}\EX_p(f(\omega)) = F'(p) = \sum_{i \in [n]} \infl.
+			\end{align*}
+		\end{mythm}
+	\end{frame}
+
+	\begin{frame}[t]
+		\frametitle{Fórmula de Russo-Margulis}	
+		Um resultado imediado do Teorema \ref{thm:russo-margulis} é o de que, para $f(\omega)$ crescente, $F(p)$ é crescente e diferenciável.
+		
+		Além disso, suponha por um instante que seja possível provar cotas do tipo
+		\begin{align}\label{eq:eq-desejada}
+		F'(p) \geq C \, \VX_p(f(\omega)),
+		\end{align}
+		para uma constante $C$ ``grande'' e $\VX_p(f(\omega)) = F(p) \, (1 - F(p))$. Então vale que, reescrevendo a Equação \ref{eq:eq-desejada},
+		\begin{align}\label{eq:derivada-desejada}
+		\left(\frac{F^{\prime}(p)}{F(p) \, (1 - F(p))}\right) = \left(\ln \frac{F(p)}{1 - F(p)}\right)^{\prime} \geq C.
+		\end{align}
+		\pause
+		Agora, tome $p$ tal que $F(p) = \frac{1}{2}$. Então, para $\delta > 0$ e integrando a Equação \ref{eq:derivada-desejada} entre $(p - \delta)$ e $p$, vale que
+		\begin{align*}
+			F(p - \delta) \leq e^{-\delta \, C} .
+		\end{align*}
+		Analogamente, integrando a Equação \ref{eq:derivada-desejada} entre $p$ e $(p + \delta)$, obtemos
+		\begin{align*}
+			F(p + \delta) \geq 1 - e^{-\delta \, C}.
+		\end{align*}
+		Ou seja, a sequência $(f_k)_{k \in \NX}$ associada passa por \textit{\textbf{sharp threshold}}.
+	\end{frame}
+
+	\subsection{Inequação de \textit{\textbf{sharp threshold}}}
+	\begin{frame}[t]
+		\frametitle{Inequação de \textit{\textbf{sharp threshold}}}
+		\begin{mythm}[Talagrand]\label{thm:talagrand}
+			Existe constante $c > 0$ tal que, $\forall p \in [0,1]$ e $n \in \NX$, vale que, para qualquer função Booleana crescente $f: \Omega \to \{0,1\}$,
+			\begin{align*}
+			\VX_p(f(\omega)) \leq c \ln\frac{1}{p(1-p)} \sum_{i \in [n]} \frac{\infl}{\ln\frac{1}{\infl}}.
+			\end{align*}
+			\label{talagrand}
+		\end{mythm}
+		\vspace{-5pt}
+		\pause
+		Note que, do Teorema \ref{thm:talagrand}, para mostrar que a sequência associada $(f_k)_{k\in\NX}$ passa por \textit{\textbf{sharp threshold}}, temos que mostrar que $\left(c \ln\frac{1}{p(1-p)}\right)^{-1}\ln\frac{1}{\max(\infl)}$ é ``grande''; i.e., $\forall i \in [n]$, $\infl$ é ``pequeno''.
+		
+		Porém, provar que todas as \textit{influências} são ``pequenas'' pode ser o verdadeiro desafio.
+	\end{frame}
+	
+	\subsection{Desigualdade de O'Donnel-Saks-Schramm-Servedio}
+	\begin{frame}[t]
+		\frametitle{Desigualdade de O'Donnel-Saks-Schramm-Servedio}
+		Alternativamente, podemos utilizar a ideia de \textit{algoritmo} para conseguir cotas como a da Equação \ref{eq:eq-desejada}.
+		\begin{mydef}[Algoritmo]
+				Dados uma n-upla $x = (x_1, \cdots, x_n)$ e um $t \leq n$, com $t \in \NX$, defina $x_{[t]} \colonequals (x_1, \cdots, x_t)$ e $\omega_{x_{[t]}} \colonequals (\omega_{x_1}, \cdots, \omega_{x_t})$. Um \textit{algoritmo} \textbf{T} é uma tripla $(i_1, \psi_t, t \leq n)$ que toma $\omega \in \Omega$ como entrada e devolve uma sequência ordenada $(i_1, \cdots, i_n)$ construída indutivamente da seguinte forma: para $2 \leq t \leq n$,
+				\begin{align*}
+					i_t = \psi_t(i_{[t-1]}, \omega_{i_{[t-1]}}) \in [n] \text{~\textbackslash~} \{i_1, \cdots, i_{t-1}\};
+				\end{align*}
+				onde $\psi_t$ é interpretada como a regra de decisão no tempo $t$ ($\psi_t$ toma, como argumentos, a localização e o valor dos bits para os primeiros $(t-1)$ passos do processo de indução, e, então, decide qual o próximo bit que será consultado). Aqui, note que a primeira coordenada $i_1$ é determinística. Por fim, para $f:\Omega \to \{0,1\}$, defina:
+				\begin{align*}
+					\tau(\omega) = \tau_{f, \text{\textbf{T}}}(\omega) \colonequals \min\{t \geq 1: \forall x \in \Omega, x_{i_{[t]}} = \omega_{i_{[t]}} \implies f(x) = f(\omega)\}.
+				\end{align*}
+		\end{mydef}
+	\end{frame}
+
+	\begin{frame}[t]
+		\frametitle{Desigualdade de O'Donnel-Saks-Schramm-Servedio}	
+		\begin{mythm}[Desiguladade de OSSS]\label{thm:osss}
+			Seja $p \in [0,1]$ e $n \in \NX$. Fixe uma função Booleana crescente $f: \Omega \longrightarrow \{0,1\}$ e um algoritmo $\text{\textbf{T}}$; então vale que:
+			\begin{align*}
+				\VX_p(f(\omega)) \leq p(1 - p) \sum_{i \in [n]} \delta_i(\text{\textbf{T}}) \, \infl, 
+			\end{align*}
+			onde $\delta_i(\text{\textbf{T}}) = \delta_i(f, \text{\textbf{T}}) \colonequals \PX_p(\exists t \leq \tau(\omega) : i_t = i)$ é chamado de \textit{revelação} de $f$ para o algoritmo $\text{\textbf{T}}$ e o bit $i$.
+		\end{mythm}
+		\vspace{-5pt}
+		\pause
+		Perceba que, sobre a Equação \ref{eq:eq-desejada}, se todas as revelações $\delta_i(\text{\textbf{T}})$ forem pequenas; ou seja, se existe um algoritmo que determina de forma completa $f(\omega)$, mas revela ``poucos'' bits, então $(f_k)_{k \in \NX}$ passa por \textit{\textbf{sharp threshold}}.
+		
+		{\color{red} FAZER COMENTÁRIOS ADICIONAIS SOBRE, TALVEZ, A INTERPRETAÇÃO.}
+	\end{frame}
+
+	\section{Aplicações em percolação Bernoulli ($\LX^d$)}
+	\begin{frame}[t]
+		\frametitle{Aplicações em percolação Bernoulli ($\LX^d$)}
+		Seja $\LX^d = (\ZX^d, \text{E}^d)$ reticulado tal que $\ZX^d$ é conjunto de vértices e $\text{E}^d = \{(x, y) \in \ZX^d \times \ZX^d : \delta(x, y) = 1\}$ é conjunto de elos, onde $\delta(x, y) = \sum_{i = 1}^{d} |x_i - y_i|$.
+		\pause
+		
+		O espaço de probabilidade $(\Omega, \FX, \PX_p)$ é definido por $\Omega = \{0, 1\}^{|\text{E}^d|}$, $\FX = \sigma($conjuntos cilíndricos$)$ e $\PX_p$ é a medida produto Bernoulli $\prod_{e \in \text{E}^d} \mu_e$, tal que $\mu_e(\omega_e = 1) = p$ e $\mu_e(\omega_e = 0) = 1 - p$.
+		\vspace{-3pt}	
+		\begin{figure}
+			\begin{overprint}
+				\onslide<3>\centering\input{Images/lattice-1.tex}
+				\onslide<4>\centering\input{Images/lattice-2.tex}
+				\onslide<5>\centering\input{Images/lattice-3.tex}
+			\end{overprint}
+		\vspace{-9pt} 
+			\begin{overprint}
+				\onslide<3>\caption{$\omega \in \Omega$ em $\LX^2$ com $p = 0.25$.}
+				\onslide<4>\caption{$\omega \in \Omega$ em $\LX^2$ com $p = 0.50$.}
+				\onslide<5>\caption{$\omega \in \Omega$ em $\LX^2$ com $p = 0.75$.}
+			\end{overprint}
+			\label{fig-reticulado}
+		\end{figure}		
+		\vspace{-12pt}
+		\pause
+		\pause
+		\pause
+		Perceba, porém que, se considerarmos funções Booleanas do tipo $f: \bar{\Omega} \to \{0, 1\}$, com $\bar{\Omega} \subset \Omega$ finito, então resultados como os dos Teoremas \ref{thm:talagrand} e \ref{thm:osss} ainda valem.
+	\end{frame}
+
+	\begin{frame}[t]
+		\frametitle{Aplicações em percolação Bernoulli ($\LX^d$)}
+		Notações e definições:
+		\begin{itemize}
+			\item Sejam $x, y \in \ZX^d$, então $x$ está conectado a $y$ se existe caminho de elos abertos ($e \in \text{E}^d$ ``aberto'' é o mesmo que $\omega_e = 1$) que conecta $x$ a $y$ (notação: $x \leftrightarrow y$).
+			\pause
+			
+			\item Dado $x \in \ZX^d$, $C_x(\omega) = \{y \in \ZX^d : x \leftrightarrow y\}$ é dito \textit{cluster} de $x$. Nesse sentido, $\{\omega \in \Omega : |C_0(\omega)| = +\infty\}$ é chamado de evento \textit{\textbf{percolar}} (notação: $\{0 \leftrightarrow +\infty\}$).
+			\pause
+			
+			\item Defina $\Lambda_n \colonequals [-n, n]^d$ caixa d-dimensional de lado $2n$ e $\partial\Lambda_n \colonequals \Lambda_n \text{~\textbackslash~} \Lambda_{n - 1}$; ou seja, $\partial\Lambda_n$ é a fronteira de $\Lambda_n$.
+			\pause
+			
+			\item Defina $\theta(p) \colonequals \PX_p(|C_0(\omega)| = +\infty)$.
+			\pause
+			
+			\item Defina $p_c(d) \colonequals \sup\{p:\theta(p) = 0\}$.
+			\pause
+			
+			\item Para $n, m \in \ZX$, defina a caixa $\text{R}(n, m) \colonequals [0, n] \times [0, m]$ e os eventos $\HC(n, m) \colonequals \{\exists$ cruzamento horizontal em $\text{R}(n, m)\}$ e $\VC(n, m) \colonequals \{\exists$ cruzamento vertical em $\text{R}(n, m)\}$).
+			\pause
+			
+			\item Defina um \textit{reticulado dual} $(\LX^2)^{\star} = ((\ZX^2)^{\star}, (\text{E}^2)^{\star})$ onde $(\ZX^2)^{\star} = \ZX^2 + \left(\frac{1}{2}, \frac{1}{2}\right)$ é conjunto de vértices e $(\text{E}^2)^{\star} = \{(x^{\star}, y^{\star}) \in (\ZX^2)^{\star} \times (\ZX^2)^{\star} : \delta(x^{\star}, y^{\star}) = 1\}$ é conjunto de elos. Além disso, para cada elo $e \in \text{E}^2$, denote por $e^{\star} \in (\text{E}^2)^{\star}$ o elo no \textit{reticulado dual} que o cruza; por fim, defina $\omega^{\star}_{e^{\star}} \colonequals 1 - \omega_e$.
+		\end{itemize}
+	\end{frame}
+	
+	\subsection{Ponto crítico para percolação em $\LX^2$}
+	\begin{frame}[t]
+		\frametitle{Ponto crítico para percolação em $\LX^2$}
+		\begin{mythm}[Kesten, 1980] \label{thm:kesten}
+			O ponto crítico para percolação Bernoulli em $\LX^2$ é $\frac{1}{2}$.
+		\end{mythm}\pause
+		\vspace{-3pt}
+		O Teorema \ref{thm:kesten} será demonstrado através de resultados parciais.
+		\begin{mypro}\label{prop:meio}
+			Para todo $n \in \NX$, $\PX_{\frac{1}{2}}(\HC(n + 1, n)) = \frac{1}{2}$.
+		\end{mypro}\pause
+		\vspace{-3pt}
+		\texttt{Demonstração:}
+		
+		Comece observando que, pela definição do reticulado dual, se $\omega \sim \PX_p$, então $\omega^{\star} \sim \PX_{1 - p}$. Em particular, se $p = \frac{1}{2}$, então $\omega$ e $\omega^{\star}$ têm a mesma distribuição. Assim,
+		\begin{align*}
+		\PX_{\frac{1}{2}}(\HL(n+1, n)) &= 1 - \PX_{\frac{1}{2}}(\HL(n+1, n)^c) \\
+		&= 1 - \PX_{\frac{1}{2}}\left(\VL^{\star}\left(\left[\frac{1}{2}, n+\frac{1}{2}\right]\times\left[-\frac{1}{2}, n+\frac{1}{2}\right]\right)\right) \\
+		&= 1 - \PX_{\frac{1}{2}}(\HL(n+1, n)), \text{ por rotação e utilizando o fato de que } p = \frac{1}{2}.
+		\end{align*}
+		Logo, $\PX_{\frac{1}{2}}(\HC(n + 1, n)) = \frac{1}{2}$, $\forall n \in \NX$.
+	\end{frame}
+
+
+	\begin{frame}[t]
+	\frametitle{Ponto crítico para percolação em $\LX^2$}
+		\begin{mycol}\label{col:quadrado}
+			Para todo $n \in \NX$, $\PX_{\frac{1}{2}}(\HC(n, n)) \geq \frac{1}{2}$.
+		\end{mycol}\pause
+		\vspace{-3pt}
+		\texttt{Demonstração:}
+		
+		Como $\HC(n, n) \supset \HC(n+1, n)$, pela Proposição \ref{prop:meio}, $\PX_{\frac{1}{2}}(\HC(n, n)) \geq \PX_{\frac{1}{2}}(\HC(n+1, n)) = \frac{1}{2}$. \pause
+		
+		\begin{mypro} \label{prop:rho}
+			Para qualquer $\rho > 0$, existe $c = c(\rho) > 0$ tal que, $\forall n \geq 1$,
+			\begin{align*}
+				c \leq \PX_{\frac{1}{2}}(\HC(\rho \, n, n)) \leq 1 - c.
+			\end{align*}
+		\end{mypro}
+		\vspace{-3pt}
+		Para demonstrar a Proposição \ref{prop:rho}, é suficiente determinar a cota inferior para a probabilidade desejada para algum $\rho = 1 + \epsilon > 1$, com $\epsilon > 0$. \pause
+		
+		\texttt{Demonstração (Proposição \ref{prop:rho}):}
+		
+		Para $\rho = \frac{3}{2}$, queremos determinar a cota inferior para $\PX_{\frac{1}{2}}(\VC(2n, 3n))$. Nesse caso, considere as componentes representadas através da Figura \ref{fig:fig-cruz}.
+	\end{frame}
+
+	\begin{frame}[t]
+		\frametitle{Ponto crítico para percolação em $\LX^2$}
+		\vspace{-9pt}
+		\begin{figure}
+		\input{Images/cruzamento-mais-alto.tex}
+		\vspace{-9pt}
+		\caption{\justifying Caixas $\text{R}$, $\text{S}$ e $\text{S}^{\prime}$ com \textit{{\color{red}ev}{\color{blue}en}{\color{green}tos}} de interesse (esq.) e conjunto de vértices $\text{V}(\gamma)$ (dir.).}
+		\label{fig:fig-cruz}
+		\end{figure}\pause
+		\vspace{-9pt}
+	Assim, se $\Gamma$ é o cruza. horizontal em $\text{S}$ \textit{mais alto}, temos que
+	\begin{align*}
+	\PX_{\frac{1}{2}}(B) &= \sum_{\gamma}\PX_{\frac{1}{2}}(B\,|\,A^{\prime} \cap \{\Gamma = \gamma\}) \cdot \PX_{\frac{1}{2}}(A^{\prime} \cap \{\Gamma = \gamma\}), \text{ já que } B \subset A^{\prime} \\
+	&\geq  \sum_{\gamma}\PX_{\frac{1}{2}}(\gamma \leftrightarrow l \text{ em } \text{V}(\gamma) \,|\, A^{\prime} \cap \{\Gamma = \gamma\}) \cdot \PX_{\frac{1}{2}}(A^{\prime} \cap \{\Gamma = \gamma\}), \text{ incl. de eventos} \\.
+	\end{align*}  
+	\end{frame}
+
+	\begin{frame}[t]
+	\frametitle{Ponto crítico para percolação em $\LX^2$}
+	\vspace{-18pt}
+	\begin{align*}
+	\PX_{\frac{1}{2}}(B) &\geq \sum_{\gamma}\PX_{\frac{1}{2}}(\gamma \leftrightarrow l \text{ em } \text{V}(\gamma)) \cdot \PX_{\frac{1}{2}}(A^{\prime} \cap \{\Gamma = \gamma\}), \text{ por independência} \\
+	&\overset{\square}{\geq} \frac{1}{4}\sum_{\gamma}\PX_{\frac{1}{2}}(A^{\prime} \cap \{\Gamma = \gamma\}) = \frac{1}{4}\,\PX_{\frac{1}{2}}(A^{\prime}) \overset{\text{\scriptsize{Cor. \ref{col:quadrado}}}}{\geq} \frac{1}{8},
+	\end{align*}  
+	onde ``$\square$'' vale, pois
+	\begin{align*}
+	\frac{1}{2} \overset{\text{\scriptsize{Cor. \ref{col:quadrado}}}}{\leq} \PX_{\frac{1}{2}}(\{\exists \text{ cruza. vertical em } \text{S}^{\prime}\}) &\leq \PX_{\frac{1}{2}}(\{\gamma \leftrightarrow l \text{ em } \text{V}(\gamma)\} \cup \{\sigma(\gamma) \leftrightarrow l \text{ em } \text{V}(\gamma)\}) \\ 
+	&\leq 2\,\PX_{\frac{1}{2}}(\gamma \leftrightarrow l \text{ em } \text{V}(\gamma)), \text{ por simetria};
+	\end{align*}
+	o que implica que $\PX_{\frac{1}{2}}(\gamma \leftrightarrow l \text{ em } \text{V}(\gamma)) \geq \frac{1}{4}$.\pause
+	
+	Finalmente, note que para $\VC(2n, 3n)$ acontecer, é suficiente que $A$, $B$ e $B^{\prime}$ aconteçam, onde $B^{\prime} = \{\exists$ cruza. horizontal em $\text{S}$ que está conectado a $[-n, n] \times \{2n\}$ em $[-n, n] \times [0, 2n]\}$. Aqui, observe que, por simetria, $\PX_{\frac{1}{2}}(B^{\prime}) = \PX_{\frac{1}{2}}(B) \geq \frac{1}{8}$. Dessa forma, vale que 
+	\begin{align*}
+	\PX_{\frac{1}{2}}(\VL(2n, 3n)) &\geq \PX_{\frac{1}{2}}(A \cap B \cap B^{\prime}), \text{ por inclusão de eventos} \\
+	&\overset{\text{\scriptsize{FKG}}}{\geq} \PX_{\frac{1}{2}}(A) \cdot \PX_{\frac{1}{2}}(B) \cdot \PX_{\frac{1}{2}}(B^{\prime}) \geq \frac{1}{128}.
+	\end{align*}
+	\end{frame}
+
+
+	\begin{frame}[t]
+		\frametitle{Ponto crítico para percolação em $\LX^2$}
+		\begin{mycol}\label{col:pc-maior-meio}
+			Existe $\alpha > 0$ tal que, para todo $n \geq 1$, $\PX_{\frac{1}{2}}(0 \leftrightarrow \partial \Lambda_n) \leq n^{-\alpha}$. Em particular $p_c \geq \frac{1}{2}$.
+		\end{mycol}\pause
+		\vspace{-3pt}
+		\texttt{Demonstração:}
+		\par Denote por $A_k = \{\partial\Lambda_k \leftrightarrow \partial\Lambda_{2k}\}$. Agora, defina a sequência $(B_i)$, t.q. $i \in \{1, \cdots, 4\}$, para $B_i = \{\exists$ cruzamento no lado mais fácil no retângulo $\text{R}_i\}$; onde $\text{R}_1 = [-2k, 2k] \times [k, 2k]$, $\text{R}_2 = [k, 2k] \times [-2k, 2k]$, $\text{R}_3 = [-2k, 2k] \times [-2k, -k]$ e $\text{R}_4 = [-2k, k] \times [-2k, 2k]$.
+		
+		\begin{figure}
+		\input{Images/caixa-ret.tex}
+		\vspace{-6pt}
+		\caption{\justifying Caixas $\Lambda_k$ e $\Lambda_{2k}$ (linha sólida) com ocorrência do evento $A_k$ e caixas $\text{R}_i$, com $i \in \{1, \cdots, 4\}$ (linha tracejada).}
+		\label{fig:fig-caixa}
+		\end{figure}
+	\end{frame}
+
+	\begin{frame}[t]
+	\frametitle{Ponto crítico para percolação em $\LX^2$}
+		\vspace{-6pt}
+		Perceba que, nesse caso, $A_k \subset \bigcup_{i = 1}^4 B_i$; logo,
+		\begin{align*}
+		\PX_{\frac{1}{2}}(A_k) &\leq 1 - \PX_{\frac{1}{2}}\left(\bigcap_{i = 1}^4{B_i}^c\right) \leq 1 - \PX_{\frac{1}{2}}({B_1}^c)^4, \text{ por rotação e FKG} \\
+		&\leq 1 - c^4 \equalscolon c_1 < 1, \text{ pela Proposição \ref{prop:rho}}.
+		\end{align*}\pause
+		Agora, seja $A$ a intersecção dos eventos $A_k$, tal que $k$ é da forma $2^m$, com $m \in \NX$, e $k \leq n$. Assim, $\{0 \leftrightarrow \partial\Lambda_n\} \subset A$; dessa forma,
+		\begin{align*}
+		\PX_{\frac{1}{2}}(0 \leftrightarrow \partial\Lambda_n) &\leq \PX_{\frac{1}{2}}(A) = \PX_{\frac{1}{2}}\left[\bigcap_{k}(\partial\Lambda_k \leftrightarrow \partial\Lambda_{2k})\right] \\
+		&= \prod_{k}\PX_{\frac{1}{2}}(\partial\Lambda_k \leftrightarrow \partial\Lambda_{2k}), \text{ por independência} \\
+		&\leq c_1^{\lfloor\log_2(n)\rfloor} \leq n^{-\alpha}, \text{ com $\alpha$ pequeno o suficiente e $n \geq 1$.}
+		\end{align*}\pause
+		\vspace{1pt}Por fim, para mostrar que $p_c \geq \frac{1}{2}$, basta notar que  se $n \rightarrow +\infty$, então $\PX_{\frac{1}{2}}(\{\omega \in \Omega : |C_0(\omega)| = +\infty\}) = 0$. Assim, como existe uma quantidade enumerável de vértices $x \in \ZX^2$, por invariância por translação, temos $\PX_{\frac{1}{2}}(\{\omega \in \Omega : |C_x(\omega)| = +\infty\}) = 0$, $\forall x \in \ZX^2$; o que implica que $p_c \geq \frac{1}{2}$.
+	\end{frame}
+
+	\begin{frame}[t]
+		\frametitle{Ponto crítico para percolação em $\LX^2$}
+		\begin{mypro}\label{prop:beta}
+			Para qualquer $p > \frac{1}{2}$, existe $\beta = \beta(p) > 0$, tal que 
+			\begin{align*}
+			\PX_p(\HL(2n, n)) \geq 1 - \frac{1}{\beta}n^{-\beta}.
+			\end{align*}
+		\end{mypro}
+		\vspace{-3pt}\pause
+		\texttt{Demonstração:}
+		
+		\begin{minipage}{0.50 \textwidth}
+			Comece por definir a função Booleana $f(\omega) \colonequals \IX_{\HL(2n, n)}(\omega)$. Fixe um elo $e$ em $\text{R}(2n, n)$ e veja que se $\diffe \neq 0$, então existe um caminho aberto na rede dual que passa pelo elo $e^{\star}$ e cruza (a menos de $e^{\star}$) verticalmente uma caixa do tipo $\text{R}^{\star} = \left[\frac{1}{2}, 2n - \frac{1}{2}\right] \times [-\frac{1}{2}, n + \frac{1}{2}]$; nesse caso, pelo menos um dos dois ``braços'' de elos abertos na rede dual que se originam em $e^{\star}$ tem tamanho maior ou igual a $\frac{n}{2}$.
+		\end{minipage}
+		\begin{minipage}{0.50 \textwidth}
+			\begin{figure}
+				\input{Images/caixa-2n.tex}
+				\vspace{-9pt}
+				\caption{\justifying Caixas $\text{R} = \text{R}(2n, n)$ e $\text{R}^{\star}$ para um elo fixado $e$, tal que $\diffe \neq 0$.}
+				\label{fig:caixa-2n}
+			\end{figure}
+		\end{minipage}
+	\end{frame}
+
+	\begin{frame}[t]
+		\frametitle{Ponto crítico para percolação em $\LX^2$}
+		Como os estados dos elos de $\omega^{\star}$ são determinados, de maneira independente, seguindo uma distribuição Bernoulli de parâmetro $1 - p$, o Corolário \ref{col:pc-maior-meio} nos dá que, para $p > \frac{1}{2}$, 
+		\begin{align*}
+		\PX_p(f(\omega) \neq f(\flipe)) = \infle &\leq 2\PX_{1-p}\left(0 \leftrightarrow \partial\Lambda_{\frac{n}{2}}\right), \text{ por inclusão de eventos} \\
+		&\leq 2\PX_{\frac{1}{2}}\left(0 \leftrightarrow \partial\Lambda_{\frac{n}{2}}\right), \text{ já que $1 - p < \frac{1}{2}$} \\
+		&\leq \frac{1}{N}, \text{ onde $N = \frac{1}{2}\left(\frac{n}{2}\right)^{\alpha}$}.
+		\end{align*}\pause
+		O que acabamos de ver é que, para todo $e \in \text{R}(2n ,n)$, $\infle \leq \frac{1}{N}$; o que, pelo Teorema \ref{thm:talagrand}, implica em dizer que, para $p > \frac{1}{2}$,
+		\begin{align}\label{eq:thm-grupo}
+		F^{\prime}(p) \geq c^{\prime}\,\ln(N)\,\VX_p(f(\omega)), \text{ onde } c^{\prime} = \left(c\,\ln\frac{1}{p(1-p)}\right)^{-1}.
+		\end{align}
+		
+		Assim, integrando a Equação \ref{eq:thm-grupo} entre $\frac{1}{2}$ e $p$, obtemos
+		\begin{align*}
+		F(p) \geq 1 - \frac{1}{F\left(\frac{1}{2}\right)} \, N^{-c^{\prime}\,\left(p - \frac{1}{2}\right)}.
+		\end{align*}
+		
+		Por fim, basta relembrar que $F(p) \colonequals \EX_p(\IX_{\HL(2n, n)}(\omega))$ e tomar $\beta$ pequeno o suficiente.
+	\end{frame}
+
+	\begin{frame}[t]
+		\frametitle{Ponto crítico para percolação em $\LX^2$}
+		\texttt{Demonstração (Teorema \ref{thm:kesten}):}
+			
+		Para provar que, em $d = 2$, $p_c$ é igual a $\frac{1}{2}$, basta mostrar que $p_c \leq \frac{1}{2}$; já que, pelo Corolário \ref{col:pc-maior-meio}, temos que $p_c \geq \frac{1}{2}$. Porém, a estratégia utilizada aqui será a de mostrar que, para $p > \frac{1}{2}$, existe, com probabilidade $1$, aglomerado de tamanho infinito em $\omega$.\pause
+		
+		Defina, como na Figura \ref{fig:caixas-iteradas}, os eventos $A_n \colonequals \HL(2^{n+1}, 2^n)$ e $B_n \colonequals \VL(2^n, 2^{n+1})$.
+		
+		\begin{figure}
+			\input{Images/caixas-iteradas.tex}
+			\vspace{-9pt}
+			\caption{\justifying Ocorrência (alternada) dos eventos $\HL(2^{n+1}, 2^n)$ e $\VL(2^n, 2^{n+1})$ para $n \in \{0, 1, 2\}$.}
+			\label{fig:caixas-iteradas}
+		\end{figure}
+	\end{frame}
+
+	\begin{frame}[t]
+	\frametitle{Ponto crítico para percolação em $\LX^2$}
+		Agora, note que se $A_n$ e $B_n$ ocorrem para todo $n \in \NX$ $-$ exceto por uma quantidade finita desses valores $-$, então existe aglomerado de tamanho infinito em $\omega$.
+		
+		Assim, pela Proposição \ref{prop:beta}, e considerando um retângulo do tipo $\text{R}(2^{n+1}, 2^n)$, temos que, para $p > \frac{1}{2}$,
+		\begin{align}\label{eq:ineq-borel}
+		\sum_{n = 1}^{+\infty}\PX_p({A_n}^c) \leq \frac{1}{\beta} \sum_{n = 1}^{+\infty} 2^{-\beta\,n}.
+		\end{align}\pause	
+		Da Equação \ref{eq:ineq-borel}, perceba que $\sum_{n=1}^{+\infty}2^{-\beta\,n}$ converge; logo, por Borel-Cantelli, ${A_n}^c$ ocorre infinitas vezes com probabilidade $0$; logo, $\PX_p(A_n \text{ infinitas vezes}) = 1$. Por rotação, $\PX_p(B_n \text{ infinitas vezes}) = 1$. Dessa forma, como $A_n$ e $B_n$ ocorrem para todo $n \in \NX$ $-$ exceto por uma quantidade finita desses valores $-$, existe, com probabilidade $1$, aglomerado de tamanho infinito em $\omega$.
+	\end{frame}
+
+	\subsection{\textit{Sharpness} da transição de fase para percolação Bernoulli em $\LX^d$}
+	\begin{frame}[t]
+		\frametitle{\textit{Sharpness} da transição de fase para percolação Bernoulli em $\LX^d$}
+		\begin{mythm}[Decaimento exponencial]\label{thm:decai-exp}
+			Para percolação Bernoulli em $\ZX^d$,
+			\begin{enumerate}
+				\item Para $p < p_c$, existe $c_p > 0$ tal que, para todo $n \geq 1$, $\PX_p(0 \leftrightarrow \partial\Lambda_n) \leq e^{-c_p \, n}$.
+				\item (Mean Field Lower Bound) Existe $c > 0$ tal que $p > p_c$, $\PX_p(0 \leftrightarrow +\infty) \geq c\,(p - p_c)$.
+			\end{enumerate}
+		\end{mythm}\pause
+		\vspace{-3pt}
+		
+		O Teorema \ref{thm:decai-exp} será demonstrado através de resultados parciais.
+		\begin{mylem}\label{lem:analise}
+			Considere uma sequência de funções convergentes $f_n: [0, \bar{x}] \to [0, M]$ diferenciáveis e crescentes em $x$ tal que, para todo $n \geq 1$,
+			\begin{align*}
+			f_n^{\prime} \geq \frac{n}{\Sigma_n} \, f_n,
+			\end{align*}
+			onde $\Sigma_n = \sum_{k = 0}^{n - 1}f_k$. Então existe $\tilde{x} \in [0, \bar{x}]$ tal que
+			\begin{enumerate}[a.]
+				\item Para qualquer $x < \tilde{x}$, existe $c_x > 0$ tal que, para qualquer $n \geq 1$, $f_n(x) \leq e^{c_x\,n}$.
+				\item Para qualquer $x > \tilde{x}$, $f = \lim_{n \to +\infty} f_n$ satisfaz $f(x) \geq x - \bar{x}$.
+			\end{enumerate}
+		\end{mylem}
+	\end{frame}
+
+	\begin{frame}[t]
+		\frametitle{\textit{Sharpness} da transição de fase para percolação Bernoulli em $\LX^d$}
+		Defina $\theta_n(p) \colonequals \PX_p(0 \leftrightarrow \partial\Lambda_n)$ e $S_n \colonequals \sum_{k = 0}^{n-1}\theta_k(p)$.
+		\begin{mypro}\label{prop:decai-exp}
+			Para qualquer $n \geq 1$, temos que
+			\begin{align*}
+			\sum_{e \in \text{E}_n} \text{Inf}_e(\IX_{0\leftrightarrow\partial\Lambda_n}(\omega)) \geq \frac{n}{S_n} \, \theta_n(p) \, (1 - \theta_n(p)),
+			\end{align*}
+			onde $\text{E}_n$ é o conjunto de elos tal que as duas extremidades de $e$ estão em $\Lambda_n$.
+		\end{mypro}\pause
+		\vspace{-3pt}
+		\begin{minipage}[t]{0.55 \textwidth}
+			Note que para provar o resultado da Proposição \ref{prop:decai-exp}, basta de mostrar que para qualquer $k \in [n]$, temos um algoritmo \textbf{T} para $\IX_{0\leftrightarrow\partial\Lambda_n}(\omega)$ tal que, para todo $e = (x, y) \in \text{E}_n$,
+			\begin{align}\label{eq:revelacoes}
+			\delta_e(\text{\textbf{T}}) \leq \PX_p(x \leftrightarrow \partial\Lambda_k) + \PX_p(y \leftrightarrow \partial\Lambda_k).
+			\end{align}
+		\end{minipage}\pause
+		\begin{minipage}[t]{0.45 \textwidth}
+			\begin{figure}
+				\input{Images/caixa-k.tex}
+				\vspace{-9pt}
+				\caption{\justifying Revelação para $\IX_{0\leftrightarrow\partial\Lambda_n}(\omega)$.}
+				\label{fig:caixa-k}
+			\end{figure}
+		\end{minipage}
+	\end{frame}
+
+	\begin{frame}[t]
+		\frametitle{\textit{Sharpness} da transição de fase para percolação Bernoulli em $\LX^d$}
+		De fato, assumindo que é verdade que $\sum_{k = 1}^n\PX_p(x \leftrightarrow \partial\Lambda_k) \leq 2\, S_n$ (a mesma cota vale para $\sum_{k = 1}^n\PX_p(y \leftrightarrow \partial\Lambda_k)$), então, aplicando o Teorema \ref{thm:osss} para $\IX_{0\leftrightarrow\partial\Lambda_n}(\omega)$ e utilizando a cota para as revelações estabelecida pela Equação \ref{eq:revelacoes}, temos que
+		\begin{align*}
+		\VX_p(\IX_{0 \leftrightarrow \partial\Lambda_n}(\omega)) \leq p\,(1-p) \sum_{e \in \text{E}_n} \left(\PX_p(x \leftrightarrow \partial\Lambda_k) + \PX_p(y \leftrightarrow \partial\Lambda_k)\right) \, \text{Inf}_e(\IX_{0 \leftrightarrow \partial\Lambda_n}(\omega)),
+		\end{align*}
+		o que implica em, somando sobre todos os $k$'s e substituindo o valor de $\VX_p(\IX_{0 \leftrightarrow \partial\Lambda_n}(\omega))$,
+		\begin{align*}
+		\sum_{k = 1}^{n} \theta_n(p)\,(1 - \theta_n(p)) &\leq 4\,S_n \, p\,(1-p) \sum_{e \in \text{E}_n} \text{Inf}_e(\IX_{0 \leftrightarrow \partial\Lambda_n}(\omega)),
+		\end{align*}
+		que o mesmo que
+		\begin{align*}
+		\sum_{e\in\text{E}_n} \text{Inf}_e(\IX_{0 \leftrightarrow \partial\Lambda_n}(\omega)) \geq \frac{n}{p\,(1-p) \, 4 \, S_n} \, \theta_n(p) \, (1 - \theta_n(p)) \geq \frac{n}{S_n} \, \theta_n(p)\, (1 - \theta_n(p)).
+		\end{align*}
+		Assim, e como já dito, basta provar a Equação \ref{eq:revelacoes}.
+	\end{frame}
+
+	\begin{frame}[t]
+		\frametitle{\textit{Sharpness} da transição de fase para percolação Bernoulli em $\LX^d$}
+		\texttt{Demonstração (Proposição \ref{prop:decai-exp}):}
+		
+		Defina o conjunto de índices $\mathbf{e}$ utilizando duas sequências $\partial\Lambda_k = \text{V}_0 \subset \text{V}_1 \subset \cdots \subset \text{V}_n$ e $\emptyset = \text{E}_0 \subset \text{E}_1 \subset \cdots \subset \text{E}_n$. Aqui, $\text{V}_t$ representa o conjunto de vértices que o algoritmo verificou estar conectado a $\partial\Lambda_k$ e $\text{E}_t$ representa o conjunto de elos explorados pelo algoritmo até o instante $t$.\pause
+		
+		Fixando uma ordem para os elos de $\text{E}_n$, defina $\text{V}_0 = \partial\Lambda_k$ e $\text{E}_0 = \emptyset$. Assuma, então, que os conjuntos $\text{V}_t \subset \text{V}_n$ e $\text{E}_t \subset \text{E}_n$ foram construídos de tal forma que, em $t$, uma das duas situações a segui se aplica:
+		
+		\begin{enumerate}[a.]
+			\item Se existe elo $e = (x, y)$ em $\text{E}_n \text{~\textbackslash~} \text{E}_t$ tal que $x \in \text{V}_t$ e $y \not\in \text{V}_t$ (se existir mais de um, escolha o menor deles $-$ de acordo com a ordem estabelecida), então defina $\mathbf{e}_{t+1} \colonequals e$, $\text{E}_{t + 1} \colonequals \text{E}_t \cup \{e\}$ e
+			\[ \text{V}_{t + 1} \colonequals
+			\begin{cases}
+			\text{V}_t \cup \{y\} &\text{ se } \omega_e = 1 \\
+			\text{V}_t &\text{ caso contrário}.
+			\end{cases}
+			\]
+			\item Se $e$ não existe, então defina $\mathbf{e}_{t+1}$ como o menor elo em $\text{E}_n \text{~\textbackslash~} \text{E}_t$ (de acordo com a ordem estabelecida), $\text{E}_{t + 1} \colonequals \text{E}_t \cup \{e\}$ e $\text{V}_{t + 1} \colonequals \text{V}_t$.
+		\end{enumerate}
+	\end{frame}
+
+	\begin{frame}[t]
+	\frametitle{\textit{Sharpness} da transição de fase para percolação Bernoulli em $\LX^d$}
+		Perceba que, enquanto estivermos na situação ``a$.$'', ainda estamos descobrindo elos que fazem parte da componente conectada a $\partial\Lambda_k$; ao passo que, assim que mudamos para a situação ``b$.$'', nós permanecemos nela. Nesse caso, $\tau(\omega)$ não é maior que o último $t$ para o qual ainda estamos na situação ``a$.$''.
+		
+		\par Relembrando a definição de $\delta_e(\text{\textbf{T}}) \colonequals \PX_p(\exists t \leq \tau(\omega) : e_t = e)$, temos que
+		\begin{align*}
+		\PX_p(\exists t \leq \tau(\omega) : e_t = e) &\leq \PX_p\left(\{x \leftrightarrow \partial\Lambda_k\} \cup \{y \leftrightarrow \partial\Lambda_k\}\right) \\
+		&\leq \PX_p(x \leftrightarrow \partial\Lambda_k) + \PX_p(y \leftrightarrow \partial\Lambda_k),
+		\end{align*}
+		o que prova a Inequação \ref{eq:revelacoes} e, portanto, finaliza a demonstração.
+	\end{frame}
+
+	\begin{frame}[t]
+	\frametitle{\textit{Sharpness} da transição de fase para percolação Bernoulli em $\LX^d$}
+		\texttt{Demonstração (Teorema \ref{thm:decai-exp}):}
+	
+		Para $\IX_{0 \leftrightarrow \partial\Lambda_n}(\omega)$, utilize o Teorema \ref{thm:russo-margulis} e a Proposição \ref{prop:decai-exp} para dizer que
+		\begin{align} \label{ineq-parcial-exp}
+		{\theta_n}^{\prime}(p) = \sum_{e \in \text{E}_n}\text{Inf}_e(\IX_{0 \leftrightarrow \partial\Lambda_n}(\omega)) \geq \frac{n}{S_n} \, \theta_n(p) \, (1 - \theta_n(p)).
+		\end{align}\pause
+		 Fixando $\bar{p} \in (p_c, 1)$, veja que, para $p \leq \bar{p}$, $1 - \theta_n(p) \geq 1 - \theta_1(\bar{p}) > 0$; dessa forma, considerando a Inequação \ref{ineq-parcial-exp}, somos capazes de dizer que
+		\begin{align*}
+		\left(\frac{1}{1 - \theta_1(\bar{p})}\,\theta_n(p)\right)^{\prime} \geq \frac{n}{(1 - \theta_1(\bar{p}))^{-1}\, S_n} \cdot \left(\frac{1}{1 - \theta_1(\bar{p})}\,\theta_n(p)\right).
+		\end{align*}\pause
+		Assim, aplicando o Lema \ref{lem:analise} para $f_n(p) = (1 - \theta_1(\bar{p}))^{-1}\,\theta_n(p)$ , $\exists$ $\tilde{p}_c \in [0, \bar{p}]$ tal que	\begin{enumerate}[a.]
+			\item Para qualquer $p < \tilde{p}_c$, existe $c_p > 0$ tal que, para qualquer $n \geq 1$, $(1 - \theta_1(\bar{p}))^{-1} \,\theta_n(p) \leq e^{-c_p\,n} \implies \theta_n(p) \leq e^{-c_p\,n}$.
+			\item Existe $c > 0$ tal que, para qualquer $p > \tilde{p}_c$, $\theta(p) \geq c\,(p - \tilde{p}_c)$.
+		\end{enumerate}
+		Já que $\bar{p}$ foi escolhido maior do que $p_c$, então $\tilde{p}_c$ deve ser, necessariamente, igual a $p_c$.
+	\end{frame}
+
+	\section{Modelos de Percolação com dependência}
+	\subsection{Percolação $2k$ Dependente}
+	\begin{frame}[t]
+	\frametitle{Percolação $2k$ Dependente}
+	Comece com um grafo $d$ dimensional $\LX^d = (\ZX^d, \text{E}^d)$, com $\ZX^d$ conjunto de vértices e $\text{E}^d$ conjunto de elos tal que $\text{E}^d = \left\{(x, y) \in \ZX^d \times \ZX^d : \sum_{i = 1}^{d} |x_i - yi| = 1\right\}$.\pause
+	
+	O espaço de probabilidade $(\Omega, \FX, \mu_p)$ é definido por com $\Omega = \{0, 1\}^{|\text{E}^d|}$, $\FX = \sigma($conjuntos cilíndricos$)$ e $\mu_p$ medida de probabilidade construída sobre $(\Omega, \FX)$.\pause
+	
+	\begin{minipage}[t]{0.50 \textwidth}
+		\vspace{-2pt}
+		Além disso, defina uma sequência $(\xi_x)_{x \in \ZX^d}$ de variáveis aleatórias $i.i.d.$, indexada pelo conjunto de vértices $\ZX^d$, tal que $\PX_p(\xi_x = 1) = p$ e $\PX_p(\xi_x = 0) = 1 - p$.\pause
+		
+		\vspace{9pt}
+		Por fim, como forma de, indiretamente, determinar $\mu_p(\omega)$, diga que, para $k \in \NX$ fixo, $\omega_e = 1$ se existe $x \in \ZX^d$ tal que $\xi_x = 1$ e $e \in \Lambda_k(x)$.
+		
+		\vspace{8pt}
+		Para esse modelo, note que existe dependência (\textit{\textbf{finita}}) para os estados dos elos.
+	\end{minipage}
+	\begin{minipage}[t]{0.50 \textwidth}
+		\begin{figure}
+			\vspace{-2pt}
+			\input{Images/configuracao-2k.tex}
+			\vspace{-3pt}
+			\caption{\justifying Configuração $\omega$ para o modelo de Percolação $2k$ Dependente com $k = 1$ em $\LX^2$.}
+			\label{fig:caixa-2n}
+		\end{figure}
+	\end{minipage}
+	\end{frame}
+
+	\begin{frame}[t]
+	\frametitle{Percolação $2k$ Dependente}
+	\begin{mythm}[Decaimento exponencial]\label{thm:decai-exp-2k}
+		Para o modelo de Percolação $2k$ Dependente em $\LX^d$, existe $p_c = p_c(d, k)$ tal que
+		\begin{enumerate}
+			\item Para $p < p_c$, existe um $c_p > 0$ tal que para todo $n \geq 1$, $\mu_p(0 \leftrightarrow \partial\Lambda_n) \leq e^{-c_p \, n}$.
+			\item (Mean Field Lower Bound) Existe $c > 0$ tal que $p > p_c$, $\mu_p(0 \leftrightarrow +\infty) \geq c \, (p - p_c)$.
+			\end{enumerate}
+		\end{mythm}\pause
+			
+		\vspace{-3pt}
+		\texttt{Demonstração:}		
+		
+		\begin{minipage}[t]{0.50 \textwidth}
+			Considere uma família de algoritmos $\text{\textbf{T}}$ similar àquela definida para a Proposição \ref{prop:decai-exp}. Nesse caso, $\text{\textbf{T}}$ irá revelar o aglomerado de $\partial\Lambda_{s}$, com $s \in [n]$. Aqui, porém, perceba que o algoritmo explora, primeiro, os vértices $x \in \Lambda_n$ tal que $\partial\Lambda_k(x)$ está conectada, através de um caminho aberto no processo de percolação de elos, a $\partial\Lambda_s$ (notação: $\partial\Lambda_k(x) \overset{\omega}{\leftrightarrow} \partial\Lambda_s$)
+		\end{minipage}
+		\begin{minipage}[t]{0.50 \textwidth}
+			\begin{figure}
+				\vspace{-7pt}
+				\input{Images/caixa-s-2k.tex}
+				\vspace{-9pt}
+				\caption{\justifying Revelação para $\IX_{0\overset{\omega}{\leftrightarrow}\partial\Lambda_n}(\tilde{\omega})$.}
+				\label{fig:caixa-k}
+			\end{figure}
+		\end{minipage}
+
+	\end{frame}
+
+	\begin{frame}[t]
+	\frametitle{Percolação $2k$ Dependente}
+		Para um conjunto de índices $\mathbf{v}$ com duas sequências $\partial\Lambda_s = \text{A}_0 \subset \text{A}_1 \subset \cdots \subset \text{A}_n$ e $\emptyset = \text{B}_0 \subset \text{B}_1 \subset \cdots \subset \text{B}_n$, com $\text{A}_t$ representando o conjunto de vértices $x$ tal que $\partial\Lambda_k(x) \overset{\omega}{\leftrightarrow} \partial\Lambda_s$ e $\text{B}_t$ o conjunto de vértices explorados até o instante $t$, temos, dada uma ordem para os vértices considerados, uma construção (em $t$) do seguinte tipo:
+		\begin{enumerate}[a.]
+			\item Ou existe um vértice $x$ em $\Lambda_n \,\backslash\, \text{B}_t$ tal que $\partial\Lambda_k(x) \overset{\omega}{\leftrightarrow} \text{A}_t$ (se existir mais de um, escolha o menor). Nesse caso, defina $\mathbf{v}_{t + 1} \colonequals x$, $\text{B}_{t + 1} = \text{B}_t \cup \{x\}$,
+			\[\text{A}_{t + 1} \colonequals
+			\begin{cases}
+			\text{A}_t \cup \{x\} & \text{ se } \xi_x = 1 \\
+			\text{A}_t & \text{ caso contrário}.
+			\end{cases}
+			\]
+			\item Ou não existe $x$ com tais características. Nesse caso, defina $\mathbf{v}_{t + 1}$ como o menor vértice em $\Lambda_n \,\backslash\, \text{B}_t$, $\text{B}_{t + 1} \colonequals \text{B}_t \cup \{x\}$ e, por fim, $\text{A}_{t + 1} \colonequals \text{A}_t$.
+		\end{enumerate}
+	
+		Perceba que, em ``a.'', ainda estamos descobrindo vértices $x$ tal que $\partial\Lambda_k(x) \overset{\omega}{\leftrightarrow} \partial\Lambda_s$; porém, quando em ``b.'', permanecemos nessa opção até o final da exploração. Em resumo, para $\tilde{\omega} \in \tilde{\Omega} = \prod_{x \in \ZX^d} \{0, 1\}$, $\tau(\tilde{\omega})$ não é maior que o último $t$ para o qual a opção ``a.'' ainda é válida. 
+	\end{frame}
+
+	\begin{frame}[t]
+	\frametitle{Percolação $2k$ Dependente}
+		Assim, relembrando a definição de $\delta_x(\text{\textbf{T}})$, temos
+		\begin{align}\label{eq:cota-revelacoes-2k}
+			\PX_p(\exists t \leq \tau(\tilde{\omega}) : v_t = x) \leq \PX_p(\partial\Lambda_k(x) \overset{\omega}{\leftrightarrow} \partial\Lambda_s).
+		\end{align}\pause
+		Perceba, porém, que podemos reescrever o lado direito da Equação \ref{eq:cota-revelacoes-2k} como
+		\begin{align*}
+		\PX_p(\{\partial\Lambda_k(x) \overset{\omega}{\leftrightarrow} \partial\Lambda_s\} \cap \{\Lambda_k(x) \text{ está aberta}\}) &\leq \PX_p(x \overset{\omega}{\leftrightarrow} \partial\Lambda_s) \\
+		\implies \PX_p(\partial\Lambda_k(x) \overset{\omega}{\leftrightarrow} \partial\Lambda_s) & \leq h \, \PX_p(x \overset{\omega}{\leftrightarrow} \partial\Lambda_s),
+		\end{align*}
+		com $h = h(p) \geq 1$ ``pagando o preço'' para abrir $\Lambda_k(x)$. Dessa forma, para todo $x \in \Lambda_n$,
+		\begin{align} \label{eq:revelacao-dependente-final}
+		\delta_x(\text{\textbf{T}}) \leq h \, \PX_p(x \overset{\omega}{\leftrightarrow} \partial\Lambda_s).
+		\end{align}\pause
+		Agora, aplicando o Teorema \ref{thm:osss} para $f(\tilde{\omega}) = \IX_{0\overset{\omega}{\leftrightarrow}\partial\Lambda_n}(\tilde{\omega})$ com a cota apresentada na Equação \ref{eq:revelacao-dependente-final}, empregando a mesma estratégia adotada na prova da Proposição \ref{prop:decai-exp} e utilizando o Teorema \ref{thm:russo-margulis} e o Lema \ref{lem:analise} para $f_n(p) = h\, (1 - \theta_1(\bar{p}))^{-1}\theta_n(p)$, tal que $\bar{p} \in (p_c, 1)$, obtemos o resultado desejado para a medida $\PX_p$.\pause
+		
+		Para estender o resultado para $\mu_p$, note que, por construção, $\PX_p(\{\tilde{\omega} \in \tilde{\Omega} : 0 \overset{\omega}{\leftrightarrow} \partial\Lambda_n\}) = \mu_p(\{\omega \in \Omega : 0 \leftrightarrow \partial\Lambda_n\})$; bem como, para o \textit{cluster} $C_0(\tilde{\omega}) \colonequals \{y \in \ZX^d : 0 \overset{\omega}{\leftrightarrow} y\}$, $\PX_p(\{\tilde{\omega} \in \tilde{\Omega} : |C_0(\tilde{\omega})| = +\infty\}) = \mu_p(\omega \in \Omega : |C_0(\omega)| = +\infty\})$.
+	\end{frame}
+
+	\subsection{Percolação FK}
+	\begin{frame}[t]
+	\frametitle{Percolação FK}
+		{\color{red}COMPLETAR.}
+	\end{frame}
+
+	\section{Referências}
+	\begin{frame}[t]
+		\frametitle{Referências}\vspace{5pt}
+		\nocite{duminil2019sharp}
+		\bibliographystyle{plain}
+		\bibliography{REFERENCIAS/REFERENCIAS}
+	\end{frame}
+
+\end{document}

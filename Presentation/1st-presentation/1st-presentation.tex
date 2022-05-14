@@ -1,0 +1,489 @@
+\documentclass[12pt]{beamer}
+
+%%% INÍCIO DE PACOTES %%%
+
+\usepackage[brazilian]{babel}
+\usepackage[utf8]{inputenc}
+
+\usepackage{graphicx} % Possibilita inclusão de imagem
+\usepackage{tikz} % Permite desenhar
+\usepackage{pgfplots} % Com tikz, desenha gráfico
+\usetikzlibrary{decorations.pathreplacing, angles, quotes} % Permite desenhar "chaves"
+\usepackage{mathtools, amsthm, amssymb, amsbsy} % Pacotes de Matemática
+\usepackage{colonequals} % Símbolo de definição: \colonequals ou \equalscolon
+\usepackage{hyperref} % Link para partes do próprio texto
+\usepackage{lmodern} % Melhora a fonte
+
+%%% INÍCIO DE APARÊNCIA %%%
+\usetheme[]{metropolis}
+\usecolortheme{wolverine}
+\setbeamercovered{transparent = 0.5}
+
+\setbeamertemplate{footline}{% Formatação do rodaé de todos os slides
+	\leavevmode%
+	\hbox{%
+		\begin{beamercolorbox}[wd = 0.800\textwidth, ht = 4ex, dp = 2ex, left]{author in head/foot}%
+			\usebeamerfont{author in head/foot}\texttt{\hspace{12pt}\insertshortauthor~|~\insertshorttitle.}%
+		\end{beamercolorbox}%
+		\begin{beamercolorbox}[wd = 0.120\textwidth, ht = 4ex, dp = 2ex, center]{date in head/foot}%
+			\insertslidenavigationsymbol~\insertsectionnavigationsymbol%
+		\end{beamercolorbox}%
+		\begin{beamercolorbox}[wd = 0.080\textwidth, ht = 4ex, dp = 2ex, center]{date in head/foot}%
+			\usebeamerfont{date in head/foot}\texttt{\insertframenumber~/~\inserttotalframenumber}%
+		\end{beamercolorbox}%
+	}%
+}
+
+
+\setbeamertemplate{theorems}[numbered] % habilita numeração nos teoremas, definições, etc.
+
+%%% INÍCIO CÓDIGO ADICIONAL %%%
+
+\theoremstyle{definition} % retira a formatação do texto (o padrão é 'plain')
+
+\newtheorem{mydef}{Definição}
+\newtheorem*{mydef*}{Definição}
+\newtheorem{mythm}{Teorema}
+\newtheorem*{mythm*}{Teorema}
+\newtheorem{myobs}{Observação}
+\newtheorem*{myobs*}{Observação}
+\newtheorem{myexp}{Exemplo}
+\newtheorem*{myexp*}{Exemplo}
+\newtheorem{mypro}{Proposição}
+\newtheorem*{mypro*}{Proposição}
+\newtheorem{mycol}{Corolário}
+\newtheorem*{mycol*}{Corolário}
+
+%%% INÍCIO DA DEFINIÇÃO DE NOVOS SÍMBOLOS E FUNÇÕES %%%
+
+\DeclareMathOperator{\PX}{\mathbb{P}} % Probability symbol
+\DeclareMathOperator{\EX}{\mathbb{E}} % Expectation symbol \mathbbmss
+\DeclareMathOperator{\VX}{\mathbb{V}} % Variance symbol
+\DeclareMathOperator{\FX}{\mathcal{F}} % Sigma-algebra symbol
+\DeclareMathOperator{\NX}{\mathbb{N}} % Natural set symbol
+\DeclareMathOperator{\ZX}{\mathbb{Z}} % Integer set symbol
+\DeclareMathOperator{\QX}{\mathbb{Q}} % Rational set symbol
+\DeclareMathOperator{\IX}{\mathbb{I}} % Irrational set symbol
+\DeclareMathOperator{\RX}{\mathbb{R}} % Real set symbol
+\DeclareMathOperator{\CX}{\mathbb{C}} % Complex set symbol
+\DeclareMathOperator{\LX}{\mathbb{L}} % Lattice set symbol
+\DeclareMathOperator{\GX}{\mathcal{G}} % Group symbol
+\DeclareMathOperator{\HC}{\mathcal{H}} % Horizontal crossing
+\DeclareMathOperator{\VC}{\mathcal{V}} % Vertical crossing
+\newcommand{\diff}{{\nabla_i}f(\omega)}
+\newcommand{\flip}{\text{Flip}_i(\omega)}
+\newcommand{\infl}{\text{Inf}_i(f(\omega))}
+
+\makeatletter % Define função ERF
+\pgfmathdeclarefunction{erf}{1}{%
+	\begingroup
+	\pgfmathparse{#1 > 0 ? 1 : -1}%
+	\edef\sign{\pgfmathresult}%
+	\pgfmathparse{abs(#1)}%
+	\edef\x{\pgfmathresult}%
+	\pgfmathparse{1/(1+0.3275911*\x)}%
+	\edef\t{\pgfmathresult}%
+	\pgfmathparse{%
+		1 - (((((1.061405429*\t -1.453152027)*\t) + 1.421413741)*\t 
+		-0.284496736)*\t + 0.254829592)*\t*exp(-(\x*\x))}%
+	\edef\y{\pgfmathresult}%
+	\pgfmathparse{(\sign)*\y}%
+	\pgfmath@smuggleone\pgfmathresult%
+	\endgroup
+}
+\makeatother
+
+%%% INÍCIO DAS INFORMAÇÕES %%%
+
+\title{Sharp Threshold Phenomena in Statistical Physics}
+\author[André V. R. Amaral]{André Victor Ribeiro Amaral}
+
+\begin{document}
+	\AtBeginSection{} % Elimina slide inicial de cada seção
+	\metroset{block = fill} % Permite que os blocos de teoremas tenham cor de fundo e estrutura
+	
+	\begin{frame}[t]
+		\centering
+		\vspace{42pt}
+		\texttt{{\usebeamercolor[fg]{frametitle} Sharp Threshold Phenomena in Statistical Physics}} \\
+		\vspace{30pt}
+		\texttt{{\small André Victor Ribeiro Amaral${}^{\dagger}$}} \\
+		\texttt{{\scriptsize Orientador$:$ Roger William Câmara Silva}}\\
+		\vspace{30pt}
+		\texttt{{\scriptsize Universidade Federal de Minas Gerais $-$ ICEx, Departam$.$ de Estatística.}}\\
+		\texttt{{\scriptsize (09/12/2019)}} \\
+		\vspace{24pt}
+		\begin{flushleft} \texttt{{\tiny ${}^{\dagger}$ E-mail$:$ \href{mailto:avramaral@gmail.com}{avramaral@gmail.com}}} \end{flushleft}
+		
+	\end{frame}
+
+	\begin{frame}[t]
+		\frametitle{Sumário}
+		\tableofcontents
+	\end{frame}
+
+	\section{Introdução}
+	\begin{frame}[t]
+		\frametitle{Introdução}	
+			Em modelos com componentes estocásticas, diz que um sistema aleatório \textbf{finito} passa por \textbf{\emph{sharp threshold}} se o seu comportamento muda ``rapidamente'' como resultado de uma pequena perturbação dos parâmetros que governam sua estrutura.
+		\pause
+		\vspace{12pt}
+		\begin{myobs*}
+			O espaço de probabilidade ($\Omega, \FX, \PX_p$) será tal que $\Omega = \{0,1\}^n$, para $n \in \NX$, $\FX = \sigma$(conjuntos cilíndricos) e $\PX_p$ é a medida produto Bernoulli $\prod_{i \in [n]} \mu_i$, com $\mu_i(\omega_i = 1) = p$ e $\mu_i(\omega_i = 0) = 1-p$; onde $[n] = \{1, \cdots n\}$.
+		\end{myobs*}
+	\end{frame}
+
+	\begin{frame}[t]
+		\frametitle{Introdução}
+		Seja $f_k: \Omega \longrightarrow \{0,1\}$ sequência de funções Booleanas, então defina $F_k(p) \colonequals \EX_p(f_k(\omega))$, $\forall k \in \NX$. Nesse caso,
+		\begin{align}\label{eq-sharp-threshold}
+			F_k(p) = \sum_{\omega \in \Omega} f_k(\omega) \, p^{\sum_{i \in [n]} \omega_i} \, (1 - p)^{\sum_{i \in [n]} 1 - \omega_i}.
+		\end{align}
+		\pause
+		\begin{mydef}
+			Uma sequência de funções Booleanas crescentes $(f_k)_{k \in \NX}$ passa por \textit{sharp threshold} em $(p_k)_{k \in \NX}$ se existe $(\delta_k)_{k \in \NX}$, com $\lim_{k \rightarrow +\infty} \delta_k = 0$, tal que $F_k(p_k - \delta_k) \longrightarrow 0$ e $F_k(p_k + \delta_k) \longrightarrow 1$, quando $k \rightarrow +\infty$.
+		\end{mydef}
+	\end{frame}
+
+	\begin{frame}[t]
+		\frametitle{Introdução}
+		\input{Images/sharp-threshold-plot.tex}
+	\end{frame}
+
+	\begin{frame}[t]
+		\frametitle{Introdução}
+		\begin{myexp}
+			Seja $f_k(\omega) = \IX_{\{\omega_1 = 1\}}(\omega)$, $\forall k \in \NX$. Nesse caso, $F_k(p) = p$; dessa forma, $(f_k)_{k \in \NX}$ \textbf{não} passa por \textit{sharp threshold}.
+		\end{myexp}
+		\pause
+		\vspace{-8pt}
+		(Modelo de Erd\"os-Rényi) Seja $G(n,p)$ grafo aleatório, então:
+		\begin{myexp}[Conectividade do grafo]
+			Seja $A_k = \{G(k, p) \text{ é conectado}\}$; então $(\IX_{A_k})_{k \in \NX}$ passa por \textit{sharp threshold} em $p_k = \frac{\log k}{k}$.
+			\label{ex-grafo-1}
+		\end{myexp}
+		\pause
+		\begin{myexp}[Exist. de comp. conectada ``grande'']
+			Seja $B_k = \{\exists \text{ comp. em } G(k, p) \text{ com tam. maior que } r_k\}$, tal que $\log k \ll r_k \ll k$; então $(\IX_{B_k})_{k \in \NX}$ passa por \textit{sharp threshold} em $p_k = \frac{1}{k}$.
+			\label{ex-grafo-2}
+		\end{myexp}
+	\end{frame}
+
+
+	
+	\section{Como provar que $(f_k)_{k \in \NX}$ passa por \textit{sharp threshold}}
+	\begin{frame}[t]
+		\frametitle{Como provar que $(f_k)_{k \in \NX}$ passa por \textit{sharp threshold}}
+		Seja $f: \Omega \longrightarrow  \{0,1\}$, então defina:
+		\begin{align*}
+			\diff \colonequals f(\omega) - f(\flip),
+		\end{align*}
+		onde
+		\[ \flip_j = \begin{cases}
+			\omega_j   & \text{ para } j \neq i \\
+			1 - \omega_j & \text{ para } j = i.
+		\end{cases}
+		\]
+		\pause
+		Além disso, defina a \textbf{influência} do bit $i$ como 
+		\begin{align*}
+			\infl \colonequals \EX_p(|\diff|),
+		\end{align*}
+		que é o mesmo que $\infl = \PX_p(f(\omega) \neq f(\flip))$.
+	\end{frame}
+
+	\subsection{Fórmula de Russo-Margulis}
+	\begin{frame}[t]
+		\frametitle{Fórmula de Russo-Margulis}
+		\begin{mythm}[Fórmula de Russo-Margulis]
+			Para $f: \Omega \longrightarrow \{0,1\}$ crescente, vale:
+			\begin{align*}
+				\frac{d}{dp}\EX_p(f(\omega)) = F'(p) = \sum_{i \in [n]} \infl.
+			\end{align*}
+		\end{mythm}
+		\pause
+		\vspace{-12pt}
+		Nesse sentido, ser for possível provar cotas do tipo:
+		\begin{align}\label{eq-desejada}
+			F'(p) \geq C \, \VX_p(f(\omega)),
+		\end{align}
+		para constante $C$ ``grande'', então vale que, tomando $p$ tal que $F(p) = \frac{1}{2}$, $\forall \delta > 0$,
+		\begin{align*}
+			F(p - \delta) \leq e^{-\delta \, C} \text{\hspace{12pt} e \hspace{12pt}} F(p + \delta) \geq 1 - e^{-\delta \, C};
+		\end{align*}
+		i.e., a seq. $(f_k)_{k \in \NX}$ associada passa por \textit{sharp threshold}.
+	\end{frame}
+	
+	
+	\subsection{Inequação de \textit{sharp threshold}}
+	\begin{frame}[t]
+		\frametitle{Inequação de \textit{sharp threshold}}
+		\begin{mythm}[Talagrand]
+			Existe constante $c > 0$ tal que, $\forall p \in [0,1]$ e $n \in \NX$, vale que, para qualquer função Booleana crescente $f: \Omega \longrightarrow \{0,1\}$,
+			\begin{align*}
+				\VX_p(f(\omega)) \leq c \ln\frac{1}{p(1-p)} \sum_{i \in [n]} \frac{\infl}{\ln\frac{1}{\infl}}.
+			\end{align*}
+			\label{talagrand}
+		\end{mythm}
+		\pause
+		\vspace{-8pt}
+		De maneira equivalente, deve existir alguma influência $i$ com
+		\begin{align} \label{eq-consq-1}
+			\frac{\infl}{\ln\frac{1}{\infl}} \geq \frac{c_p}{n} \VX_p(f(\omega)),
+		\end{align}
+		onde $c_p = \left(c \ln \frac{1}{p(1-p)}\right)^{-1}$.
+	\end{frame}
+	
+	\begin{frame}[t]
+		\frametitle{Inequação de \textit{sharp threshold}}
+		\vspace{-8pt}
+		Continuando, a Inequação \ref{eq-consq-1} implica em: existe pelo menos uma influência tal que
+		\begin{align*}
+			\infl > c_p \frac{\ln n}{n} \VX_p(f(\omega)),
+		\end{align*}
+		com $c_p$ possivelmente modificado por um fator multiplicador.\vspace{12pt}
+		\pause
+		Por fim, fazendo referência à Inequação \ref{eq-desejada}, o Teorema \ref{talagrand} pode ser traduzido como
+		\begin{align*}
+			F'(p) > c_p \, \ln\frac{1}{\max_i(\infl)} \, \VX_p(f(\omega));
+		\end{align*}
+		ou seja, se $C = c_p \, \ln\frac{1}{\max_i(\infl)}$ é ``grande'', então a seq. $(f_k)_{k \in \NX}$ associada passa por \textit{sharp threshold}.
+	\end{frame}
+
+	\begin{frame}[t]
+		\frametitle{Inequação de \textit{sharp threshold}}
+		\begin{mythm}
+			Existe constante $c > 0$ tal que, $\forall p \in [0, 1]$ e $n \in \NX$, vale que, para qualquer função Booleana crescente $f: \Omega \longrightarrow \{0,1\}$ que é \textit{simétrica sob um grupo $\GX$ agindo transitivamente sobre $[n]$}\footnotemark,
+			\footnotetext{{\tiny Dado um conjunto $\Lambda$, $(\Sigma, \psi)$ é grupo simétrico $\GX$ se $\Sigma = \{\sigma; \sigma:\Lambda\longrightarrow\Lambda\ \text{ é bijeção}\}$ e $\psi:\Sigma\times\Sigma\longrightarrow\Sigma$, com $(\sigma_1, \sigma_2) \mapsto \sigma_1 \circ \sigma_2$; nesse caso, $f$ é dita \textit{simétrica sob $\GX$}, se $f \circ \sigma = f$, $\forall \sigma \in \GX$. Além disso, $\GX$ \textit{age transitivamente} sobre $\Lambda$ se, para todo par $\lambda_1$ e $\lambda_2$ em $\Lambda$, existe $\sigma \in \GX$, tal que $\sigma(\lambda_1) = \lambda_2$.}}
+			\begin{align*}
+				F'(p) \geq c \, \ln(n) \, \VX_p(f(\omega)).
+			\end{align*}
+			\label{thm-grupo}
+			\vspace{-24pt}
+		\end{mythm}
+		\pause
+		\vspace{-8pt}
+		Nesse contexto, para todo par $i_1$ e $i_2 \in [n]$, vale que:
+		\begin{align*}
+			\text{Inf}_{i_1}(f) = \text{Inf}_{i_1}(f \circ \sigma) = \text{Inf}_{i_2}(f).
+		\end{align*}
+	\end{frame}
+
+	\begin{frame}[t]
+		\frametitle{Inequação de \textit{sharp threshold}}
+		Mais uma vez, fazendo referência à Inequação \ref{eq-desejada}, e tomando $C = c \, \ln(n)$, é possível dizer, então, que $(f_k)_{k \in \NX}$ passa por \textit{sharp threshold} sempre que forem satisfeitas as hipóteses do Teorema \ref{thm-grupo}.
+		\pause
+		\vspace{6pt}
+		\begin{myexp}[Propriedades${}^{\star}$ monótonas em grafos]
+			Considerando o Modelo de Erd\"os-Rényi, toda sequência $(\IX_{A_k})_{k \in \NX}$ de funções indicadoras de propriedades crescentes de grafos; i.e., propriedades que dependem da ocorrência de eventos crescentes $A_k$, passa por \textit{sharp threshold}.
+			\label{ex-geral}
+		\end{myexp}
+		\vspace{-6pt}
+		Perceba que os Exemplos \ref{ex-grafo-1} e \ref{ex-grafo-2} são casos particulares do Exemplo \ref{ex-geral}.
+	\end{frame}
+	
+	
+	\subsection{Desigualdade de O'Donnel-Saks-Schramm-Servedio}
+	\begin{frame}[t]
+		\frametitle{Desigualdade de O'Donnel-Saks-Schramm-Servedio}
+		\vspace{-3.5pt}	
+		\begin{mydef}[Algoritmo]
+			{\footnotesize
+				Dados uma n-upla $x = (x_1, \cdots, x_n)$ e um $t \leq n$, com $t \in \NX$, defina $x_{[t]} \colonequals (x_1, \cdots, x_t)$ e $\omega_{x_{[t]}} \colonequals (\omega_{x_1}, \cdots, \omega_{x_t})$. Um \textit{algoritmo} $\boldsymbol{T}$ é uma tripla $(i_1, \psi_t, t \leq n)$ que toma $\omega \in \Omega$ como entrada e devolve uma sequência ordenada $(i_1, \cdots, i_n)$ construída indutivamente da seguinte forma: para $2 \leq t \leq n$,
+				\begin{align*}
+					i_t = \psi_t(i_{[t-1]}, \omega_{i_{[t-1]}}) \in [n] \text{~\textbackslash~} \{i_1, \cdots, i_{t-1}\};
+				\end{align*}
+				onde $\psi_t$ é interpretada como a regra de decisão no tempo $t$ ($\psi_t$ toma, como argumentos, a localização e o valor dos bits para os primeiros $(t-1)$ passos do processo de indução, e, então, decide qual o próximo bit que será consultado). Aqui, note que a primeira coordenada $i_1$ é determinística. Por fim, para $f:\Omega \longrightarrow \{0,1\}$, defina:
+				\vspace{-6pt}
+				\begin{align*}
+					\tau(\omega) = \tau_{f, \boldsymbol{T}}(\omega) \colonequals \min\{t \geq 1: \forall x \in \Omega, x_{i_{[t]}} = \omega_{i_{[t]}} \implies f(x) = f(\omega)\}.
+				\end{align*}
+				\vspace{-24pt}
+			}
+		\end{mydef}
+	\end{frame}
+
+	\begin{frame}[t]
+		\frametitle{Desigualdade de O'Donnel-Saks-Schramm-Servedio}	
+		\begin{mythm}[Desiguladade de OSSS]
+			Seja $p \in [0,1]$ e $n \in \NX$. Fixe uma função Booleana crescente $f: \Omega \longrightarrow \{0,1\}$ e um algoritmo $\boldsymbol{T}$; então vale que:
+			\begin{align*}
+				\VX_p(f(\omega)) \leq p(1 - p) \sum_{i \in [n]} \delta_i(\boldsymbol{T}) \, \infl, 
+			\end{align*}
+			onde $\delta_i(\boldsymbol{T}) = \delta_i(f, \boldsymbol{T}) \colonequals \PX_p(\exists t \leq \tau(\omega) : i_t = i)$ é chamado de \textit{revelação} de $f$ para o algoritmo $\boldsymbol{T}$ e o bit $i$.
+			\label{osss-inequality}
+		\end{mythm}
+		\pause
+		\vspace{-8pt}
+		Sobre a Inequação \ref{eq-desejada}, se todas as \textit{revelações} $\delta_i(\boldsymbol{T})$ forem pequenas; i.e., se existe um algoritmo que determina de forma completa $f(\omega)$, mas \textit{revela} ``poucos'' bits, então $(f_k)_{k \in \NX}$ passa por \textit{sharp threshold}.
+	\end{frame}
+
+	\section{Aplicações em percolação Bernoulli ($\ZX^d$)}
+	\begin{frame}[t]
+		\frametitle{Aplicações em percolação Bernoulli ($\ZX^d$)}
+		{\footnotesize Seja $\LX^d = (\ZX^d, E^d)$ reticulado tal que $\ZX^d$ é conjunto de vértices e $E^d = \{\langle x, y\rangle \in \ZX^d \times \ZX^d : \delta(x, y) = 1\}$, onde $\delta(x, y) = \sum_{i = 1}^{d} |x_i - y_i|$.} \\
+		{\footnotesize $\phantom{X}$} \\
+		\begin{minipage}{0.55 \textwidth}
+			{\footnotesize Defina ($\Omega$, $\FX$, $\PX_p$) tal que:} 
+			\begin{itemize}
+				\item {\footnotesize $\Omega = \{0,1\}^{|E^d|}$;}
+				\item {\footnotesize $\FX = \sigma(\text{conjuntos cilíndricos})$;}
+				\item {\footnotesize $\PX_p$ é medida produto Bernoulli $\prod_{e \in E^d} \mu_e$, com $\mu_e(\omega_e = 1) = p$ e $\mu_e(\omega_e = 0) = 1-p$.}
+			\end{itemize}	 
+		\end{minipage}
+		\pause
+		\begin{minipage}{0.40 \textwidth}
+			\begin{figure}
+				\begin{overprint}
+					\onslide<2>\centering\input{Images/lattice-1.tex}
+					\onslide<3>\centering\input{Images/lattice-2.tex}
+					\onslide<4>\centering\input{Images/lattice-3.tex}
+				\end{overprint}
+			\vspace{-12pt} 
+				\begin{overprint}
+					\onslide<2>\caption{$\omega \in \Omega$ em $\LX^2$ com $p = 0.25$.}
+					\onslide<3>\caption{$\omega \in \Omega$ em $\LX^2$ com $p = 0.50$.}
+					\onslide<4>\caption{$\omega \in \Omega$ em $\LX^2$ com $p = 0.75$.}
+				\end{overprint}
+				\label{fig-reticulado}
+			\end{figure}		
+		\end{minipage}
+	\end{frame}
+
+	\begin{frame}[t]
+		\frametitle{Aplicações em percolação Bernoulli ($\ZX^d$)}
+		Notações e definições:
+		\begin{itemize}
+			\item Sejam $x, y \in \ZX^d$, então $x$ está conectado a $y$ se existe caminho de elos abertos ($e \in E^d$ ``aberto'' é o mesmo que $\omega_e = 1$) que conecta $x$ a $y$ (notação: $x \leftrightarrow y$).
+			\pause
+			\item Dado $x \in \ZX^d$, $C_x(\omega) = \{y \in \ZX^d : x \leftrightarrow y\}$ é dito \textit{cluster} de $x$. Nesse sentido, $\{\omega \in \Omega : |C_0(\omega)| = +\infty\}$ é o evento \textit{percolar} (notação: $\{0 \leftrightarrow +\infty\}$).
+			%\pause
+			%\item Seja $\Lambda_n = [-n, n]^d$ caixa d-dimensional de lado $2n$ e $\partial\Lambda_n \colonequals \Lambda_n \text{~\textbackslash~} \Lambda_{n - 1}$; isto é, $\partial\Lambda_n$ é a fronteira de $\Lambda_n$.
+			\pause 
+			\item Defina $\theta(p) \colonequals \PX_p(|C_0| = +\infty)$.
+			\pause
+			\item Defina $p_c(d) \colonequals \sup\{p:\theta(p) = 0\}$.
+			\pause
+			\item Para $n, m \in \ZX$, defina a caixa $R(n, m) \colonequals [0, n] \times [0, m]$ e $\HC(n, m) \colonequals \{\exists \text{ cruzamento horizontal em } R(n, m)\}$.
+			%\pause
+			%\item Nessa aplicação, as funções Booleanas serão definidas como $f: \{0,1\}^{|E|} \longrightarrow \{0, 1\}$, onde $E \subset E^d$ é conjunto finito.
+		\end{itemize}
+	\end{frame}
+	
+	\subsection{Ponto crítico para percolação em $\ZX^2$}
+	\begin{frame}[t]
+		\frametitle{Ponto crítico para percolação em $\ZX^2$}
+		\begin{mythm}[Kesten, 1980]
+			O ponto crítico para percolação Bernoulli em $\ZX^2$ é $\frac{1}{2}$; i.e., 
+			\begin{align*}
+				p_c(2) = \frac{1}{2}.
+			\end{align*}
+			\label{thm-kesten}
+		\end{mythm}
+		\pause
+		Uma intuição desse resultado é dada por:	
+		\begin{minipage}{0.50 \textwidth}
+			\begin{mypro}
+				Temos que, para todo $n \in \NX$, $\PX_{\frac{1}{2}}(\HC(n + 1, n)) = \frac{1}{2}$.
+				\label{prop-kesten}
+			\end{mypro}
+		\end{minipage}
+		\begin{minipage}{0.475 \textwidth}
+			\input{Images/cruzamento-caixa.tex}
+		\end{minipage}
+	\end{frame}
+
+	\begin{frame}[t]
+		\frametitle{Ponto crítico para percolação em $\ZX^2$}
+			Seja ${(\ZX^2)}^{\star} = \left(\frac{1}{2},\frac{1}{2}\right) + \ZX^2$, defina, para $\omega^{\star} \in \{0,1\}^{|{(E^d)}^{\star}|}$, $\omega^{\star}_{e^{\star}} \colonequals 1 - \omega_e$.
+			\begin{figure}
+				\input{Images/rede-dual.tex}
+				\caption{Rede dual ${(\ZX^2)}^{\star}$ $-$ em vermelho.}
+				\label{fig-rede-dual}
+			\end{figure}		
+	\end{frame}
+
+	\begin{frame}[t]
+		\frametitle{Ponto crítico para percolação em $\ZX^2$}
+		\vspace{-12pt}
+		\texttt{Esboço da prova da Proposição \ref{prop-kesten}:} \\~\\
+		\begin{minipage}{0.425 \textwidth}
+			\input{Images/caixas-sobrepostas.tex}
+		\end{minipage}
+		\begin{minipage}{0.55 \textwidth}
+				\uncover<1->{Sejam $R = (n + 1, n)$ e $R^{\star} = (n, n + 1)$; além de $\HC(n + 1, n)$, defina $\VC(n, n + 1)$ como o evento no qual existe cruz. vertical em $R^{\star}$.} \vspace{-9pt}
+				
+				\uncover<2->{Note que $\omega \sim \PX_p$ e $\omega^{\star} \sim \PX_{1 - p}$.} \vspace{9pt}
+				
+				\uncover<3->{Assim, \vspace{-8pt}
+					{\footnotesize
+						\begin{align*}
+						\PX_{\frac{1}{2}}(\HC(n + 1, n)) & = 1 - \PX_{\frac{1}{2}}(\HC(n + 1, n)^c) \\
+						  				  				 & = 1 - \PX_{\frac{1}{2}}(\VC(n, n + 1))   \\
+														 & = 1 - \PX_{\frac{1}{2}}(\HC(n + 1, n)) \\
+					  	\PX_{\frac{1}{2}}(\HC(n + 1, n)) & = \frac{1}{2}.
+						\end{align*}
+					}%
+				}%
+		\end{minipage}
+	\end{frame}
+
+	\begin{frame}[t]
+		\frametitle{Ponto crítico para percolação em $\ZX^2$}
+		\begin{mythm}
+			Para qualquer $\rho > 0$, existe $c = c(\rho) > 0$ tal que.  $\forall n \geq 1$,
+			\begin{align*}
+				c < \PX_{\frac{1}{2}}(\HC(\rho n, n)) \leq 1 - c.
+			\end{align*}
+		\end{mythm}
+		\pause
+		Seja $\Lambda_n = [-n, n]^d$ caixa d-dimensional de lado $2n$ e $\partial\Lambda_n \colonequals \Lambda_n \text{~\textbackslash~} \Lambda_{n - 1}$; isto é, $\partial\Lambda_n$ é a fronteira de $\Lambda_n$. Então vale o seguinte resultado:
+		\begin{mycol}
+			Existe $\alpha > 0$ tal que, para todo $n \geq 1$, $\PX_{\frac{1}{2}}(0 \leftrightarrow \partial\Lambda_n) \leq \frac{1}{n^{\alpha}}$. Em particular, $p_c \geq \frac{1}{2}$.
+		\end{mycol}
+	\end{frame}
+
+	\begin{frame}[t]
+	\frametitle{Ponto crítico para percolação em $\ZX^2$}
+		\vspace{-4pt}
+		\begin{mypro}
+			Para qualquer $p > \frac{1}{2}$, existe $\beta = \beta(p) > 0$ tal que,
+			\begin{align*}
+			\PX_p(\HC(2n, n)) \leq 1 - \frac{1}{\beta \, n^{\beta}}.
+			\end{align*}
+			\label{prop-only}
+		\end{mypro}
+		\vspace{-3pt}
+		{\footnotesize
+		Na demonstração da Proposição \ref{prop-only} é possível mostrar que, $\forall e \in E$, $\text{Inf}_e(\IX_{\HC(2n, n)}) \leq \frac{1}{N}$; o que, pelo Teorema \ref{thm-grupo}, nos dá o resultado.
+		\pause \\ \vspace{9pt}
+		Por fim, para terminar a prova do Teorema \ref{thm-kesten}, basta olhar para os eventos $\HC(2^{n + 1}, 2^n)$ e $\VC(2^n, 2^{n + 1})$. Nesse caso, pela Proposição \ref{prop-only}, $\sum_{n = 1}^{+\infty} \PX_p(\HC(2^{n + 1}, 2^n)^c) \leq \frac{1}{\beta}\sum_{n = 1}^{+\infty}\frac{1}{2^{\beta n}}$. Por Borel-Cantelli e simetria dos eventos $\HC(2^{n + 1}, 2^n)$ e $\VC(2^n, 2^{n + 1})$, o resultado segue.}
+		
+	\end{frame}	
+	
+	\subsection{\textit{Sharpness} da transição de fase para percolação Bernoulli em $\ZX^d$}
+	\begin{frame}[t]
+		\frametitle{\textit{Sharpness} da transição de fase para percolação Bernoulli em $\ZX^d$}
+		\begin{mythm}
+			Para percolação Bernoulli em $\ZX^d$,
+			\begin{enumerate}
+				\item Para $p < p_c$, existe $c_p > 0$ tal que, para todo $n \geq 1$, $\PX_p(0 \leftrightarrow \partial\Lambda_n) \leq e^{-c_p \, n}$.
+				\item (Mean Field Lower Bound) Existe $c > 0$ tal que $p > p_c$, $\PX_p(0 \leftrightarrow +\infty) \geq c(p - p_c)$.
+			\end{enumerate}
+		\label{thm-decai-exp}
+		\end{mythm}
+		\pause
+		\vspace{-8pt}
+		Observação: \\
+		A demonstração do Teorema \ref{thm-decai-exp} vem da escolha de um algoritmo $\boldsymbol{T}$ apropriado, para que, então, seja possível aplicar o Teorema \ref{osss-inequality} (Desigualdade de OSSS).
+	\end{frame}
+
+	\section{Referências}
+	\begin{frame}[t]
+		\frametitle{Referências}\vspace{5pt}
+		\nocite{duminil2019sharp}
+		\bibliographystyle{plain}
+		\bibliography{REFERENCIAS/REFERENCIAS}
+	\end{frame}
+
+\end{document}

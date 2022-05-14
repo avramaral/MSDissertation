@@ -1,0 +1,34 @@
+\begin{figure}
+	\begin{tikzpicture}[scale = 0.75, declare function = {funcao(\x) = 0.5 + (0.5 * erf((ln(\x) - ln(1 - x))/(0.45254834)));}]
+		\begin{axis}
+		[
+			name = myGraph,
+			xmin = 0,
+			xmax = 1.075,
+			xtick = {0, 1},
+			axis x line = bottom,
+			ymin = 0,
+			ymax = 1.075,
+			ytick = {0,1},
+			axis y line = middle,
+			samples = 200,
+			domain = 0:1,
+			clip = false %
+		]
+			\addplot[blue, mark = none, thick] (x, {funcao(x)});
+			\draw[densely dotted] (100, 0) -- (100, 100);
+			\draw[densely dotted] (0, 100) -- (100, 100);
+			\draw[densely dotted] (40,  0) -- (40,  100);
+			\draw[densely dotted] (60,  0) -- (60,  100);
+			\draw[densely dotted] (0,  10) -- (100,  10);
+			\draw[densely dotted] (0,  90) -- (100,  90);
+			\node[left] at (axis cs:0, 0.10) {\scriptsize{$F_k(p_k - \delta_k)$}};
+			\node[left] at (axis cs:0, 0.90) {\scriptsize{$F_k(p_k + \delta_k)$}};
+			\node[right] at (axis cs:1.075, 0) {\small{$p$}};
+			\node[above] at (axis cs:0, 1.075) {\small{$F_k(p)$}};
+			\draw[decoration = {brace, mirror, raise = 5pt}, decorate] (axis cs:0.4,0) -- node[below = 6pt] {{\scriptsize $2\delta_k$ }} (axis cs:0.6, 0);
+		\end{axis}		
+	\end{tikzpicture}
+	\caption{Esboço de $F_k(p) = \EX_p(f_k(w))$ para algum $k$ ``grande'', tal que $(f_k)_{k \in \NX}$ passa por \textit{sharp threshold}.} 
+	\label{fig-sharp-threshold}
+\end{figure}

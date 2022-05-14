@@ -1,0 +1,10 @@
+\babel@toc {brazilian}{}
+\beamer@sectionintoc {1}{Introdução}{3}{0}{1}
+\beamer@sectionintoc {2}{Como provar que $(f_n)_{n \in \NX }$ passa por \textit {\textbf {sharp threshold}}?}{9}{0}{2}
+\beamer@subsectionintoc {2}{1}{Fórmula de Russo-Margulis}{9}{0}{2}
+\beamer@subsectionintoc {2}{2}{Inequação de \textit {\textbf {sharp threshold}}}{13}{0}{2}
+\beamer@subsectionintoc {2}{3}{Desigualdade de O'Donnel-Saks-Schramm-Servedio}{14}{0}{2}
+\beamer@sectionintoc {3}{Aplicações em percolação Bernoulli ($\LX ^d$)}{16}{0}{3}
+\beamer@subsectionintoc {3}{1}{Ponto crítico para percolação em $\LX ^2$}{28}{0}{3}
+\beamer@subsectionintoc {3}{2}{\textit {Sharpness} da transição de fase para percolação Bernoulli em $\LX ^d$}{41}{0}{3}
+\beamer@sectionintoc {4}{Referências}{52}{0}{4}

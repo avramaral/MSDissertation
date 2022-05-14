@@ -1,0 +1,13 @@
+\babel@toc {brazilian}{}
+\beamer@sectionintoc {1}{Introdução}{3}{0}{1}
+\beamer@sectionintoc {2}{Como provar que $(f_k)_{k \in \NX }$ passa por \textit {\textbf {sharp threshold}}}{9}{0}{2}
+\beamer@subsectionintoc {2}{1}{Fórmula de Russo-Margulis}{9}{0}{2}
+\beamer@subsectionintoc {2}{2}{Inequação de \textit {\textbf {sharp threshold}}}{13}{0}{2}
+\beamer@subsectionintoc {2}{3}{Desigualdade de O'Donnel-Saks-Schramm-Servedio}{15}{0}{2}
+\beamer@sectionintoc {3}{Aplicações em percolação Bernoulli ($\LX ^d$)}{18}{0}{3}
+\beamer@subsectionintoc {3}{1}{Ponto crítico para percolação em $\LX ^2$}{30}{0}{3}
+\beamer@subsectionintoc {3}{2}{\textit {Sharpness} da transição de fase para percolação Bernoulli em $\LX ^d$}{54}{0}{3}
+\beamer@sectionintoc {4}{Modelos de Percolação com dependência}{66}{0}{4}
+\beamer@subsectionintoc {4}{1}{Percolação $2k$ Dependente}{66}{0}{4}
+\beamer@subsectionintoc {4}{2}{Percolação FK}{77}{0}{4}
+\beamer@sectionintoc {5}{Referências}{78}{0}{5}

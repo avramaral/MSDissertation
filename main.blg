@@ -1,0 +1,48 @@
+This is BibTeX, Version 0.99d (TeX Live 2019/Debian)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: main.aux
+The style file: apalike.bst
+Database file #1: pos-textuais/referencias.bib
+Warning--can't use both volume and number fields in harris1960lower
+You've used 30 entries,
+            1935 wiz_defined-function locations,
+            670 strings with 8586 characters,
+and the built_in function-call counts, 11956 in all, are:
+= -- 1237
+> -- 355
+< -- 33
++ -- 134
+- -- 112
+* -- 969
+:= -- 2005
+add.period$ -- 97
+call.type$ -- 30
+change.case$ -- 201
+chr.to.int$ -- 30
+cite$ -- 31
+duplicate$ -- 480
+empty$ -- 896
+format.name$ -- 159
+if$ -- 2388
+int.to.chr$ -- 1
+int.to.str$ -- 0
+missing$ -- 29
+newline$ -- 156
+num.names$ -- 90
+pop$ -- 154
+preamble$ -- 1
+purify$ -- 203
+quote$ -- 0
+skip$ -- 380
+stack$ -- 0
+substring$ -- 1004
+swap$ -- 79
+text.length$ -- 9
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 176
+warning$ -- 1
+while$ -- 116
+width$ -- 0
+write$ -- 400
+(There was 1 warning)

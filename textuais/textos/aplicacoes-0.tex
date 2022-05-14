@@ -1,0 +1,54 @@
+\par Para essa seção, vamos considerar o modelo de percolação Bernoulli em $\LX^d$ (em particular, para $d = 2$). Nesse sentido, considere o reticulado $d$ dimensional $\LX^d = (\ZX^d, \text{E}^d)$, tal que $\ZX^d$ é conjunto de vértices e $\text{E}^d$ é conjuntos de elos.
+
+\par Primeiro, denote por $x \in \ZX^d$ um elemento do conjunto de vértices, representado por $x = (x_1, \cdots, x_d)$, com $x_i \in \ZX$, $\forall i \in \{1, \cdots, d\}$. Defina $\delta(x, y) = \sum_{i = 1}^{d} |x_i - y_i|$, tal que $x, y \in \ZX^d$, como função distância. Então, dizemos que $\text{E}^d = \{(x, y) \in \ZX^d \times \ZX^d: \delta(x, y) = 1\}$ é o conjunto de elos.
+
+\par O espaço de probabilidade para esse modelo será dado por $(\Omega, \FX, \PX_p)$. Nesse caso, $\Omega = \prod_{e \in \text{E}^d} \{0, 1\}$, onde $\omega = (\omega_e: e \in \text{E}^d)$ é configuração de $\Omega$, tal que $\omega_e = 0$ representa elo $e$ ``fechado'' e $\omega_e = 1$ representa elo $e$ ``aberto'', $\forall e \in \text{E}^d$. Com o propósito de definir uma $\sigma-$álgebra apropriada, seja $C(f, a_0, \cdots, a_n) = \{\omega \in \Omega : \omega_{e + f} = a_e, 0 \leq e \leq n, a_e \in \{0, 1\}\}$ conjunto cilíndrico finito-dimensional. Nesse caso, é possível mostrar que cilindros finito-dimensionais formam uma semi-álgebra, denotada por $\mathcal{C}$, de subconjuntos de $\Omega$. Dessa forma, somos capazes de definir uma medida $\mathbf{P}_p: \mathcal{C} \longrightarrow [0, 1]$, tal que $\mathbf{P}_p(C(f, a_0, \cdots, a_n)) = \prod_{e: a_e = 1} p \prod_{e: a_e = 0} (1 - p)$. Aplicando o Teorema de Extensão de Kolmogorov, $\mathbf{P}_p$ pode ser estendida, de maneira única, para uma medida $\PX_p$, definida em $\sigma(\mathcal{C})$, tal que $\PX_p(A) = \mathbf{P}_p(A)$, $\forall A \in \mathcal{C}$. Sendo assim, para $\FX = \sigma(\mathcal{C})$, a medida de probabilidade de interesse $\PX_p(\omega)$ pode ser expressa por $\prod_{e:\omega_e = 1} p \prod_{e:\omega_e = 0} (1 - p)$. 
+
+%Entretanto, note que se considerarmos funções booleanas do tipo $f: \bar{\Omega} \longrightarrow \{0, 1\}$, onde $\bar{\Omega} \subset \Omega$ é conjunto finito, todos os resultados que demonstramos na Seção \ref{How-to-prove} ainda serão válidos; em particular $f$ será uma função do tipo $\IX_A(\omega)$, onde $A$ é evento que depende de uma quantidade finita de elos. 
+
+\par Abaixo, são apresentadas outras importantes definições que nos serão úteis ao longo desta seção.
+
+\begin{mydef} \label{caminho}
+	Um \textit{caminho} $\gamma$ em $\LX^d$ é definido pela sequência $\gamma = (x_i)_{i \in [n]}$ de vértices (distintos), tal que $(x_i, x_{i + 1}) \in \text{E}^d$, $\forall i \in [n] \,\text{\textbackslash}\, n$. Além disso, dizemos que um caminho $\gamma$ é \textit{aberto} se, para todos os elos $e$ que compõem $\gamma$, $\omega_e = 1$. Por fim, dizemos que ``$x$ \textit{está conectado a} $y$'' se existe $\gamma = (x, \cdots, y)$ caminho aberto (notação: $x \leftrightarrow y$).
+\end{mydef}
+
+\begin{mydef} \label{aglomerado}
+	Dado $x \in \ZX^d$, o \textit{aglomerado} de $x$ em $\omega$ é definido por $C_x(\omega) = \{y \in \ZX^d: x \leftrightarrow y\}$.
+\end{mydef}
+
+Uma observação importante é a de que, ao evento $\{\omega \in \Omega: |C_0(\omega)| = +\infty\}$, damos o nome de \textit{percolar}.
+
+\begin{mydef}
+	O ponto crítico no reticulado $\LX^d$ é definido por $p_c(\LX^d) = \sup\{p: \theta(p) = 0\}$, onde $\theta: [0, 1] \longrightarrow [0, 1]$ é função que mapeia $p \mapsto \PX_p(\{\omega \in \Omega : |C_0(\omega)| = +\infty\})$.
+\end{mydef}
+
+\par Sobre as propriedades da função $\theta(p)$, temos os seguintes resultados:
+
+\begin{mypro} \label{theta_prop}
+	A função $\theta(p)$ é não-decrescente; i.e., se $p_1 < p_2$, então $\theta(p_1) \leq \theta(p_2)$, $\forall ~p_1, ~p_2 \in [0, 1]$.
+\end{mypro}
+
+\par A demonstração da Proposição \ref{theta_prop} será feita no Apêndice \hyperref[apendice-primeiro]{A}.
+
+\begin{mypro} \label{lem-descontinuidade}
+	Para $d \geq 2$, $\exists p_c(d) \in (0, 1)$ tal que
+	\[ \theta(p) : \begin{cases}
+	= 0 & \text{se } p < p_c(d) \\
+	> 0 & \text{se } p > p_c(d).
+	\end{cases}
+	\]
+\end{mypro}
+\par A demonstração da Proposição \ref{lem-descontinuidade} será feita no Apêndice \hyperref[apendice-primeiro]{A}. O resultado será utilizado para a prova da Proposição \ref{lem-infinito}, que nos dá informação sobre a probabilidade de existir aglomerado de tamanho infinito em $\LX^d$ para uma configuração $\omega \in \Omega$.
+
+\begin{mypro}\label{lem-infinito}
+	Seja $\psi : [0, 1] \longrightarrow [0, 1]$, com $p \mapsto \PX_p(\{\omega \in \Omega : \exists$ aglomerado de tamanho infinito em $\LX^d$ para $\omega\})$, então:
+	\[ \psi(p) = \begin{cases}
+	0  &\text{se } p < p_c(d)\\
+	1  &\text{se } p > p_c(d).
+	\end{cases}
+	\]
+\end{mypro}
+\par A demonstração da Proposição \ref{lem-infinito} será feita no Apêndice \hyperref[apendice-primeiro]{A}.
+
+
+\par Por fim, defina $\Lambda_n \colonequals [-n, n]^d$, ou seja, uma caixa $d-$dimensional de lado $2n$, e $\partial \Lambda_n \colonequals \Lambda_n \text{\textbackslash} \Lambda_{n-1}$ (onde $\partial \Lambda_n$ representa a ``fronteira'' da caixa $[-n, n]^d$).

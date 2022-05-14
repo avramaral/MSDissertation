@@ -1,0 +1,67 @@
+\begin{tikzpicture}[scale = 0.75]
+
+\draw[solid, black] (-4, -3) -- ( 4, -3);
+\draw[solid, black] (-4,  3) -- ( 4,  3);
+\draw[solid, black] (-4, -3) -- (-4,  3);
+\draw[solid, black] ( 4, -3) -- ( 4,  3);
+
+\draw [decorate, decoration = {brace, amplitude = 6pt, mirror}, xshift = 4pt, yshift = 0pt] (4, -3) -- (4, 3) node [black, midway, xshift = 14pt, yshift = 0pt] {\small $n$};
+
+\draw [decorate, decoration = {brace, amplitude = 6pt, mirror}, xshift = 0pt, yshift = -4pt] (-4, -3) -- (4, -3) node [black, midway, xshift = 0pt, yshift = -14pt] {\small $n + 1$};
+
+\draw[solid, black] (-1.5, -1) -- (-1.5, 1);
+\draw[solid, black] (-1.5, -1) -- (0.5, -1);
+\draw[solid, black] ( 0.5, -1) -- (0.5,  1);
+\draw[solid, black] ( 0.5,  1) -- (-1.5, 1);
+\node[black] at (-2, -0.9) {{\small $\Lambda_k$}};
+
+\draw[solid, black] ( 1.5, -1) -- ( 1.5, 1);
+\draw[solid, black] ( 1.5,  1) -- (-0.5, 1);
+\draw[solid, black] (-0.5,  1) -- (-0.5,-1);
+\draw[solid, black] (-0.5, -1) -- ( 1.5,-1);
+\node[black] at ( 2, -0.9) {{\small ${\Lambda_k}^{\prime}$}};
+
+\node[black] at ( 6.5, 0) {{\small (lado B)}};
+\node[black] at (-6.5, 0) {{\small (lado A)}};
+
+\draw[solid, thick, black] (-1.5, 0) to[out = 135, in = -45] (-4, 0);
+\draw[solid, thick, black] ( 1.5, 0) to[out = -45, in = 135] ( 4, 0);
+
+\draw[fill] (-1.5, 0) circle (2.68pt);
+\draw[fill] (  -4, 0) circle (2.68pt);
+\draw[fill] ( 1.5, 0) circle (2.68pt);
+\draw[fill] (   4, 0) circle (2.68pt);
+
+	\draw[black] ( 0,  0) circle (2.68pt);
+\node[black] at (0, -.4) {{\scriptsize $(0, 0)$}};
+
+%	\draw[solid, black] (-2, -2) -- ( 2, -2);
+%	\draw[solid, black] ( 2, -2) -- ( 2,  2);
+%	\draw[solid, black] ( 2,  2) -- (-2,  2);
+%	\draw[solid, black] (-2,  2) -- (-2, -2);
+%	
+%	\draw[solid, black] (-4, -4) -- ( 4, -4);
+%	\draw[solid, black] ( 4, -4) -- ( 4,  4);
+%	\draw[solid, black] ( 4,  4) -- (-4,  4);
+%	\draw[solid, black] (-4,  4) -- (-4, -4);
+%	
+%	\draw[dashed, black] (-2, -4) -- (-2, 4);
+%	\draw[dashed, black] ( 2, -4) -- ( 2, 4);
+%	\draw[dashed, black] (-4, -2) -- ( 4,-2);
+%	\draw[dashed, black] (-4,  2) -- ( 4, 2);
+%	
+%	\draw[black] ( 0,  0) circle (3.35pt);
+%	\node[black] at (0, -.5) {{\footnotesize $(0, 0)$}};
+%	\node[black] at (-2.4, -1.65) {{\small $\Lambda_{k\phantom{2}}$}};
+%	\node[black] at (-4.6, -3.65) {{\small $\Lambda_{2k}$}};
+%	
+%	\draw[fill] ( -1,  1) circle (3.35pt);
+%	\draw[fill] ( -4,  1) circle (3.35pt);
+%	
+%	\draw[solid, thick, black] (-1, 1) to[out = 135, in = -45] (-4, 1);
+%	
+%	\draw [decorate, decoration = {brace, amplitude = 6pt, mirror}, xshift = 4pt, yshift = 0pt] (2, -2) -- (2, 2) node [black, midway, xshift = 14pt, yshift = 0pt] {\small $2k$};
+%	
+%	\draw [decorate, decoration = {brace, amplitude = 6pt, mirror}, xshift = 4pt, yshift = 0pt] (4, -4) -- (4, 4) node [black, midway, xshift = 14pt, yshift = 0pt] {\small $4k$};
+	
+\end{tikzpicture}
